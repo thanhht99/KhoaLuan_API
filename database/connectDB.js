@@ -13,6 +13,7 @@ class ConnectMongo {
         mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            bufferCommands: false,
         }).then(() => console.log(`DB MongoDB is connected`.yellow))
 
         const conn = mongoose.connection
