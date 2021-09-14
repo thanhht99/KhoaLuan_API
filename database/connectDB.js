@@ -36,7 +36,6 @@ class ConnectMongo {
             .then(() => console.log(`DB MongoDB is connected`.yellow))
             .catch((err) => {
                 console.error("Error while connecting to DB", err);
-                return next(new ErrorResponse(502, "Bad Gateway."));
             });
 
         const conn = mongoose.connection;

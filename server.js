@@ -53,7 +53,7 @@ app.use("/api/feedback", feedback);
 app.use("/api/data", data);
 
 app.get('/', (req, res) => {
-    res.send('Hello. *_* Alo Alo!');
+    res.send(`Hello. *_* Alo Alo! MONGODB_URI=${process.env.MONGODB_URI}`);
 });
 
 // middleware error
