@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const colors = require('colors');
 const Grid = require('gridfs-stream');
+const ErrorResponse = require("../model/statusResponse/ErrorResponse");
 
 class ConnectMongo {
 
@@ -11,10 +12,11 @@ class ConnectMongo {
 
     static getConnect() {
         mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true,
-        }).then(() => console.log(`DB MongoDB is connected`.yellow))
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                useCreateIndex: true,
+            }).then(() => console.log(`DB MongoDB is connected`.yellow))
+            .catch(() => { return next(new ErrorResponse(502, "Bad Gateway.")); });
 
         const conn = mongoose.connection
 
