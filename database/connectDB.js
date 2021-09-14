@@ -11,12 +11,15 @@ class ConnectMongo {
     }
 
     static getConnect() {
-        mongoose.connect(process.env.MONGO_URI, {
+        mongoose.connect(process.env.MONGODB_URI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useCreateIndex: true,
             }).then(() => console.log(`DB MongoDB is connected`.yellow))
-            .catch(() => { return next(new ErrorResponse(502, "Bad Gateway.")); });
+            .catch((err) => {
+                console.error('Error while connecting to DB', err);
+                return next(new ErrorResponse(502, "Bad Gateway."));
+            });
 
         const conn = mongoose.connection
 
