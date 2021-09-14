@@ -6,7 +6,8 @@ const { authorize } = require("../middleware/authorize");
 const mongoUpload = require("../middleware/mongoUpload");
 const { ConnectMongo } = require("../database/connectDB");
 
-router.get("/all", jwtAuth, authorize("Admin"), userController.getAllUsers);
+// router.get("/all", jwtAuth, authorize("Admin"), userController.getAllUsers);
+router.get("/all", userController.getAllUsers);
 
 router.get("/avatar", jwtAuth, userController.avatarUser);
 
