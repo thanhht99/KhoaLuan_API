@@ -11,7 +11,6 @@ exports.getAllUsers = asyncMiddleware(async(req, res, next) => {
     // if (!req.session.account) {
     //     return next(new ErrorResponse(401, "End of login session"));
     // }
-    console.log("Hi");
     const users = await User.find().select("-updatedAt -createdAt -__v");
     const userAndAccount = await Promise.all(users.map(async(user) => {
         if (user.isAcc) {
