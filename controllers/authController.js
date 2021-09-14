@@ -103,7 +103,7 @@ exports.verifyCode = asyncMiddleware(async(req, res, next) => {
 // Sign In
 exports.signIn = asyncMiddleware(async(req, res, next) => {
     const { userNameOrEmail, password } = req.body;
-    console.log("🚀 ~ file: authController.js ~ line 106 ~ exports.signIn=asyncMiddleware ~ req.body", req.body)
+    // console.log("🚀 ~ file: authController.js ~ line 106 ~ exports.signIn=asyncMiddleware ~ req.body", req.body)
     req.checkBody('userNameOrEmail', 'User Name Or Email is empty!!').notEmpty();
     req.checkBody('password', 'Password is empty!!').notEmpty();
 

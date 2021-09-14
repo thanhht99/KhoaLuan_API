@@ -26,7 +26,7 @@ class MailService {
             })
             .catch((err) => {
                 console.log(err);
-                return next(new ErrorResponse(500, "Error send mail"));
+                // return next(new ErrorResponse(500, "Error send mail"));
             });
         return info;
     }
