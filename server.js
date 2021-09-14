@@ -8,6 +8,7 @@ const colors = require('colors');
 const session = require('express-session');
 const errorMiddleware = require("./middleware/errorMiddleware");
 const { ConnectMongo } = require("./database/connectDB");
+// const connectDB = require("./database/connectDB");
 const MailService = require("./utility/mail");
 
 const auth = require("./routes/auth");
@@ -24,6 +25,7 @@ const data = require("./routes/data");
 
 // using MongoDB
 ConnectMongo.getConnect();
+
 MailService.init();
 
 // middleware parse body
