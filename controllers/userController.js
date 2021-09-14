@@ -12,20 +12,19 @@ exports.getAllUsers = asyncMiddleware(async(req, res, next) => {
     //     return next(new ErrorResponse(401, "End of login session"));
     // }
     console.log("Hi");
-    try {
-        const users = await User.find().select("-updatedAt -createdAt -__v");
-        const userAndAccount = await Promise.all(users.map(async(user) => {
-            if (user.isAcc) {
-                const account = await Account.findOne({ email: user.email }).select("-password -updatedAt -createdAt -__v");
-                user.account = account;
-                return user;
-            }
+    const users = await User.find().select("-updatedAt -createdAt -__v");
+    const userAndAccount = await Promise.all(users.map(async(user) => {
+        if (user.isAcc) {
+            const account = await Account.findOne({ email: user.email }).select("-password -updatedAt -createdAt -__v");
+            user.account = account;
             return user;
-        }));
-        return res.status(200).json(new SuccessResponse(200, userAndAccount));
-    } catch (error) {
-        return next(new ErrorResponse(400, error));
+        }
+        return user;
+    }));
+    if (!userAndAccount) {
+        return next(new ErrorResponse(404, "User and Account are not found"));
     }
+    return res.status(200).json(new SuccessResponse(200, userAndAccount));
 });
 
 // Get User
