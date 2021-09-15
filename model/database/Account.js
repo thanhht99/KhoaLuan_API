@@ -9,6 +9,7 @@ const AccountSchema = new Schema({
         trim: true,
         required: [true, "Username is required"],
         minlength: [6, "Username musts have more than 6 characters"],
+        maxlength: [32, "Username musts have less than 32 characters"],
         unique: true,
     },
     email: {
@@ -26,8 +27,10 @@ const AccountSchema = new Schema({
     },
     password: {
         type: String,
+        trim: true,
         required: [true, "Password is required"],
-        minlength: [6, "Password musts have more than 6 characters"]
+        minlength: [6, "Password musts have more than 6 characters"],
+        maxlength: [50, "Password musts have less than 50 characters"],
     },
     role: {
         type: String,

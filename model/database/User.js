@@ -17,9 +17,11 @@ const UserSchema = new Schema({
         trim: true,
         required: [true, "Full Name is required"],
         minlength: [3, "Full Name musts have more than 3 characters"],
+        maxlength: [50, "Full Name musts have less than 50 characters"],
     },
     address: {
         type: String,
+        trim: true,
     },
     email: {
         type: String,
@@ -39,6 +41,14 @@ const UserSchema = new Schema({
         trim: true,
         required: [true, "Phone is required"],
         validate: [isPhone, 'Oops..Please fill a valid number phone'],
+    },
+    dayOfBirth: {
+        type: Date,
+        required: [true, "Day Of Birth is required"],
+    },
+    gender: {
+        type: String,
+        enum: ["Male", "Female"]
     },
     image: {
         type: String,

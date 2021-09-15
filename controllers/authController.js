@@ -8,65 +8,85 @@ const asyncMiddleware = require("../middleware/asyncMiddleware");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
+Date.prototype.isDate = function() {
+    return this !== "Invalid Date" && !isNaN(this) ? true : false;
+};
+
 // Sign up
 exports.signUp = asyncMiddleware(async(req, res, next) => {
-    const { fullName, userName, email, phone, password } = req.body;
-    req.checkBody('fullName', 'Full Name is empty!!').notEmpty();
-    req.checkBody('userName', 'User Name is empty!!').notEmpty();
-    req.checkBody('email', 'Email is empty!!').notEmpty();
-    req.checkBody('phone', 'Phone is empty!!').notEmpty();
-    req.checkBody('password', 'Password is empty!!').notEmpty();
-    req.checkBody('email', 'Invalid email!!').isEmail();
-    req.checkBody('phone', 'Invalid phone!!').custom((val) => /(84|0[3|5|7|8|9])+([0-9]{8})\b/.test(val));
-    req.checkBody('userName', 'Invalid UserName!!').custom((val) => /^[a-zA-Z0-9]+$/.test(val));
+    const { fullName, userName, email, phone, password, dayOfBirth, gender } = req.body;
+    req.checkBody("fullName", "Full Name is empty!!").notEmpty();
+    req.checkBody("userName", "User Name is empty!!").notEmpty();
+    req.checkBody("email", "Email is empty!!").notEmpty();
+    req.checkBody("phone", "Phone is empty!!").notEmpty();
+    req.checkBody("dayOfBirth", "Day Of Birth is empty!!").notEmpty();
+    req.checkBody("gender", "Gender is empty!!").notEmpty();
+    req.checkBody("password", "Password is empty!!").notEmpty();
+    req.checkBody("email", "Invalid email!!").isEmail();
+    req.checkBody("phone", "Invalid phone!!").custom((val) => /(84|0[3|5|7|8|9])+([0-9]{8})\b/.test(val));
+    req.checkBody("userName", "Invalid UserName!!").custom((val) => /^[a-zA-Z0-9]+$/.test(val));
 
-    let errors = await req.getValidationResult()
+    console.log("🚀 ~ file: authController.js ~ line 18 ~ exports.signUp=asyncMiddleware ~ dayOfBirth", dayOfBirth)
+
+    let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
-        let array = []
-        errors.array().forEach(e => array.push(e.msg))
+        let array = [];
+        errors.array().forEach((e) => array.push(e.msg));
         return next(new ErrorResponse(422, array));
     }
+    let dayOfBirthD = new Date(dayOfBirth);
+    console.log("🚀 ~ Date(dayOfBirth)", dayOfBirthD)
+    console.log("🚀 ~ Date(dayOfBirth)", dayOfBirthD.isDate())
+    if (!dayOfBirthD.isDate()) {
+        return next(new ErrorResponse(400, "Day Of Birth invalid"));
+    }
+
     const newAccount = new Account({
         userName,
         email,
-        password
+        password,
     });
     newAccount.verifyCode = Math.floor(Math.random() * 1000000);
     const newUser = new User({
         fullName,
         email,
         phone,
-        isAcc: true
+        dayOfBirth: dayOfBirthD,
+        gender,
+        isAcc: true,
     });
 
     const res_acc = await newAccount.save();
     if (res_acc) {
         newUser.userAccount = res_acc._id;
-        const res_user = await newUser.save();
-        if (res_user) {
-            try {
-                await MailService.sendMail(
-                    `Clothes Store AT99<${process.env.USER_MAIL}>`,
-                    email,
-                    "Verify Code",
-                    `Hi ${fullName}.<br>Thank you for sign up an account on our website. ^-^.<br>` +
-                    `\n<b>User Name:</b> ${userName}.<br>` +
-                    `\n<b>Email:</b> ${email}.<br>` +
-                    `\n<b>Phone:</b> ${phone}.<br>` +
-                    `\n<b>Your Verify Code:</b> <span style="color:red"><b>${newAccount.verifyCode}</b></span>.<br>` +
-                    `\nClick on the link to verify:http://localhost:${process.env.PORT}/api/auth/signUp/verifyCode/${newAccount._id}.<br>`
-                );
-                return res.status(201)
-                    .json(new SuccessResponse(
+        try {
+            await newUser.save();
+            await MailService.sendMail(
+                `Clothes Store AT99<${process.env.USER_MAIL}>`,
+                email,
+                "Verify Code",
+                `Hi ${fullName}.<br>Thank you for sign up an account on our website. ^-^.<br>` +
+                `\n<b>User Name:</b> ${userName}.<br>` +
+                `\n<b>Email:</b> ${email}.<br>` +
+                `\n<b>Phone:</b> ${phone}.<br>` +
+                `\n<b>Your Verify Code:</b> <span style="color:red"><b>${newAccount.verifyCode}</b></span>.<br>` +
+                `\nClick on the link to verify:http://localhost:${process.env.PORT}/api/auth/signUp/verifyCode/${newAccount._id}.<br>`
+            );
+            return res
+                .status(201)
+                .json(
+                    new SuccessResponse(
                         201,
                         `Sign up successfully. Please check your email - ${email}`
-                    ));
-            } catch (err) {
-                await User.findByIdAndDelete(res_user._id);
-                await Account.findByIdAndDelete(res_acc._id);
-                return next(new ErrorResponse(500, err));
-            }
+                    )
+                );
+        } catch (err) {
+            await Account.findByIdAndDelete(res_acc._id);
+            await User.findByIdAndDelete(res_user._id);
+            return next(new ErrorResponse(500, err));
         }
+        // if (res_user) {
+        // }
     }
 });
 
@@ -77,12 +97,12 @@ exports.verifyCode = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(422, "Id is empty"));
     }
     const { verifyCode } = req.body;
-    req.checkBody('verifyCode', 'Verify Code is empty!!').notEmpty();
+    req.checkBody("verifyCode", "Verify Code is empty!!").notEmpty();
 
-    let errors = await req.getValidationResult()
+    let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
-        let array = []
-        errors.array().forEach(e => array.push(e.msg))
+        let array = [];
+        errors.array().forEach((e) => array.push(e.msg));
         return next(new ErrorResponse(422, array));
     }
     const acc = await Account.findOne({ _id: id });
@@ -91,7 +111,9 @@ exports.verifyCode = asyncMiddleware(async(req, res, next) => {
             if (verifyCode === acc.verifyCode) {
                 const updatedActiveAccount = await Account.findOneAndUpdate({ email: acc.email }, { isActive: true }, { new: true });
                 // console.log(updatedActiveAccount);
-                return res.status(200).json(new SuccessResponse(200, "Verify successful"));
+                return res
+                    .status(200)
+                    .json(new SuccessResponse(200, "Verify successful"));
             }
             return next(new ErrorResponse(406, "Verify code incorrect"));
         }
@@ -104,20 +126,27 @@ exports.verifyCode = asyncMiddleware(async(req, res, next) => {
 exports.signIn = asyncMiddleware(async(req, res, next) => {
     const { userNameOrEmail, password } = req.body;
     // console.log("🚀 ~ file: authController.js ~ line 106 ~ exports.signIn=asyncMiddleware ~ req.body", req.body)
-    req.checkBody('userNameOrEmail', 'User Name Or Email is empty!!').notEmpty();
-    req.checkBody('password', 'Password is empty!!').notEmpty();
+    req.checkBody("userNameOrEmail", "User Name Or Email is empty!!").notEmpty();
+    req.checkBody("password", "Password is empty!!").notEmpty();
 
-    let errors = await req.getValidationResult()
+    let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
-        let array = []
-        errors.array().forEach(e => array.push(e.msg))
+        let array = [];
+        errors.array().forEach((e) => array.push(e.msg));
         return next(new ErrorResponse(422, array)).send(array);
     }
-    const checkExistAccountByUserName = await Account.findOne({ userName: userNameOrEmail });
-    const checkExistAccountByEmail = await Account.findOne({ email: userNameOrEmail });
+    const checkExistAccountByUserName = await Account.findOne({
+        userName: userNameOrEmail,
+    });
+    const checkExistAccountByEmail = await Account.findOne({
+        email: userNameOrEmail,
+    });
 
     if (checkExistAccountByUserName || checkExistAccountByEmail) {
-        const account = (checkExistAccountByUserName || !checkExistAccountByEmail) ? checkExistAccountByUserName : checkExistAccountByEmail;
+        const account =
+            checkExistAccountByUserName || !checkExistAccountByEmail ?
+            checkExistAccountByUserName :
+            checkExistAccountByEmail;
         if (account.isActive) {
             const isMatchPassword = await Account.comparePassword(
                 password,
@@ -125,19 +154,23 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
             );
             if (isMatchPassword) {
                 if (account.isLogin) {
-                    return next(new ErrorResponse(403, "Account is logged in somewhere else"));
+                    return next(
+                        new ErrorResponse(403, "Account is logged in somewhere else")
+                    );
                 }
                 const token = jwt.sign({
                         userName: account.userName,
                         email: account.email,
-                        role: account.role
+                        role: account.role,
                     },
                     process.env.SECRETKEY, { expiresIn: "2h" }
                 );
                 const updatedIsLogin = await Account.findOneAndUpdate({ email: account.email }, { isLogin: true }, { new: true });
                 setTimeout(async function() {
                     await Account.findOneAndUpdate({ email: jwt.decode(token).email }, { isLogin: false }, { new: true });
-                    console.log('Run setTimeout() Account update isLogin(false) success !!! !!! !!!')
+                    console.log(
+                        "Run setTimeout() Account update isLogin(false) success !!! !!! !!!"
+                    );
                 }, 1000 * 60 * 60 * 2);
                 return res.status(200).json(new SuccessResponse(200, token));
             }
@@ -151,23 +184,33 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
 // Forget password
 exports.forgetPassword = asyncMiddleware(async(req, res, next) => {
     const { userNameOrEmail } = req.body;
-    req.checkBody('userNameOrEmail', 'User Name Or Email is empty!!').notEmpty();
+    req.checkBody("userNameOrEmail", "User Name Or Email is empty!!").notEmpty();
 
-    let errors = await req.getValidationResult()
+    let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
-        let array = []
-        errors.array().forEach(e => array.push(e.msg))
+        let array = [];
+        errors.array().forEach((e) => array.push(e.msg));
         return next(new ErrorResponse(422, array));
     }
-    const checkExistAccountByUserName = await Account.findOne({ userName: userNameOrEmail });
-    const checkExistAccountByEmail = await Account.findOne({ email: userNameOrEmail });
+    const checkExistAccountByUserName = await Account.findOne({
+        userName: userNameOrEmail,
+    });
+    const checkExistAccountByEmail = await Account.findOne({
+        email: userNameOrEmail,
+    });
     const verifyCode = Math.floor(Math.random() * 1000000);
 
     if (checkExistAccountByUserName || checkExistAccountByEmail) {
-        const account = (checkExistAccountByUserName || !checkExistAccountByEmail) ? checkExistAccountByUserName : checkExistAccountByEmail;
+        const account =
+            checkExistAccountByUserName || !checkExistAccountByEmail ?
+            checkExistAccountByUserName :
+            checkExistAccountByEmail;
         if (account.isActive) {
             const token = crypto.randomBytes(30).toString("hex");
-            const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+            const hashedToken = crypto
+                .createHash("sha256")
+                .update(token)
+                .digest("hex");
 
             const newToken = await Token.findOneAndUpdate({ email: account.email }, {
                 email: account.email,
@@ -189,11 +232,14 @@ exports.forgetPassword = asyncMiddleware(async(req, res, next) => {
                         `\n<b>Your Verify Code:</b> <span style="color:red"><b>${newToken.verifyCode}</b></span>.<br>` +
                         `\nClick on the link to reset password:http://localhost:${process.env.PORT}/api/auth/resetPassword/${token}.<br>`
                     );
-                    return res.status(200)
-                        .json(new SuccessResponse(
-                            200,
-                            `Please check your email ${newToken.email} to reset password`
-                        ));
+                    return res
+                        .status(200)
+                        .json(
+                            new SuccessResponse(
+                                200,
+                                `Please check your email ${newToken.email} to reset password`
+                            )
+                        );
                 } catch (err) {
                     return next(new ErrorResponse(500, err));
                 }
@@ -208,8 +254,8 @@ exports.forgetPassword = asyncMiddleware(async(req, res, next) => {
 exports.resetPassword = asyncMiddleware(async(req, res, next) => {
     const { token } = req.params;
     const { verifyCode, password } = req.body;
-    req.checkBody('verifyCode', 'Verify Code is empty!!').notEmpty();
-    req.checkBody('password', 'Password is empty!!').notEmpty();
+    req.checkBody("verifyCode", "Verify Code is empty!!").notEmpty();
+    req.checkBody("password", "Password is empty!!").notEmpty();
 
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
@@ -221,10 +267,10 @@ exports.resetPassword = asyncMiddleware(async(req, res, next) => {
     if (!checkToken) {
         return next(new ErrorResponse(400, "Invalid Token or expired"));
     }
-    let errors = await req.getValidationResult()
+    let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
-        let array = []
-        errors.array().forEach(e => array.push(e.msg))
+        let array = [];
+        errors.array().forEach((e) => array.push(e.msg));
         return next(new ErrorResponse(422, array));
     }
     if (verifyCode === checkToken.verifyCode) {
@@ -239,7 +285,9 @@ exports.resetPassword = asyncMiddleware(async(req, res, next) => {
                 await Token.findOneAndUpdate({ email: res_acc.email }, {
                     token: null,
                 }, { upsert: true, new: true });
-                return res.status(200).json(new SuccessResponse(200, "Your password is updated"));
+                return res
+                    .status(200)
+                    .json(new SuccessResponse(200, "Your password is updated"));
             } catch (err) {
                 return next(new ErrorResponse(500, err));
             }
