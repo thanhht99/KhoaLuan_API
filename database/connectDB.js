@@ -25,8 +25,8 @@ class ConnectMongo {
     //     return mongoose;
     // };
 
-    static async getConnect() {
-        await mongoose
+    static getConnect() {
+        mongoose
             .connect(process.env.MONGODB_URI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,

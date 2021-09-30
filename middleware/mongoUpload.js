@@ -5,10 +5,10 @@ const path = require('path');
 const ErrorResponse = require("../model/statusResponse/ErrorResponse");
 
 const storage = new GridFsStorage({
-    url: "mongodb://localhost:27017/SaleOnline",
+    url: "mongodb+srv://qtd1999:QTD267qtd@cluster0.cp94j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     file: (req, file) => {
-        // console.log("---------------------------------");
-        // console.log(file);        
+        console.log("---------------------------------");
+        console.log(file);
         return new Promise((resolve, reject) => {
             crypto.randomBytes(16, (err, buf) => {
                 if (err) {

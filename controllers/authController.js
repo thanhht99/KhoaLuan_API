@@ -165,6 +165,11 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
                     },
                     process.env.SECRETKEY, { expiresIn: "2h" }
                 );
+                res.cookie('token', token, {
+                    maxAge: 365 * 24 * 60 * 60 * 100,
+                    httpOnly: true,
+                    // secure: true;
+                })
                 const updatedIsLogin = await Account.findOneAndUpdate({ email: account.email }, { isLogin: true }, { new: true });
                 setTimeout(async function() {
                     await Account.findOneAndUpdate({ email: jwt.decode(token).email }, { isLogin: false }, { new: true });
@@ -174,7 +179,7 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
                 }, 1000 * 60 * 60 * 2);
                 return res.status(200).json(new SuccessResponse(200, token));
             }
-            return next(new ErrorResponse(401, "Password is not match"));
+            return next(new ErrorResponse(403, "Password is not match"));
         }
         return next(new ErrorResponse(403, "Account locked"));
     }

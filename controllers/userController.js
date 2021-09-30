@@ -43,7 +43,7 @@ exports.getAcc = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {
         return next(new ErrorResponse(401, "End of login session"));
     }
-    const acc = await Account.findOne({ email: req.session.account.email }).select("-updatedAt -createdAt -__v");
+    const acc = await Account.findOne({ email: req.session.account.email }).select("-password -updatedAt -createdAt -__v");
     if (!acc) {
         return next(new ErrorResponse(404, "Account is not found"))
     }
