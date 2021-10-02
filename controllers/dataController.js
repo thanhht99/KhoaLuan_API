@@ -48,7 +48,7 @@ exports.user = asyncMiddleware(async(req, res, next) => {
     });
     const user3 = new User({
         userAccount: account3._id,
-        fullName: "Saler",
+        fullName: "Customer",
         email: "anhruemngu123@gmail.com",
         phone: "0367662607",
         isAcc: true,

@@ -3,7 +3,7 @@ const SuccessResponse = require("../model/statusResponse/SuccessResponse");
 const Account = require("../model/database/Account");
 const User = require("../model/database/User");
 const asyncMiddleware = require("../middleware/asyncMiddleware");
-const { ConnectMongo } = require('../database/connectDB');
+const { ConnectMongo } = require("../database/connectDB");
 const removeUpload = require("../middleware/removeUpload");
 
 // Get All Users
@@ -12,14 +12,18 @@ exports.getAllUsers = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(401, "End of login session"));
     }
     const users = await User.find().select("-updatedAt -createdAt -__v");
-    const userAndAccount = await Promise.all(users.map(async(user) => {
-        if (user.isAcc) {
-            const account = await Account.findOne({ email: user.email }).select("-password -updatedAt -createdAt -__v");
-            user.account = account;
+    const userAndAccount = await Promise.all(
+        users.map(async(user) => {
+            if (user.isAcc) {
+                const account = await Account.findOne({ email: user.email }).select(
+                    "-password -updatedAt -createdAt -__v"
+                );
+                user.account = account;
+                return user;
+            }
             return user;
-        }
-        return user;
-    }));
+        })
+    );
     if (!userAndAccount) {
         return next(new ErrorResponse(404, "User and Account are not found"));
     }
@@ -31,9 +35,11 @@ exports.getUser = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {
         return next(new ErrorResponse(401, "End of login session"));
     }
-    const user = await User.findOne({ email: req.session.account.email }).select("-updatedAt -createdAt -__v");
+    const user = await User.findOne({ email: req.session.account.email }).select(
+        "-updatedAt -createdAt -__v"
+    );
     if (!user) {
-        return next(new ErrorResponse(404, "User is not found"))
+        return next(new ErrorResponse(404, "User is not found"));
     }
     return res.status(200).json(new SuccessResponse(200, user));
 });
@@ -43,9 +49,11 @@ exports.getAcc = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {
         return next(new ErrorResponse(401, "End of login session"));
     }
-    const acc = await Account.findOne({ email: req.session.account.email }).select("-password -updatedAt -createdAt -__v");
+    const acc = await Account.findOne({
+        email: req.session.account.email,
+    }).select("-password -updatedAt -createdAt -__v");
     if (!acc) {
-        return next(new ErrorResponse(404, "Account is not found"))
+        return next(new ErrorResponse(404, "Account is not found"));
     }
     return res.status(200).json(new SuccessResponse(200, acc));
 });
@@ -60,9 +68,13 @@ exports.findUserByUserName = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(403, "Forbidden !!!. What are you doing???"));
     }
     try {
-        const user = await User.findOne({ email: req.session.account.email }).select("-updatedAt -createdAt -__v");
+        const user = await User.findOne({
+            email: req.session.account.email,
+        }).select("-updatedAt -createdAt -__v");
         if (user.isAcc) {
-            const account = await Account.findOne({ email: user.email }).select("-password -updatedAt -createdAt -__v");
+            const account = await Account.findOne({ email: user.email }).select(
+                "-password -updatedAt -createdAt -__v"
+            );
             user.account = account;
         }
         return res.status(200).json(new SuccessResponse(200, user));
@@ -73,11 +85,14 @@ exports.findUserByUserName = asyncMiddleware(async(req, res, next) => {
 
 // Avatar User
 exports.avatarUser = asyncMiddleware(async(req, res, next) => {
-    if (!req.session.account) {
-        return next(new ErrorResponse(401, "End of login session"));
-    }
+    // if (!req.session.account) {
+    //     return next(new ErrorResponse(401, "End of login session"));
+    // }
+    // const checkExistAccount = await Account.findOne({
+    //     userName: req.session.account.userName,
+    // });
     const checkExistAccount = await Account.findOne({
-        userName: req.session.account.userName,
+        _id: req.params.id,
     });
     if (!checkExistAccount) {
         return next(new ErrorResponse(404, "Account is not found"));
@@ -87,18 +102,17 @@ exports.avatarUser = asyncMiddleware(async(req, res, next) => {
     }
 
     try {
-        const findUser = await User.findOne({ email: req.session.account.email });
+        const findUser = await User.findOne({ email: checkExistAccount.email });
         req.params.filename = findUser.image;
 
         const { filename } = req.params;
 
         const file = ConnectMongo.gfs.find({ filename }).toArray((err, files) => {
-                if (!files || !files.length) {
-                    return next(new ErrorResponse(404, "file not found"));
-                }
-                ConnectMongo.gfs.openDownloadStreamByName(filename).pipe(res);
-            })
-            // console.log(file);
+            if (!files || !files.length) {
+                return next(new ErrorResponse(404, "file not found"));
+            }
+            ConnectMongo.gfs.openDownloadStreamByName(filename).pipe(res);
+        });
     } catch (error) {
         return next(new ErrorResponse(500, "Can't open the image"));
     }
@@ -139,21 +153,53 @@ exports.updatePassword = asyncMiddleware(async(req, res, next) => {
 
 // Update User
 exports.updateUser = asyncMiddleware(async(req, res, next) => {
-    const { fullName, address, phone } = req.body;
-    const image = req.file.filename;
-    // console.log(req.body);
-    req.checkBody("fullName", "Full Name is empty!!").notEmpty();
+    const { address, phone } = req.body;
     req.checkBody("address", "Address is empty!!").notEmpty();
     req.checkBody("phone", "Phone is empty!!").notEmpty();
-    req.checkBody("phone", "Invalid phone!!").custom((val) => /(84|0[3|5|7|8|9])+([0-9]{8})\b/.test(val));
+    req
+        .checkBody("phone", "Invalid phone!!")
+        .custom((val) => /(84|0[3|5|7|8|9])+([0-9]{8})\b/.test(val));
 
     let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
         let array = [];
         errors.array().forEach((e) => array.push(e.msg));
-        removeUpload(req.file.filename);
         return next(new ErrorResponse(422, array));
     }
+
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    const checkExistAccount = await Account.findOne({
+        userName: req.session.account.userName,
+    });
+    if (!checkExistAccount) {
+        return next(new ErrorResponse(404, "Account is not found"));
+    }
+    if (!checkExistAccount.isActive) {
+        return next(new ErrorResponse(403, "Account locked"));
+    }
+
+    const user = await User.findOne({ email: req.session.account.email });
+    if (!user) {
+        return next(new ErrorResponse(404, "User not found"));
+    }
+
+    const updateUser = await User.findOneAndUpdate({ email: req.session.account.email }, { address, phone }, { new: true });
+    if (!updateUser) {
+        return next(
+            new ErrorResponse(
+                400,
+                "Update Failure. Please contact the administrator to get the problem resolved. Thanks!!!"
+            )
+        );
+    }
+    return res.status(200).json(new SuccessResponse(200, updateUser));
+});
+
+// Update Avatar
+exports.updateAvatar = asyncMiddleware(async(req, res, next) => {
+    const image = req.file.filename;
 
     if (!req.session.account) {
         removeUpload(req.file.filename);
@@ -180,10 +226,11 @@ exports.updateUser = asyncMiddleware(async(req, res, next) => {
     if (!user) {
         return next(new ErrorResponse(404, "User not found"));
     }
-    console.log(user.image);
-    removeUpload(user.image);
+    if (user.image) {
+        removeUpload(user.image);
+    }
 
-    const updateUser = await User.findOneAndUpdate({ email: req.session.account.email }, { fullName, address, phone, image }, { new: true });
+    const updateUser = await User.findOneAndUpdate({ email: req.session.account.email }, { image }, { new: true });
     if (!updateUser) {
         removeUpload(req.file.filename);
         return next(

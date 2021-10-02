@@ -14,7 +14,8 @@ Date.prototype.isDate = function() {
 
 // Sign up
 exports.signUp = asyncMiddleware(async(req, res, next) => {
-    const { fullName, userName, email, phone, password, dayOfBirth, gender } = req.body;
+    const { fullName, userName, email, phone, password, dayOfBirth, gender } =
+    req.body;
     req.checkBody("fullName", "Full Name is empty!!").notEmpty();
     req.checkBody("userName", "User Name is empty!!").notEmpty();
     req.checkBody("email", "Email is empty!!").notEmpty();
@@ -23,10 +24,12 @@ exports.signUp = asyncMiddleware(async(req, res, next) => {
     req.checkBody("gender", "Gender is empty!!").notEmpty();
     req.checkBody("password", "Password is empty!!").notEmpty();
     req.checkBody("email", "Invalid email!!").isEmail();
-    req.checkBody("phone", "Invalid phone!!").custom((val) => /(84|0[3|5|7|8|9])+([0-9]{8})\b/.test(val));
-    req.checkBody("userName", "Invalid UserName!!").custom((val) => /^[a-zA-Z0-9]+$/.test(val));
-
-    console.log("🚀 ~ file: authController.js ~ line 18 ~ exports.signUp=asyncMiddleware ~ dayOfBirth", dayOfBirth)
+    req
+        .checkBody("phone", "Invalid phone!!")
+        .custom((val) => /(84|0[3|5|7|8|9])+([0-9]{8})\b/.test(val));
+    req
+        .checkBody("userName", "Invalid UserName!!")
+        .custom((val) => /^[a-zA-Z0-9]+$/.test(val));
 
     let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
@@ -35,8 +38,8 @@ exports.signUp = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(422, array));
     }
     let dayOfBirthD = new Date(dayOfBirth);
-    console.log("🚀 ~ Date(dayOfBirth)", dayOfBirthD)
-    console.log("🚀 ~ Date(dayOfBirth)", dayOfBirthD.isDate())
+    // console.log("🚀 ~ Date(dayOfBirth)", dayOfBirthD);
+    // console.log("🚀 ~ Date(dayOfBirth)", dayOfBirthD.isDate());
     if (!dayOfBirthD.isDate()) {
         return next(new ErrorResponse(400, "Day Of Birth invalid"));
     }
@@ -165,11 +168,11 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
                     },
                     process.env.SECRETKEY, { expiresIn: "2h" }
                 );
-                res.cookie('token', token, {
+                res.cookie("token", token, {
                     maxAge: 365 * 24 * 60 * 60 * 100,
                     httpOnly: true,
                     // secure: true;
-                })
+                });
                 const updatedIsLogin = await Account.findOneAndUpdate({ email: account.email }, { isLogin: true }, { new: true });
                 setTimeout(async function() {
                     await Account.findOneAndUpdate({ email: jwt.decode(token).email }, { isLogin: false }, { new: true });
@@ -184,6 +187,23 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(403, "Account locked"));
     }
     return next(new ErrorResponse(404, "User Name Or Email not exist"));
+});
+
+// Logout
+exports.logout = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    const checkExistAccount = await Account.findOne({
+        userName: req.session.account.userName,
+    });
+    if (!checkExistAccount) {
+        return next(new ErrorResponse(404, "User Name not exist"));
+    }
+    await Account.findOneAndUpdate({ userName: req.session.account.userName }, { isLogin: false }, { new: true });
+    res
+        .status(200)
+        .json(new SuccessResponse(200, "Update isLogin successful =_="));
 });
 
 // Forget password

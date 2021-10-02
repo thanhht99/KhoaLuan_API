@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const validator = require('mongoose-validator')
+const validator = require("mongoose-validator");
 mongoose.set("runValidators", true);
 
 var isPhone = function(number) {
     return /(84|0[3|5|7|8|9])+([0-9]{8})\b/.test(number);
-}
+};
 
 const UserSchema = new Schema({
     userAccount: {
@@ -25,14 +25,13 @@ const UserSchema = new Schema({
     },
     email: {
         type: String,
-        required: [true, "Email is required"],
         trim: true,
         lowercase: true,
         validate: [
             validator({
-                validator: 'isEmail',
-                message: 'Oops..please enter valid email'
-            })
+                validator: "isEmail",
+                message: "Oops..please enter valid email",
+            }),
         ],
         unique: true,
     },
@@ -40,15 +39,14 @@ const UserSchema = new Schema({
         type: String,
         trim: true,
         required: [true, "Phone is required"],
-        validate: [isPhone, 'Oops..Please fill a valid number phone'],
+        validate: [isPhone, "Oops..Please fill a valid number phone"],
     },
     dayOfBirth: {
         type: Date,
-        required: [true, "Day Of Birth is required"],
     },
     gender: {
         type: String,
-        enum: ["Male", "Female"]
+        enum: ["Male", "Female"],
     },
     image: {
         type: String,
@@ -58,14 +56,14 @@ const UserSchema = new Schema({
     },
     isAcc: {
         type: Boolean,
-        default: false
+        default: false,
     },
     isActive: {
         type: Boolean,
-        default: true
-    }
+        default: true,
+    },
 }, {
     timestamps: true,
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);

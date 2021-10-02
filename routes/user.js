@@ -8,7 +8,8 @@ const { ConnectMongo } = require("../database/connectDB");
 
 router.get("/all", jwtAuth, authorize("Admin"), userController.getAllUsers);
 
-router.get("/avatar", jwtAuth, userController.avatarUser);
+// router.get("/avatar", jwtAuth, userController.avatarUser);
+router.get("/avatar/:id", userController.avatarUser);
 
 router.get("/:userName", jwtAuth, userController.findUserByUserName);
 
@@ -18,11 +19,13 @@ router.get("/acc/info", jwtAuth, userController.getAcc);
 
 router.patch("/updatePassword", jwtAuth, userController.updatePassword);
 
+router.patch("/updateUser", jwtAuth, userController.updateUser);
+
 router.patch(
-    "/updateUser",
+    "/updateAvatar",
     jwtAuth,
     mongoUpload.single("image"),
-    userController.updateUser
+    userController.updateAvatar
 );
 
 module.exports = router;
