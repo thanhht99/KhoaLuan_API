@@ -47,9 +47,6 @@ exports.getAllProducts = asyncMiddleware(async(req, res, next) => {
 // Get All Products By IsActive
 exports.getAllProductsSortByIsActive = asyncMiddleware(
     async(req, res, next) => {
-        if (!req.session.account) {
-            return next(new ErrorResponse(401, "End of login session"));
-        }
         const isActive = getBoolean(req.query.isActive);
         if (
             isActive === null ||
@@ -64,6 +61,7 @@ exports.getAllProductsSortByIsActive = asyncMiddleware(
                 select: "category_name category_desc",
             })
             .select("-updatedAt -createdAt -__v");
+
         if (!products.length) {
             return next(new ErrorResponse(404, "No products"));
         }
@@ -95,11 +93,7 @@ exports.getProductBySku = asyncMiddleware(async(req, res, next) => {
 // Add Product
 exports.createNewProduct = asyncMiddleware(async(req, res, next) => {
     const { name, price, quantity, description, category, sku } = req.body;
-    const image = req.file.filename;
-    console.log(
-        "🚀 ~ file: productController.js ~ line 96 ~ exports.createNewProduct=asyncMiddleware ~ image",
-        image
-    );
+    // const image = req.file.filename;
     if (!req.session.account) {
         removeUpload(req.file.filename);
         return next(new ErrorResponse(401, "End of login session"));
@@ -117,12 +111,12 @@ exports.createNewProduct = asyncMiddleware(async(req, res, next) => {
     if (!errors.isEmpty()) {
         let array = [];
         errors.array().forEach((e) => array.push(e.msg));
-        removeUpload(req.file.filename);
+        // removeUpload(req.file.filename);
         return next(new ErrorResponse(422, array));
     }
 
     if (!req.file.filename.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-        removeUpload(req.file.filename);
+        // removeUpload(req.file.filename);
         return next(new ErrorResponse(400, "This is not an image file"));
     }
 
@@ -136,7 +130,7 @@ exports.createNewProduct = asyncMiddleware(async(req, res, next) => {
     );
 
     if (!categoryAll_Name.includes(category)) {
-        removeUpload(req.file.filename);
+        // removeUpload(req.file.filename);
         return next(new ErrorResponse(422, "Category invalid !!!"));
     }
     const newProduct = new Product({

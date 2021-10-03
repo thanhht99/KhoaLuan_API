@@ -22,19 +22,18 @@ function getBoolean(value) {
 
 // All Category
 exports.getAllCategories = asyncMiddleware(async(req, res, next) => {
-    if (!req.session.account) {
-        return next(new ErrorResponse(401, "End of login session"));
-    }
     try {
-        const categories = await Category.find().select('-updatedAt -createdAt -__v');
+        const categories = await Category.find({ isActive: true }).select(
+            "-updatedAt -createdAt -__v"
+        );
         if (!categories.length) {
-            return next(new ErrorResponse(404, 'No categories'));
+            return next(new ErrorResponse(404, "No categories"));
         }
         return res.status(200).json(new SuccessResponse(200, categories));
     } catch (error) {
         return next(new ErrorResponse(400, error));
     }
-})
+});
 
 // Create Category
 exports.createNewCategory = asyncMiddleware(async(req, res, next) => {
@@ -54,9 +53,9 @@ exports.createNewCategory = asyncMiddleware(async(req, res, next) => {
     const category = new Category({ category_name, category_desc });
     const res_category = await category.save();
     if (res_category) {
-        return res.status(200).json(new SuccessResponse(200, res_category))
+        return res.status(200).json(new SuccessResponse(200, res_category));
     }
-})
+});
 
 // Update Category
 exports.updateCategory = asyncMiddleware(async(req, res, next) => {
@@ -79,10 +78,12 @@ exports.updateCategory = asyncMiddleware(async(req, res, next) => {
     }
     const updatedCategory = await Category.findOneAndUpdate({ _id: id, isActive: true }, { category_name, category_desc }, { new: true });
     if (!updatedCategory) {
-        return next(new ErrorResponse(400, 'Can not updated. Active category is false!'))
+        return next(
+            new ErrorResponse(400, "Can not updated. Active category is false!")
+        );
     }
-    return res.status(200).json(new SuccessResponse(200, updatedCategory))
-})
+    return res.status(200).json(new SuccessResponse(200, updatedCategory));
+});
 
 // Update isActive Category
 exports.updateActiveCategory = asyncMiddleware(async(req, res, next) => {
@@ -95,15 +96,19 @@ exports.updateActiveCategory = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(400, "Id is empty"));
     }
     // console.log(isActive)
-    if (isActive === null || isActive === undefined || typeof(isActive) !== "boolean") {
+    if (
+        isActive === null ||
+        isActive === undefined ||
+        typeof isActive !== "boolean"
+    ) {
         return next(new ErrorResponse(404, "API invalid"));
     }
     const updatedCategory = await Category.findOneAndUpdate({ _id: id }, { isActive }, { new: true });
     if (!updatedCategory) {
-        return next(new ErrorResponse(400, 'Not found to updated'))
+        return next(new ErrorResponse(400, "Not found to updated"));
     }
-    return res.status(200).json(new SuccessResponse(200, updatedCategory))
-})
+    return res.status(200).json(new SuccessResponse(200, updatedCategory));
+});
 
 // Delete Category
 exports.deleteCategory = asyncMiddleware(async(req, res, next) => {
@@ -116,7 +121,7 @@ exports.deleteCategory = asyncMiddleware(async(req, res, next) => {
     }
     const deleteCategory = await Category.findByIdAndDelete(id);
     if (!deleteCategory) {
-        return next(new ErrorResponse(400, 'Not found to delete'))
+        return next(new ErrorResponse(400, "Not found to delete"));
     }
     return res.status(204).json(new SuccessResponse(204, "Delete successfully"));
-})
+});
