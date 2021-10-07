@@ -72,9 +72,6 @@ exports.getAllProductsSortByIsActive = asyncMiddleware(
 // Find Product By SKU
 exports.getProductBySku = asyncMiddleware(async(req, res, next) => {
     const { sku } = req.params;
-    if (!req.session.account) {
-        return next(new ErrorResponse(401, "End of login session"));
-    }
     if (!sku.trim()) {
         return next(new ErrorResponse(400, "Sku is empty"));
     }

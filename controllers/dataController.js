@@ -109,6 +109,11 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         category: "Jeans",
         sku: "J0020207",
         image: "https://imgur.com/XCvL9Xo.jpg",
+        listImage: [
+            "https://i.imgur.com/4LDr6NG.jpg",
+            "https://i.imgur.com/GuDDuwr.jpg",
+            "https://i.imgur.com/sKvfzAD.jpg",
+        ],
     });
     const product2 = new Product({
         name: "Quần Dài Jean Slimfit Đơn Giản B19",
@@ -118,6 +123,14 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         category: "Jeans",
         sku: "J0019174",
         image: "https://imgur.com/NkM2kYo.jpg",
+        listImage: [
+            "https://i.imgur.com/01sIL8Q.jpg",
+            "https://i.imgur.com/HguNkcg.jpg",
+            "https://i.imgur.com/3gflEPq.jpg",
+            "https://i.imgur.com/6TV28rz.jpg",
+            "https://i.imgur.com/aPGcVu2.jpg",
+            "https://i.imgur.com/rRhs6xJ.jpg",
+        ],
     });
     const product3 = new Product({
         name: "Sơ Mi Tay Ngắn Y Nguyên Bản 18- Summer Ver2",
@@ -127,6 +140,18 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         category: "T-Shirt",
         sku: "TS0020246",
         image: "https://imgur.com/fsCPzxU.jpg",
+        listImage: [
+            "https://i.imgur.com/r3Fvzuw.jpg",
+            "https://i.imgur.com/L7rNeIQ.jpg",
+            "https://i.imgur.com/YQHrhaJ.jpg",
+            "https://i.imgur.com/aAa74S4.jpg",
+            "https://i.imgur.com/1qDRMtW.jpg",
+            "https://i.imgur.com/eWyO9nT.jpg",
+            "https://i.imgur.com/UWTRHL6.jpg",
+            "https://i.imgur.com/zeBy2Vu.jpg",
+            "https://i.imgur.com/Yuvh2QU.jpg",
+            "https://i.imgur.com/l7lgar3.jpg",
+        ],
     });
     const product4 = new Product({
         name: "Quần Dài Jean Slimfit Đơn Giản B35",
@@ -136,6 +161,14 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         category: "Jeans",
         sku: "J0019585",
         image: "https://imgur.com/Q827jxx.jpg",
+        listImage: [
+            "https://i.imgur.com/afVZFWn.jpg",
+            "https://i.imgur.com/4LuLyho.jpg",
+            "https://i.imgur.com/0yjZoFd.jpg",
+            "https://i.imgur.com/JfQuYcK.jpg",
+            "https://i.imgur.com/J4rJCIy.jpg",
+            "https://i.imgur.com/rRhs6xJ.jpg",
+        ],
     });
     const product5 = new Product({
         name: "PKTT Nón Đơn Giản A21",
@@ -145,6 +178,11 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         category: "Hat",
         sku: "H0019689",
         image: "https://imgur.com/LOfyrVk.jpg",
+        listImage: [
+            "https://i.imgur.com/aYaT8bq.jpg",
+            "https://i.imgur.com/oOQMeUp.jpg",
+            "https://i.imgur.com/NxM4J4C.jpg",
+        ],
     });
     const product6 = new Product({
         name: "PKTT Nón Đặc Biệt A16",
@@ -154,6 +192,12 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         category: "Hat",
         sku: "H0019519",
         image: "https://imgur.com/eKaV0XK.jpg",
+        listImage: [
+            "https://i.imgur.com/0hBGWca.jpg",
+            "https://i.imgur.com/S1LUfp6.jpg",
+            "https://i.imgur.com/CrEW7yF.jpg",
+            "https://i.imgur.com/IFeYJIV.jpg",
+        ],
     });
 
     await product1.save();

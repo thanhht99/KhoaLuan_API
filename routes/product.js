@@ -22,7 +22,7 @@ router.get(
     productController.getAllProductsSortByIsActive
 );
 
-router.get("/:sku", jwtAuth, productController.getProductBySku);
+router.get("/:sku", baseAuth, productController.getProductBySku);
 
 router.get("/image/:sku", jwtAuth, productController.getImageProductBySku);
 
