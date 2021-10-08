@@ -11,6 +11,7 @@ exports.baseAuth = async(req, res, next) => {
     }
 
     const decode = new Buffer.from(token, "base64").toString();
+    console.log("🚀 🚀 🚀 🚀 🚀 🚀 🚀~ decode", decode)
 
     if (`${process.env.BASEAUTH_USER}:${process.env.BASEAUTH_PASSWORD}` === decode) {
         next();
