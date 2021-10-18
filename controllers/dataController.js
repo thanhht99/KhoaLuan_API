@@ -211,6 +211,29 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         .json(new SuccessResponse(201, "Created product successfully. =_="));
 });
 
+// Data Product2
+exports.products2 = asyncMiddleware(async(req, res, next) => {
+    // category: Hat: 10,Shirt:7,Coat:5,T-Shirt:10,Jeans:10
+    const product10 = new Product({
+        name: "Quần Dài Jean Slimfit Đơn Giản M4",
+        price: 18.7,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 78% cotton 21% recycle poly 1% spandex \nTính Năng Cân Bằng Nhiệt Độ",
+        category: "Jeans",
+        sku: "J0020207",
+        image: "https://i.imgur.com/3GnfM54.jpg",
+        listImage: [
+            "https://i.imgur.com/4LDr6NG.jpg",
+            "https://i.imgur.com/GuDDuwr.jpg",
+            "https://i.imgur.com/sKvfzAD.jpg",
+        ],
+    });
+
+    return res
+        .status(201)
+        .json(new SuccessResponse(201, "Created product successfully. =_="));
+});
+
 // Data
 exports.data = asyncMiddleware(async(req, res, next) => {
     this.categories();
