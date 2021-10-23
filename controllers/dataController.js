@@ -229,6 +229,85 @@ exports.products2 = asyncMiddleware(async(req, res, next) => {
         ],
     });
 
+    const product11 = new Product({
+        name: "Quần Dài Jean Straight Đặc Biệt M1",
+        price: 18,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n - Mềm mại \n- Thoáng mát",
+        category: "Jeans",
+        sku: "J0020188",
+        image: "https://i.imgur.com/jvlJDFd.jpg",
+        listImage: [
+            "https://i.imgur.com/7Wq6YPE.jpg",
+            "https://i.imgur.com/ksnJYi8.jpg",
+            "https://i.imgur.com/CdpqIDD.jpg",
+        ],
+    });
+
+    const product12 = new Product({
+        name: "Quần Dài Jean Slimfit Đơn Giản M3",
+        price: 18.2,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n - Mềm mại \n- Thoáng mát",
+        category: "Jeans",
+        sku: "J0020189",
+        image: "https://i.imgur.com/nETorPr.jpg",
+        listImage: [
+            "https://i.imgur.com/bBL0xvS.jpg",
+            "https://i.imgur.com/vJtBrev.jpg",
+            "https://i.imgur.com/rseutlQ.jpg",
+        ],
+    });
+
+    const product13 = new Product({
+        name: "Quần Dài Jean Slimfit Đặc Biệt M8",
+        price: 18,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex ",
+        category: "Jeans",
+        sku: "J0020180",
+        image: "https://i.imgur.com/WAfTKwJ.jpg",
+        listImage: [
+            "https://i.imgur.com/vbE55rc.jpg",
+            "https://i.imgur.com/QpNL61d.jpg",
+            "https://i.imgur.com/rTvuh17.jpg",
+            "https://i.imgur.com/g5N25q6.jpg",
+            "https://i.imgur.com/AvVuhxu.jpg",
+        ],
+    });
+
+    const product14 = new Product({
+        name: "Quần Dài Jean Slimfit Đặc Biệt M7",
+        price: 18.5,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex ",
+        category: "Jeans",
+        sku: "J0020178",
+        image: "https://i.imgur.com/C7oMFKr.jpg",
+        listImage: [
+            "https://i.imgur.com/RdbIfJH.jpg",
+            "https://i.imgur.com/JD0w9bk.jpg",
+            "https://i.imgur.com/yEXuERh.jpg",
+        ],
+    });
+
+    const product15 = new Product({
+        name: "Quần Dài Jean Skinny 12VAHDT Vạn Xuân Kiến Quốc Ver1",
+        price: 18.3,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 98% cotton 2% spandex \n- Khắc laser logo Vạn Xuân Kiến Quốc \n- Rách gối phong cách ",
+        category: "Jeans",
+        sku: "J0020148",
+        image: "https://i.imgur.com/MJBqpKf.jpg",
+        listImage: [
+            "https://i.imgur.com/qhrjCZv.jpg",
+            "https://i.imgur.com/mBWkw4k.jpg",
+            "https://i.imgur.com/LeNP3PC.jpg",
+            "https://i.imgur.com/LHLigLn.jpg",
+            "https://i.imgur.com/2ebliAM.jpg",
+        ],
+    });
+
     return res
         .status(201)
         .json(new SuccessResponse(201, "Created product successfully. =_="));
