@@ -308,6 +308,70 @@ exports.products2 = asyncMiddleware(async(req, res, next) => {
         ],
     });
 
+    const product16 = new Product({
+        name: "Quần Dài Jean Straight 12VAHDT Văn Hiến Chi Bang Ver1",
+        price: 18,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n- Thiết kế ống đứng \n- Thoải mái \n- Che khuyết điểm \n+ Wash thời trang \n+ In logo Văn Hiến Chi Bang ",
+        category: "Jeans",
+        sku: "J0020131",
+        image: "https://i.imgur.com/eEuEslL.jpg",
+        listImage: [
+            "https://i.imgur.com/DNMPSKd.jpg",
+            "https://i.imgur.com/YWFaVov.jpg",
+            "https://i.imgur.com/iVlqyYt.jpg",
+        ],
+    });
+
+    const product17 = new Product({
+        name: "Quần Dài Jean Slimfit Đơn Giản 12VAHDT Vạn Xuân Kiến Quốc Ver2",
+        price: 18.3,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 98% cotton 2% spandex \n- In logo Vạn Xuân Kiến Quốc ",
+        category: "Jeans",
+        sku: "J0020130",
+        image: "https://i.imgur.com/Y2SFkHJ.jpg",
+        listImage: [
+            "https://i.imgur.com/6nSuOc4.jpg",
+            "https://i.imgur.com/5PtQDoW.jpg",
+            "https://i.imgur.com/MG3C57m.jpg",
+            "https://i.imgur.com/QFWvIaz.jpg",
+            "https://i.imgur.com/Gdavi22.jpg",
+        ],
+    });
+
+    const product18 = new Product({
+        name: "Quần Dài Jean Slimfit Đơn Giản Logo 2010 Ver1",
+        price: 18,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n- In Logo Y2010 phía sau túi",
+        category: "Jeans",
+        sku: "J0020118",
+        image: "https://i.imgur.com/cXkixjd.jpg",
+        listImage: [
+            "https://i.imgur.com/vemfuoQ.jpg",
+            "https://i.imgur.com/yFZLA0T.jpg",
+            "https://i.imgur.com/CT3UwzE.jpg",
+        ],
+    });
+
+    const product19 = new Product({
+        name: "Quần Dài Jean Slimfit Đặc Biệt M3",
+        price: 18.3,
+        quantity: 100,
+        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n- Mềm mại \n- Thoáng mát \n- Thấm hút \nHDSD: \n- Hãy lộn mặt trái của sản phẩm trước khi giặt để hạn chế bay màu vải. \n- Không nên sử dụng các chất tẩy rửa mạnh trong quá trình giặt.",
+        category: "Jeans",
+        sku: "J0019946",
+        image: "https://i.imgur.com/CFR3UrV.jpg",
+        listImage: [
+            "https://i.imgur.com/CZYsCUF.jpg",
+            "https://i.imgur.com/MQEXi8k.jpg",
+            "https://i.imgur.com/A9e7L3Z.jpg",
+            "https://i.imgur.com/a1mhc62.jpg",
+            "https://i.imgur.com/IT4EPFj.jpg",
+        ],
+    });
+
     return res
         .status(201)
         .json(new SuccessResponse(201, "Created product successfully. =_="));
