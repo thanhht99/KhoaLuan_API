@@ -252,28 +252,13 @@ exports.products = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/IFeYJIV.jpg",
         ],
     });
-
-    await product1.save();
-    await product2.save();
-    await product3.save();
-    await product4.save();
-    await product5.save();
-    await product6.save();
-    return res
-        .status(201)
-        .json(new SuccessResponse(201, "Created product successfully. =_="));
-});
-
-// Data Product2
-exports.products2 = asyncMiddleware(async(req, res, next) => {
-    // category: Hat: 10,Shirt:7,Coat:5,T-Shirt:10,Jeans:10
     const product10 = new Product({
         name: "Quần Dài Jean Slimfit Đơn Giản M4",
         price: 18.7,
         quantity: 100,
         description: "Chất liệu: Jean Cotton \nThành phần: 78% cotton 21% recycle poly 1% spandex \nTính Năng Cân Bằng Nhiệt Độ",
         category: "Jeans",
-        sku: "J0020207",
+        sku: "J0020208",
         image: "https://i.imgur.com/3GnfM54.jpg",
         listImage: [
             "https://i.imgur.com/4LDr6NG.jpg",
@@ -559,7 +544,7 @@ exports.products2 = asyncMiddleware(async(req, res, next) => {
         quantity: 100,
         description: "Chất liệu: Cotton 2 chiều\nThành phần: 100% Cotton\n- Co dãn 2 chiều\n- Thấm hút mồ hôi tốt mang lại cảm giác thoáng mát",
         category: "T-Shirt",
-        sku: "TS0020023",
+        sku: "TS0020024",
         image: "https://i.imgur.com/sTdD586.jpg",
         listImage: [
             "https://i.imgur.com/VWkM0ed.jpg",
@@ -584,22 +569,6 @@ exports.products2 = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/k8X9s1Y.jpg",
             "https://i.imgur.com/FIo1OLy.jpg",
             "https://i.imgur.com/26MmkoL.jpg",
-        ],
-    });
-
-    //Data Hat: 10
-    const product30 = new Product({
-        name: "PKTT Nón Đơn Giản A21",
-        price: 5.2,
-        quantity: 100,
-        description: "Chất liệu : Kaki\nThành phần: 100% cotton",
-        category: "Hat",
-        sku: "H0019689",
-        image: "https://i.imgur.com/cqTsJqw.jpg",
-        listImage: [
-            "https://i.imgur.com/XZLYTiZ.jpg",
-            "https://i.imgur.com/9cSFR3D.jpg",
-            "https://i.imgur.com/zaeTmFW.jpg",
         ],
     });
 
@@ -852,7 +821,7 @@ exports.products2 = asyncMiddleware(async(req, res, next) => {
         quantity: 100,
         description: "Chất liệu: Kate\nThành phần: 88% superfine 12% modal\n- Ít Nhăn & Dễ ủi\n- Nhanh Khô\n- Thoáng mát",
         category: "Shirt",
-        sku: "S0020006",
+        sku: "S0020007",
         image: "https://i.imgur.com/kGZg6RA.jpg",
         listImage: [
             "https://i.imgur.com/oPICBnG.jpg",
@@ -964,7 +933,6 @@ exports.products2 = asyncMiddleware(async(req, res, next) => {
     await product27.save();
     await product28.save();
     await product29.save();
-    await product30.save();
     await product31.save();
     await product32.save();
     await product33.save();
@@ -987,6 +955,12 @@ exports.products2 = asyncMiddleware(async(req, res, next) => {
     await product50.save();
     await product51.save();
 
+    await product1.save();
+    await product2.save();
+    await product3.save();
+    await product4.save();
+    await product5.save();
+    await product6.save();
     return res
         .status(201)
         .json(new SuccessResponse(201, "Created product successfully. =_="));
