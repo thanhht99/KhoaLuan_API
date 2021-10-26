@@ -1,26 +1,39 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const validator = require("mongoose-validator");
 
 const OrderSchema = new Schema({
-    userEmail: {
-        type: mongoose.Schema.Types.String,
-        ref: "User",
+    email: {
+        type: String,
+        required: [true, "Email is required"],
+        trim: true,
+        lowercase: true,
+        validate: [
+            validator({
+                validator: "isEmail",
+                message: "Oops..please enter valid email",
+            }),
+        ],
     },
     orderCode: {
         type: String,
         required: [true, "Order code is required"],
         unique: true,
     },
+    fullName: {
+        type: String,
+        required: [true, "Full Name is required"],
+    },
     phone: {
         type: String,
         required: [true, "Phone is required"],
     },
-    deliveryAddress: {
+    address: {
         type: String,
-        required: [true, "Delivery Address is required"],
+        required: [true, "Address is required"],
     },
     products: [{
-        productId: {
+        id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Product",
         },
@@ -38,18 +51,17 @@ const OrderSchema = new Schema({
         },
         total: {
             type: Number,
-            required: [true, "Total is required"],
-        }
+        },
     }, ],
     orderDate: {
         type: Date,
     },
     intendedArrivalDate: {
-        type: Date,
+        type: String,
     },
     payments: {
         type: String,
-        enum: ["Momo", "COD", "Bank account"]
+        enum: ["Momo", "COD", "Bank account"],
     },
     temporaryMoney: {
         type: Number,
@@ -84,20 +96,19 @@ const OrderSchema = new Schema({
     voucherCode: {
         type: String,
         trim: true,
-        default: null
+        default: null,
     },
     discount: {
         type: Number,
+    },
+    note: {
+        type: String,
     },
     isBill: {
         type: Boolean,
         default: false,
     },
     isFeedback: {
-        type: Boolean,
-        default: false,
-    },
-    isVoucher: {
         type: Boolean,
         default: false,
     },

@@ -4,6 +4,7 @@ const Account = require("../model/database/Account");
 const User = require("../model/database/User");
 const Category = require("../model/database/Category");
 const Product = require("../model/database/Product");
+const Voucher = require("../model/database/Voucher");
 const asyncMiddleware = require("../middleware/asyncMiddleware");
 const mongoUpload = require("../middleware/mongoUpload");
 
@@ -97,6 +98,58 @@ exports.categories = asyncMiddleware(async(req, res, next) => {
     // return res
     //     .status(201)
     //     .json(new SuccessResponse(201, "Created categories successfully. =_="));
+});
+
+// Data Vouchers
+exports.vouchers = asyncMiddleware(async(req, res, next) => {
+    const vouchers1 = new Voucher({
+        voucher_name: "Event 30/4 & 1/5",
+        voucher_desc: ".....",
+        discount: 0.1,
+        code: "30T4A1T5",
+        type: "Percent",
+        startDate: "2021-04-30T09:00:00.000Z",
+        endDate: "2021-05-01T09:00:00.000Z",
+        image: "https://i.imgur.com/eblSaaD.jpg",
+    });
+    const vouchers2 = new Voucher({
+        voucher_name: "Event 2/9",
+        voucher_desc: ".....",
+        discount: 0.3,
+        code: "MUNGQK29",
+        type: "Percent",
+        startDate: "2021-08-30T09:00:00.000Z",
+        endDate: "2021-09-02T09:00:00.000Z",
+        image: "https://i.imgur.com/YnQK7Fd.jpg",
+    });
+    const vouchers3 = new Voucher({
+        voucher_name: "Event Black Friday 26/11",
+        voucher_desc: ".....",
+        discount: 26.11,
+        code: "EBFD2611",
+        type: "Money",
+        startDate: "2021-11-25T09:00:00.000Z",
+        endDate: "2021-11-27T09:00:00.000Z",
+        image: "https://i.imgur.com/gWQxZbU.jpg",
+    });
+    const vouchers4 = new Voucher({
+        voucher_name: "Event Merry Christmas",
+        voucher_desc: ".....",
+        discount: 25.12,
+        code: "EMCM2512",
+        type: "Money",
+        startDate: "2021-12-24T09:00:00.000Z",
+        endDate: "2021-12-26T09:00:00.000Z",
+        image: "https://i.imgur.com/ByVD7py.jpg",
+    });
+
+    await vouchers1.save();
+    await vouchers2.save();
+    await vouchers3.save();
+    await vouchers4.save();
+    // return res
+    //     .status(201)
+    //     .json(new SuccessResponse(201, "Created vouchers successfully. =_="));
 });
 
 // Data Product
@@ -238,6 +291,7 @@ exports.products2 = asyncMiddleware(async(req, res, next) => {
 exports.data = asyncMiddleware(async(req, res, next) => {
     this.categories();
     this.user();
+    this.vouchers();
     return res
         .status(201)
         .json(new SuccessResponse(201, "Created database successfully. =_="));

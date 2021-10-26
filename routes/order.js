@@ -4,12 +4,13 @@ const jwtAuth = require('../middleware/jwtAuth');
 const orderController = require('../controllers/orderController');
 const { authorize } = require("../middleware/authorize");
 const mongoUpload = require("../middleware/mongoUpload");
+const { baseAuth } = require('../middleware/baseAuth');
 
 router.get("/allOrder", jwtAuth, authorize("Admin"), orderController.allOrder);
 
 router.get("/", jwtAuth, orderController.orderOfUser);
 
-router.post("/", jwtAuth, orderController.createOrder);
+router.post("/", baseAuth, orderController.createOrder);
 
 router.post("/changeOrderStatus/:id", jwtAuth, authorize("Admin", "Saler"),
     orderController.changeOrderStatus

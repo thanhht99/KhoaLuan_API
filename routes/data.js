@@ -9,9 +9,8 @@ router.get("/sync", dataController.data);
 
 // router.get("/sync/categories", dataController.categories);
 
-router.get(
-    "/sync/products",
-    dataController.products
-);
+// router.get("/sync/vouchers", dataController.vouchers);
+
+router.get("/sync/products", dataController.products);
 
 module.exports = router;

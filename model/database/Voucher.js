@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const VoucherSchema = new Schema({
@@ -23,7 +23,7 @@ const VoucherSchema = new Schema({
     },
     type: {
         type: String,
-        enum: ["Money", "Percent"]
+        enum: ["Money", "Percent"],
     },
     startDate: {
         type: Date,
@@ -33,12 +33,15 @@ const VoucherSchema = new Schema({
         type: Date,
         required: [true, "End Date is required"],
     },
+    image: {
+        type: String,
+    },
     isActive: {
         type: Boolean,
-        default: true
-    }
+        default: true,
+    },
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
-module.exports = mongoose.model('Voucher', VoucherSchema);
+module.exports = mongoose.model("Voucher", VoucherSchema);

@@ -3,8 +3,11 @@ const router = express.Router();
 const jwtAuth = require('../middleware/jwtAuth');
 const voucherController = require('../controllers/voucherController');
 const { authorize } = require("../middleware/authorize");
+const { baseAuth } = require('../middleware/baseAuth');
 
 router.get("/all", jwtAuth, authorize("Admin"), voucherController.getAllVouchers);
+
+router.get("/:code", baseAuth, voucherController.getVoucher);
 
 router.post("/create", jwtAuth, authorize("Admin"), voucherController.createNewVoucher);
 

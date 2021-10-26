@@ -27,22 +27,45 @@ exports.getAllVouchers = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(401, "End of login session"));
     }
     try {
-        const vouchers = await Voucher.find().select('-updatedAt -createdAt -__v');
+        const vouchers = await Voucher.find().select("-updatedAt -createdAt -__v");
         if (!vouchers.length) {
-            return next(new ErrorResponse(404, 'No vouchers'));
+            return next(new ErrorResponse(404, "No vouchers"));
         }
         return res.status(200).json(new SuccessResponse(200, vouchers));
     } catch (error) {
         return next(new ErrorResponse(400, error));
     }
-})
+});
+
+// Find Vouchers
+exports.getVoucher = asyncMiddleware(async(req, res, next) => {
+    const { code } = req.params;
+    if (!code.trim()) {
+        return next(new ErrorResponse(400, "Code is empty"));
+    }
+    const res_voucher = await Voucher.findOne({ code, isActive: true }).select(
+        "-updatedAt -createdAt -__v"
+    );
+    if (!res_voucher) {
+        return next(new ErrorResponse(404, "No voucher"));
+    }
+    return res.status(200).json(new SuccessResponse(200, res_voucher));
+});
 
 // Create Voucher
 exports.createNewVoucher = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {
         return next(new ErrorResponse(401, "End of login session"));
     }
-    const { voucher_name, voucher_desc, discount, type, code, startDate, endDate } = req.body;
+    const {
+        voucher_name,
+        voucher_desc,
+        discount,
+        type,
+        code,
+        startDate,
+        endDate,
+    } = req.body;
     req.checkBody("voucher_name", "Voucher Name is empty!!").notEmpty();
     req.checkBody("voucher_desc", "Voucher Description is empty!!").notEmpty();
     req.checkBody("discount", "Discount is empty!!").notEmpty();
@@ -50,8 +73,20 @@ exports.createNewVoucher = asyncMiddleware(async(req, res, next) => {
     req.checkBody("code", "Type Voucher is empty!!").notEmpty();
     req.checkBody("startDate", "Start Date is empty!!").notEmpty();
     req.checkBody("endDate", "End Date is empty!!").notEmpty();
-    req.checkBody("startDate", "Start Date must be in correct format YYYY-MM-DDTHH:MM:SS.000Z !!").isISO8601().toDate();
-    req.checkBody("endDate", "End Date must be in correct format YYYY-MM-DDTHH:MM:SS.00Z !!").isISO8601().toDate();
+    req
+        .checkBody(
+            "startDate",
+            "Start Date must be in correct format YYYY-MM-DDTHH:MM:SS.000Z !!"
+        )
+        .isISO8601()
+        .toDate();
+    req
+        .checkBody(
+            "endDate",
+            "End Date must be in correct format YYYY-MM-DDTHH:MM:SS.00Z !!"
+        )
+        .isISO8601()
+        .toDate();
 
     let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
@@ -76,13 +111,21 @@ exports.createNewVoucher = asyncMiddleware(async(req, res, next) => {
         }
     }
 
-    const newVoucher = new Voucher({ voucher_name, voucher_desc, discount, type, code, startDate: convertStartDate, endDate: convertEndDate });
+    const newVoucher = new Voucher({
+        voucher_name,
+        voucher_desc,
+        discount,
+        type,
+        code,
+        startDate: convertStartDate,
+        endDate: convertEndDate,
+    });
     const res_voucher = await newVoucher.save();
     if (!res_voucher) {
         return next(new ErrorResponse(400, "Voucher has not been created !!!"));
     }
-    return res.status(200).json(new SuccessResponse(200, res_voucher))
-})
+    return res.status(200).json(new SuccessResponse(200, res_voucher));
+});
 
 // Update Voucher
 exports.updateVoucher = asyncMiddleware(async(req, res, next) => {
@@ -107,10 +150,12 @@ exports.updateVoucher = asyncMiddleware(async(req, res, next) => {
 
     const updatedVoucher = await Voucher.findOneAndUpdate({ _id: id, isActive: true }, { voucher_name, voucher_desc }, { new: true });
     if (!updatedVoucher) {
-        return next(new ErrorResponse(400, 'Can not updated. Active voucher is false!'));
+        return next(
+            new ErrorResponse(400, "Can not updated. Active voucher is false!")
+        );
     }
-    return res.status(200).json(new SuccessResponse(200, updatedVoucher))
-})
+    return res.status(200).json(new SuccessResponse(200, updatedVoucher));
+});
 
 // Update isActive Voucher
 exports.updateActiveVoucher = asyncMiddleware(async(req, res, next) => {
@@ -123,15 +168,19 @@ exports.updateActiveVoucher = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(400, "Id is empty"));
     }
     // console.log(isActive)
-    if (isActive === null || isActive === undefined || typeof(isActive) !== "boolean") {
+    if (
+        isActive === null ||
+        isActive === undefined ||
+        typeof isActive !== "boolean"
+    ) {
         return next(new ErrorResponse(404, "API invalid"));
     }
     const updatedVoucher = await Voucher.findOneAndUpdate({ _id: id }, { isActive }, { new: true });
     if (!updatedVoucher) {
-        return next(new ErrorResponse(400, 'Not found to updated'));
+        return next(new ErrorResponse(400, "Not found to updated"));
     }
     return res.status(200).json(new SuccessResponse(200, updatedVoucher));
-})
+});
 
 // Delete Voucher
 exports.deleteVoucher = asyncMiddleware(async(req, res, next) => {
@@ -144,7 +193,7 @@ exports.deleteVoucher = asyncMiddleware(async(req, res, next) => {
     }
     const deleteVoucher = await Voucher.findByIdAndDelete(id);
     if (!deleteVoucher) {
-        return next(new ErrorResponse(400, 'Not found to delete'))
+        return next(new ErrorResponse(400, "Not found to delete"));
     }
     return res.status(204).json(new SuccessResponse(204, "Delete successfully"));
-})
+});
