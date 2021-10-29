@@ -292,10 +292,10 @@ exports.createOrder = asyncMiddleware(async(req, res, next) => {
                 Math.floor(Math.random() * 10000) + `${day}${month}${year}`;
             checkOrderCode = await Order.findOne({ orderCode: newOrder.orderCode });
         }
-
         for (let i = 0; i < newOrder.products.length; i++) {
             const product = await Product.findOne({
                 _id: newOrder.products[i].id,
+                isActive: true,
             });
             if (product) {
                 if (product.quantity >= newOrder.products[i].quantity) {} else {
@@ -326,6 +326,7 @@ exports.createOrder = asyncMiddleware(async(req, res, next) => {
                 if (product) {
                     if (product.quantity >= newOrder.products[i].quantity) {
                         product.quantity = product.quantity - newOrder.products[i].quantity;
+                        product.sold += newOrder.products[i].quantity;
                         await product.save();
                     } else {
                         return next(

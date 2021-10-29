@@ -22,6 +22,7 @@ const voucher = require("./routes/voucher");
 const bill = require("./routes/bill");
 const feedback = require("./routes/feedback");
 const data = require("./routes/data");
+const firebase = require("./routes/firebase");
 
 // using MongoDB
 ConnectMongo.getConnect();
@@ -59,6 +60,7 @@ app.use("/api/voucher", voucher);
 app.use("/api/bill", bill);
 app.use("/api/feedback", feedback);
 app.use("/api/data", data);
+app.use("/api/firebase", firebase);
 
 app.get("/", (req, res) => {
     res.send(`Hello. *_* Alo Alo!`);

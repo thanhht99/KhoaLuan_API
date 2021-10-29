@@ -63,6 +63,10 @@ const OrderSchema = new Schema({
         type: String,
         enum: ["Momo", "COD", "Bank account"],
     },
+    imagePayment: {
+        type: String,
+        default: null,
+    },
     temporaryMoney: {
         type: Number,
         required: [true, "Temporary money is required"],
