@@ -9,9 +9,15 @@ const mongoUpload = require("../middleware/mongoUpload");
 router.post(
     "/create",
     jwtAuth,
-    // mongoUpload.single("image"),
     authorize("Admin"),
     productController.createNewProduct
+);
+
+router.patch(
+    "/listImage/:sku",
+    jwtAuth,
+    authorize("Admin"),
+    productController.listImageProduct
 );
 
 router.get("/all", baseAuth, productController.getAllProducts);
@@ -33,12 +39,18 @@ router.patch(
     productController.updateActiveProduct
 );
 
+// Update Product
 router.patch(
     "/update/:sku",
     jwtAuth,
-    mongoUpload.single("image"),
     authorize("Admin"),
     productController.updateProduct
+);
+router.patch(
+    "/updateListImage/:sku",
+    jwtAuth,
+    authorize("Admin"),
+    productController.updateListImageProduct
 );
 
 module.exports = router;

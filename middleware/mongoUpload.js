@@ -1,7 +1,7 @@
-const multer = require('multer');
-const crypto = require('crypto');
-const GridFsStorage = require('multer-gridfs-storage');
-const path = require('path');
+const multer = require("multer");
+const crypto = require("crypto");
+const GridFsStorage = require("multer-gridfs-storage");
+const path = require("path");
 const ErrorResponse = require("../model/statusResponse/ErrorResponse");
 
 const storage = new GridFsStorage({
@@ -14,15 +14,15 @@ const storage = new GridFsStorage({
                 if (err) {
                     return reject(err);
                 }
-                const filename = buf.toString('hex') + path.extname(file.originalname);
+                const filename = buf.toString("hex") + path.extname(file.originalname);
                 const fileInfo = {
                     filename: filename,
-                    bucketName: process.env.MONGO_BUCKET
+                    bucketName: process.env.MONGO_BUCKET,
                 };
                 resolve(fileInfo);
             });
         });
-    }
+    },
 });
 
 const mongoUpload = multer({ storage });

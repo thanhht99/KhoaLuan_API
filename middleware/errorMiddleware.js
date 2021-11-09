@@ -3,7 +3,7 @@ const removeUpload = require("./removeUpload");
 
 const errorMiddleware = (err, req, res, next) => {
     let errors = {...err };
-    console.log(err)
+    // console.log(err)
 
     if (!err.code && err.message) {
         errors.code = 500;

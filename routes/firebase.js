@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const { baseAuth } = require("../middleware/baseAuth");
-const multer = require("multer");
 const firebaseController = require("../controllers/firebaseController");
-
-const upload = multer({
-    storage: multer.memoryStorage(),
-});
 
 router.post(
     "/upload/:id",
-    upload.single("file"),
     baseAuth,
     firebaseController.upload
+);
+
+router.post(
+    "/uploadProduct/:id",
+    baseAuth,
+    firebaseController.uploadImageProduct
 );
 
 router.get("/getImage/:name", baseAuth, firebaseController.getImage);

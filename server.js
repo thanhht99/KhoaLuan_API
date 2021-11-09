@@ -38,6 +38,9 @@ app.use(
         credentials: true, //Để bật cookie HTTP qua CORS
     })
 );
+// Cho phép lý dữ liệu từ form method POST
+app.use(express.urlencoded({ extended: true }));
+
 app.use(validator());
 app.use(
     session({

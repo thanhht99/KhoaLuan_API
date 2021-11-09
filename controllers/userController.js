@@ -154,6 +154,10 @@ exports.updatePassword = asyncMiddleware(async(req, res, next) => {
 // Update User
 exports.updateUser = asyncMiddleware(async(req, res, next) => {
     const { address, phone } = req.body;
+    console.log(
+        "🚀 ~ file: userController.js ~ line 157 ~ exports.updateUser=asyncMiddleware ~ address, phone",
+        req.body
+    );
     req.checkBody("address", "Address is empty!!").notEmpty();
     req.checkBody("phone", "Phone is empty!!").notEmpty();
     req
