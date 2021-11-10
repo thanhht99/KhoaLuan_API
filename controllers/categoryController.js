@@ -35,6 +35,21 @@ exports.getAllCategories = asyncMiddleware(async(req, res, next) => {
     }
 });
 
+// All Category ************************** getAllTrueAndFalse ************************
+exports.getAllTrueAndFalse = asyncMiddleware(async(req, res, next) => {
+    try {
+        const categories = await Category.find().select(
+            "-updatedAt -createdAt -__v"
+        );
+        if (!categories.length) {
+            return next(new ErrorResponse(404, "No categories"));
+        }
+        return res.status(200).json(new SuccessResponse(200, categories));
+    } catch (error) {
+        return next(new ErrorResponse(400, error));
+    }
+});
+
 // Create Category
 exports.createNewCategory = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {

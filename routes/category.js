@@ -7,6 +7,14 @@ const { baseAuth } = require("../middleware/baseAuth");
 
 router.get("/all", baseAuth, categoryController.getAllCategories);
 
+router.get(
+    "/allTrueAndFalse",
+    jwtAuth,
+    authorize("Admin"),
+    categoryController.getAllTrueAndFalse
+);
+
+//Create
 router.post(
     "/create",
     jwtAuth,
@@ -14,6 +22,7 @@ router.post(
     categoryController.createNewCategory
 );
 
+//Update
 router.patch(
     "/update/:id",
     jwtAuth,
