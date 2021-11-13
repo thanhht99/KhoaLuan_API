@@ -166,7 +166,7 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
                         email: account.email,
                         role: account.role,
                     },
-                    process.env.SECRETKEY, { expiresIn: "2h" }
+                    process.env.SECRETKEY, { expiresIn: "2d" }
                 );
                 res.cookie("token", token, {
                     maxAge: 365 * 24 * 60 * 60 * 100,

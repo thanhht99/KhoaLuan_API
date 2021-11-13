@@ -46,6 +46,10 @@ const OrderSchema = new Schema({
             type: Number,
             required: [true, "Price is required"],
         },
+        sku: {
+            type: String,
+            required: [true, "Sku is required"],
+        },
         promotion: {
             type: Number,
         },
@@ -122,6 +126,13 @@ const OrderSchema = new Schema({
     },
 }, {
     timestamps: true,
+});
+
+OrderSchema.virtual("product_detail", {
+    ref: "Product",
+    foreignField: "_id",
+    localField: "products.id",
+    justOne: true,
 });
 
 module.exports = mongoose.model("Order", OrderSchema);

@@ -6,7 +6,7 @@ const { authorize } = require("../middleware/authorize");
 const mongoUpload = require("../middleware/mongoUpload");
 const { baseAuth } = require('../middleware/baseAuth');
 
-router.get("/allOrder", jwtAuth, authorize("Admin"), orderController.allOrder);
+router.get("/allOrder", jwtAuth, authorize("Admin", "Saler"), orderController.allOrder);
 
 router.get("/", jwtAuth, orderController.orderOfUser);
 
