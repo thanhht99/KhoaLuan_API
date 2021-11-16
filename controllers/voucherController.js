@@ -3,6 +3,8 @@ const SuccessResponse = require("../model/statusResponse/SuccessResponse");
 const asyncMiddleware = require("../middleware/asyncMiddleware");
 const Voucher = require("../model/database/Voucher");
 const Product = require("../model/database/Product");
+const { uploadSingleImageFirebase } = require("./firebaseController");
+const { singleUploadMiddleware } = require("../middleware/multipleUploadMiddleware");
 
 function getBoolean(value) {
     switch (value) {
@@ -57,19 +59,12 @@ exports.createNewVoucher = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {
         return next(new ErrorResponse(401, "End of login session"));
     }
-    const {
-        voucher_name,
-        voucher_desc,
-        discount,
-        type,
-        code,
-        startDate,
-        endDate,
-    } = req.body;
+    const file = await uploadSingleImageFirebase(req, res, next);
+    const { voucher_name, voucher_desc, discount, code, startDate, endDate } =
+    req.body;
     req.checkBody("voucher_name", "Voucher Name is empty!!").notEmpty();
     req.checkBody("voucher_desc", "Voucher Description is empty!!").notEmpty();
     req.checkBody("discount", "Discount is empty!!").notEmpty();
-    req.checkBody("type", "Type Voucher is empty!!").notEmpty();
     req.checkBody("code", "Type Voucher is empty!!").notEmpty();
     req.checkBody("startDate", "Start Date is empty!!").notEmpty();
     req.checkBody("endDate", "End Date is empty!!").notEmpty();
@@ -100,15 +95,13 @@ exports.createNewVoucher = asyncMiddleware(async(req, res, next) => {
     if (convertStartDate >= convertEndDate) {
         return next(new ErrorResponse(400, "Start date and End date invalid"));
     }
-    if (type === "Money") {
-        if (discount < 1000) {
-            return next(new ErrorResponse(400, "Discount invalid"));
-        }
+
+    let type;
+    if (discount > 1) {
+        type = "Money";
     }
-    if (type === "Percent") {
-        if (discount > 1 || discount < 0) {
-            return next(new ErrorResponse(400, "Discount invalid"));
-        }
+    if (discount > 0 && discount <= 1) {
+        type = "Percent";
     }
 
     const newVoucher = new Voucher({
@@ -119,6 +112,7 @@ exports.createNewVoucher = asyncMiddleware(async(req, res, next) => {
         code,
         startDate: convertStartDate,
         endDate: convertEndDate,
+        image: file,
     });
     const res_voucher = await newVoucher.save();
     if (!res_voucher) {
@@ -129,6 +123,8 @@ exports.createNewVoucher = asyncMiddleware(async(req, res, next) => {
 
 // Update Voucher
 exports.updateVoucher = asyncMiddleware(async(req, res, next) => {
+    await singleUploadMiddleware(req, res);
+
     const { id } = req.params;
     if (!req.session.account) {
         return next(new ErrorResponse(401, "End of login session"));
@@ -137,9 +133,28 @@ exports.updateVoucher = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(400, "Id is empty"));
     }
 
-    const { voucher_name, voucher_desc } = req.body;
+    const { voucher_name, voucher_desc, discount, code, startDate, endDate } =
+    req.body;
     req.checkBody("voucher_name", "Voucher Name is empty!!").notEmpty();
     req.checkBody("voucher_desc", "Voucher Description is empty!!").notEmpty();
+    req.checkBody("discount", "Discount is empty!!").notEmpty();
+    req.checkBody("code", "Type Voucher is empty!!").notEmpty();
+    req.checkBody("startDate", "Start Date is empty!!").notEmpty();
+    req.checkBody("endDate", "End Date is empty!!").notEmpty();
+    req
+        .checkBody(
+            "startDate",
+            "Start Date must be in correct format YYYY-MM-DDTHH:MM:SS.000Z !!"
+        )
+        .isISO8601()
+        .toDate();
+    req
+        .checkBody(
+            "endDate",
+            "End Date must be in correct format YYYY-MM-DDTHH:MM:SS.00Z !!"
+        )
+        .isISO8601()
+        .toDate();
 
     let errors = await req.getValidationResult();
     if (!errors.isEmpty()) {
@@ -148,7 +163,61 @@ exports.updateVoucher = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(422, array));
     }
 
-    const updatedVoucher = await Voucher.findOneAndUpdate({ _id: id, isActive: true }, { voucher_name, voucher_desc }, { new: true });
+    let updatedVoucher;
+    const checkCodeVoucher = await Voucher.findOne({ _id: id });
+    if (!checkCodeVoucher) {
+        return next(new ErrorResponse(404, "Voucher not found"));
+    }
+    if (!req.file && !checkCodeVoucher.image) {
+        return next(new ErrorResponse(400, "No files found"));
+    }
+
+    let file;
+    if (req.file) {
+        file = await uploadSingleImageFirebase(req, res, next);
+    }
+    if (!req.file) {
+        file = checkCodeVoucher.image;
+    }
+
+    const convertStartDate = new Date(startDate);
+    const convertEndDate = new Date(endDate);
+    if (convertStartDate >= convertEndDate) {
+        return next(new ErrorResponse(400, "Start date and End date invalid"));
+    }
+
+    let type;
+    if (discount > 1) {
+        type = "Money";
+    }
+    if (discount > 0 && discount <= 1) {
+        type = "Percent";
+    }
+
+    if (code === checkCodeVoucher.code) {
+        updatedVoucher = await Voucher.findOneAndUpdate({ _id: id, isActive: true }, {
+            voucher_name,
+            voucher_desc,
+            discount,
+            type,
+            startDate: convertStartDate,
+            endDate: convertEndDate,
+            image: file,
+        }, { new: true });
+    }
+    if (code !== checkCodeVoucher.code) {
+        updatedVoucher = await Voucher.findOneAndUpdate({ _id: id, isActive: true }, {
+            voucher_name,
+            voucher_desc,
+            discount,
+            type,
+            code,
+            startDate: convertStartDate,
+            endDate: convertEndDate,
+            image: file,
+        }, { new: true });
+    }
+
     if (!updatedVoucher) {
         return next(
             new ErrorResponse(400, "Can not updated. Active voucher is false!")

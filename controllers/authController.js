@@ -179,7 +179,7 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
                     console.log(
                         "Run setTimeout() Account update isLogin(false) success !!! !!! !!!"
                     );
-                }, 1000 * 60 * 60 * 2);
+                }, 1000 * 60 * 60 * 20);
                 return res.status(200).json(new SuccessResponse(200, token));
             }
             return next(new ErrorResponse(403, "Password is not match"));

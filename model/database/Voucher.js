@@ -5,7 +5,7 @@ const VoucherSchema = new Schema({
     voucher_name: {
         type: String,
         required: [true, "Voucher Name is required"],
-        unique: true,
+        // unique: true,
     },
     voucher_desc: {
         type: String,
