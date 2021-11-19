@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
@@ -53,8 +53,8 @@ const ProductSchema = new Schema({
     },
     isActive: {
         type: Boolean,
-        default: true
-    }
+        default: true,
+    },
 }, {
     toJSON: { virtuals: true },
     timestamps: true,
@@ -64,7 +64,14 @@ ProductSchema.virtual("category_detail", {
     ref: "Category",
     foreignField: "category_name",
     localField: "category",
-    justOne: true
+    justOne: true,
+});
+
+ProductSchema.virtual("promotion_detail", {
+    ref: "Promotion",
+    foreignField: "_id",
+    localField: "promotionId",
+    justOne: true,
 });
 
 module.exports = mongoose.model("Product", ProductSchema);

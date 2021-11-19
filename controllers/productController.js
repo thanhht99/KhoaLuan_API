@@ -37,8 +37,8 @@ function getBoolean(value) {
 exports.getAllProducts = asyncMiddleware(async(req, res, next) => {
     const products = await Product.find()
         .populate({
-            path: "category_detail",
-            select: "category_name category_desc",
+            path: "promotion_detail",
+            select: "promotion_name discount",
         })
         .select("-updatedAt -createdAt -__v");
     if (!products.length) {
@@ -51,6 +51,8 @@ exports.getAllProducts = asyncMiddleware(async(req, res, next) => {
 exports.getAllProductsSortByIsActive = asyncMiddleware(
     async(req, res, next) => {
         const isActive = getBoolean(req.query.isActive);
+        const isPromotion = req.query.isPromotion;
+
         if (
             isActive === null ||
             isActive === undefined ||
@@ -58,12 +60,30 @@ exports.getAllProductsSortByIsActive = asyncMiddleware(
         ) {
             return next(new ErrorResponse(404, "API invalid"));
         }
-        const products = await Product.find({ isActive })
-            .populate({
-                path: "category_detail",
-                select: "category_name category_desc",
-            })
-            .select("-updatedAt -createdAt -__v");
+        let products;
+
+        if (isPromotion) {
+            const isPromotion = getBoolean(req.query.isPromotion);
+            if (
+                isPromotion === null ||
+                isPromotion === undefined ||
+                typeof isPromotion !== "boolean"
+            ) {
+                return next(new ErrorResponse(404, "API invalid isPromotion"));
+            }
+
+            products = await Product.find({ isActive, isPromotion })
+                .populate("promotion_detail")
+                .select("-updatedAt -createdAt -__v");
+        }
+        if (!isPromotion) {
+            products = await Product.find({ isActive })
+                .populate({
+                    path: "promotion_detail",
+                    select: "promotion_name discount",
+                })
+                .select("-updatedAt -createdAt -__v");
+        }
 
         if (!products.length) {
             return next(new ErrorResponse(404, "No products"));

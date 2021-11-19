@@ -51,7 +51,7 @@ const OrderSchema = new Schema({
             required: [true, "Sku is required"],
         },
         promotion: {
-            type: Number,
+            type: Object,
         },
         total: {
             type: Number,

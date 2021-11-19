@@ -20,6 +20,7 @@ router.patch(
     productController.listImageProduct
 );
 
+// Get all products
 router.get("/all", baseAuth, productController.getAllProducts);
 
 router.get(
@@ -27,6 +28,7 @@ router.get(
     baseAuth,
     productController.getAllProductsSortByIsActive
 );
+/* *************************************************************** */
 
 router.get("/:sku", baseAuth, productController.getProductBySku);
 

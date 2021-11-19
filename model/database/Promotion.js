@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const PromotionSchema = new Schema({
@@ -6,8 +6,11 @@ const PromotionSchema = new Schema({
         productSku: {
             type: mongoose.Schema.Types.String,
             ref: "Product",
-        }
-    }],
+        },
+        name: {
+            type: String,
+        },
+    }, ],
     promotion_name: {
         type: String,
         required: [true, "Promotion Name is required"],
@@ -21,7 +24,7 @@ const PromotionSchema = new Schema({
     },
     type: {
         type: String,
-        enum: ["Money", "Percent"]
+        enum: ["Money", "Percent"],
     },
     startDate: {
         type: Date,
@@ -33,10 +36,10 @@ const PromotionSchema = new Schema({
     },
     isActive: {
         type: Boolean,
-        default: true
-    }
+        default: true,
+    },
 }, {
-    timestamps: true
+    timestamps: true,
 });
 
-module.exports = mongoose.model('Promotion', PromotionSchema);
+module.exports = mongoose.model("Promotion", PromotionSchema);
