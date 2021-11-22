@@ -50,7 +50,7 @@ const OrderSchema = new Schema({
             type: String,
             required: [true, "Sku is required"],
         },
-        promotion: {
+        discount: {
             type: Object,
         },
         total: {

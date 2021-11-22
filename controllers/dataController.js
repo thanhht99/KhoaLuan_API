@@ -26,6 +26,7 @@ exports.user = asyncMiddleware(async(req, res, next) => {
         dayOfBirth: "07-26-1999",
         gender: "Male",
     });
+
     const account2 = new Account({
         userName: "saler123",
         email: "tienthanh26071999@gmail.com",
@@ -42,6 +43,7 @@ exports.user = asyncMiddleware(async(req, res, next) => {
         dayOfBirth: "06-14-1999",
         gender: "Male",
     });
+
     const account3 = new Account({
         userName: "cus123",
         email: "anhruemngu123@gmail.com",
@@ -57,12 +59,33 @@ exports.user = asyncMiddleware(async(req, res, next) => {
         dayOfBirth: "06-14-1999",
         gender: "Male",
     });
+
+    const account4 = new Account({
+        userName: "admin9999",
+        email: "admin9999@gmail.com",
+        password: "123456",
+        role: "Admin",
+        isActive: true,
+    });
+    const user4 = new User({
+        userAccount: account4._id,
+        fullName: "Admin 9999",
+        email: "admin9999@gmail.com",
+        phone: "0367669999",
+        isAcc: true,
+        dayOfBirth: "06-14-1999",
+        gender: "Male",
+    });
+
     await account1.save();
     await user1.save();
     await account2.save();
     await user2.save();
     await account3.save();
     await user3.save();
+    await account4.save();
+    await user4.save();
+
     // return res
     //     .status(201)
     //     .json(new SuccessResponse(201, "Created user successfully. =_="));
