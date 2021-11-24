@@ -5,6 +5,27 @@ const Promotion = require("../model/database/Promotion");
 const Cart = require("../model/database/Cart");
 const Product = require("../model/database/Product");
 
+// Save Cart
+exports.saveCart = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    const cart = await Cart.findOne({ userEmail: req.session.account.email });
+    const cartNew = new Cart({
+        userEmail: req.session.account.email,
+        products: req.body.products,
+    });
+    if (!cart) {
+        await cartNew.save();
+        res.status(200).json(new SuccessResponse(200, "Successfully saved"));
+    }
+    if (cart) {
+        await Cart.findByIdAndDelete({ _id: cart._id });
+        await cartNew.save();
+        res.status(200).json(new SuccessResponse(200, "Successfully saved"));
+    }
+});
+
 // Get Cart
 exports.getCart = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {
@@ -12,10 +33,9 @@ exports.getCart = asyncMiddleware(async(req, res, next) => {
     }
     const cart = await Cart.findOne({ userEmail: req.session.account.email });
     if (!cart) {
-        return next(new ErrorResponse(400, "Cart not found"));
+        return next(new ErrorResponse(400, "No shopping cart has been saved yet"));
     }
     res.status(200).json(new SuccessResponse(200, cart));
-
 });
 
 // Add Item to Cart
@@ -62,29 +82,46 @@ exports.addItemToCart = asyncMiddleware(async(req, res, next) => {
             cart.products[indexFound].quantity + quantity <= product.quantity
         ) {
             if (product.isPromotion) {
-                const promotion = await Promotion.findOne({ _id: product.promotionId, isActive: true });
+                const promotion = await Promotion.findOne({
+                    _id: product.promotionId,
+                    isActive: true,
+                });
                 if (promotion) {
                     cart.products[indexFound].promotion = promotion.discount;
                     cart.products[indexFound].typePromotion = promotion.type;
                 }
             }
-            cart.products[indexFound].quantity = cart.products[indexFound].quantity + quantity;
+            cart.products[indexFound].quantity =
+                cart.products[indexFound].quantity + quantity;
             cart.products[indexFound].price = product.price;
-            cart.products[indexFound].total = parseInt(cart.products[indexFound].quantity * product.price);
+            cart.products[indexFound].total = parseInt(
+                cart.products[indexFound].quantity * product.price
+            );
             if (cart.products[indexFound].typePromotion === "Money") {
-                cart.products[indexFound].total = parseInt(cart.products[indexFound].quantity * product.price) - cart.products[indexFound].promotion * cart.products[indexFound].quantity;
+                cart.products[indexFound].total =
+                    parseInt(cart.products[indexFound].quantity * product.price) -
+                    cart.products[indexFound].promotion *
+                    cart.products[indexFound].quantity;
             }
             if (cart.products[indexFound].typePromotion === "Percent") {
-                cart.products[indexFound].total = parseInt(cart.products[indexFound].quantity * product.price) - parseInt(cart.products[indexFound].quantity * product.price * cart.products[indexFound].promotion);
+                cart.products[indexFound].total =
+                    parseInt(cart.products[indexFound].quantity * product.price) -
+                    parseInt(
+                        cart.products[indexFound].quantity *
+                        product.price *
+                        cart.products[indexFound].promotion
+                    );
             }
-
         } else if (
             quantity > 0 &&
             quantity <= product.quantity &&
             indexFound === -1
         ) {
             if (product.isPromotion) {
-                const promotion = await Promotion.findOne({ _id: product.promotionId, isActive: true });
+                const promotion = await Promotion.findOne({
+                    _id: product.promotionId,
+                    isActive: true,
+                });
                 if (promotion) {
                     promotionProduct = promotion.discount;
                     typePromotionProduct = promotion.type;
@@ -96,7 +133,9 @@ exports.addItemToCart = asyncMiddleware(async(req, res, next) => {
                 a = parseInt(product.price * quantity) - promotionProduct * quantity;
             }
             if (typePromotionProduct === "Percent") {
-                a = parseInt(product.price * quantity) - parseInt(product.price * promotionProduct * quantity);
+                a =
+                    parseInt(product.price * quantity) -
+                    parseInt(product.price * promotionProduct * quantity);
             }
 
             cart.products.push({
@@ -128,7 +167,10 @@ exports.addItemToCart = asyncMiddleware(async(req, res, next) => {
             return next(new ErrorResponse(400, "Quantity of products is not enough"));
         }
         if (product.isPromotion) {
-            const promotion = await Promotion.findOne({ _id: product.promotionId, isActive: true });
+            const promotion = await Promotion.findOne({
+                _id: product.promotionId,
+                isActive: true,
+            });
             if (promotion) {
                 promotionProduct = promotion.discount;
                 typePromotionProduct = promotion.type;
@@ -144,10 +186,13 @@ exports.addItemToCart = asyncMiddleware(async(req, res, next) => {
         };
 
         if (typePromotionProduct === "Money") {
-            products.total = parseInt(product.price * quantity) - promotionProduct * quantity;
+            products.total =
+                parseInt(product.price * quantity) - promotionProduct * quantity;
         }
         if (typePromotionProduct === "Percent") {
-            products.total = parseInt(product.price * quantity) - parseInt(product.price * promotionProduct * quantity);
+            products.total =
+                parseInt(product.price * quantity) -
+                parseInt(product.price * promotionProduct * quantity);
         }
         const userEmail = req.session.account.email;
         const totalProduct = quantity;
@@ -210,7 +255,10 @@ exports.subItemFromCart = asyncMiddleware(async(req, res, next) => {
                 );
             } else if (indexFound !== -1) {
                 if (product.isPromotion) {
-                    const promotion = await Promotion.findOne({ _id: product.promotionId, isActive: true });
+                    const promotion = await Promotion.findOne({
+                        _id: product.promotionId,
+                        isActive: true,
+                    });
                     if (promotion) {
                         cart.products[indexFound].promotion = promotion.discount;
                         cart.products[indexFound].typePromotion = promotion.type;
@@ -219,13 +267,24 @@ exports.subItemFromCart = asyncMiddleware(async(req, res, next) => {
                 cart.products[indexFound].quantity =
                     cart.products[indexFound].quantity - quantity;
                 cart.products[indexFound].price = product.price;
-                cart.products[indexFound].total = parseInt(cart.products[indexFound].quantity * product.price);
+                cart.products[indexFound].total = parseInt(
+                    cart.products[indexFound].quantity * product.price
+                );
 
                 if (cart.products[indexFound].typePromotion === "Money") {
-                    cart.products[indexFound].total = parseInt(cart.products[indexFound].quantity * product.price) - cart.products[indexFound].promotion * cart.products[indexFound].quantity;
+                    cart.products[indexFound].total =
+                        parseInt(cart.products[indexFound].quantity * product.price) -
+                        cart.products[indexFound].promotion *
+                        cart.products[indexFound].quantity;
                 }
                 if (cart.products[indexFound].typePromotion === "Percent") {
-                    cart.products[indexFound].total = parseInt(cart.products[indexFound].quantity * product.price) - parseInt(cart.products[indexFound].quantity * product.price * cart.products[indexFound].promotion);
+                    cart.products[indexFound].total =
+                        parseInt(cart.products[indexFound].quantity * product.price) -
+                        parseInt(
+                            cart.products[indexFound].quantity *
+                            product.price *
+                            cart.products[indexFound].promotion
+                        );
                 }
             } else {
                 return next(new ErrorResponse(400, "Invalid request"));
@@ -265,7 +324,9 @@ exports.emptyCart = asyncMiddleware(async(req, res, next) => {
     if (!data) {
         return next(new ErrorResponse(400, "Error! Empty cart"));
     }
-    return res.status(200).json(new SuccessResponse(200, "Cart has been emptied"));
+    return res
+        .status(200)
+        .json(new SuccessResponse(200, "Cart has been emptied"));
 });
 
 // Remove Single Product From Cart
@@ -306,7 +367,9 @@ exports.removeProductFromCart = asyncMiddleware(async(req, res, next) => {
                 .reduce((acc, next) => acc + next);
             const dataUpdate = await cart.save();
             if (!dataUpdate) {
-                return next(new ErrorResponse(400, "Remove product from cart failed !"));
+                return next(
+                    new ErrorResponse(400, "Remove product from cart failed !")
+                );
             }
             res.status(200).json(new SuccessResponse(200, dataUpdate));
         } else {

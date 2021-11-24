@@ -56,7 +56,7 @@ exports.orderOfUser = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {
         return next(new ErrorResponse(401, "End of login session"));
     }
-    const order = await Order.findOne({ userEmail: req.session.account.email });
+    const order = await Order.find({ email: req.session.account.email });
     if (!order) {
         return next(new ErrorResponse(404, "No order"));
     }
@@ -297,12 +297,23 @@ exports.createOrder = asyncMiddleware(async(req, res, next) => {
                 Math.floor(Math.random() * 10000) + `${day}${month}${year}`;
             checkOrderCode = await Order.findOne({ orderCode: newOrder.orderCode });
         }
+
+        // console.log("💯💯💯💯💯💯 newOrder", newOrder);
+
         for (let i = 0; i < newOrder.products.length; i++) {
             const product = await Product.findOne({
                 _id: newOrder.products[i].id,
                 isActive: true,
             });
             if (product) {
+                if (newOrder.products[i].discount !== 0 && !product.isPromotion) {
+                    return next(
+                        new ErrorResponse(
+                            400,
+                            `Promotion is not valid for this product: ${product.name}`
+                        )
+                    );
+                }
                 if (product.quantity >= newOrder.products[i].quantity) {
                     newOrder.products[i].sku = product.sku;
                 } else {
