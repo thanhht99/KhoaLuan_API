@@ -5,11 +5,13 @@ const User = require("../model/database/User");
 const Category = require("../model/database/Category");
 const Product = require("../model/database/Product");
 const Voucher = require("../model/database/Voucher");
+const Promotion = require("../model/database/Promotion");
 const asyncMiddleware = require("../middleware/asyncMiddleware");
 const mongoUpload = require("../middleware/mongoUpload");
 
 // Data user
 exports.user = asyncMiddleware(async(req, res, next) => {
+    // Admin
     const account1 = new Account({
         userName: "admin123",
         email: "clothes.store.at99@gmail.com",
@@ -19,7 +21,7 @@ exports.user = asyncMiddleware(async(req, res, next) => {
     });
     const user1 = new User({
         userAccount: account1._id,
-        fullName: "Admin",
+        fullName: "Admin 123",
         email: "clothes.store.at99@gmail.com",
         phone: "0367662607",
         isAcc: true,
@@ -27,17 +29,53 @@ exports.user = asyncMiddleware(async(req, res, next) => {
         gender: "Male",
     });
 
+    const account4 = new Account({
+        userName: "admin009",
+        email: "admin009@gmail.com",
+        password: "123456",
+        role: "Admin",
+        isActive: true,
+    });
+    const user4 = new User({
+        userAccount: account4._id,
+        fullName: "Admin 009",
+        email: "admin009@gmail.com",
+        phone: "0367669999",
+        isAcc: true,
+        dayOfBirth: "06-14-1999",
+        gender: "Male",
+    });
+
+    const account5 = new Account({
+        userName: "admin008",
+        email: "admin008@gmail.com",
+        password: "123456",
+        role: "Admin",
+        isActive: true,
+    });
+    const user5 = new User({
+        userAccount: account5._id,
+        fullName: "Admin 008",
+        email: "admin008@gmail.com",
+        phone: "0367669999",
+        isAcc: true,
+        dayOfBirth: "06-14-1999",
+        gender: "Male",
+    });
+    //********************************************************************** */
+
+    // Saler
     const account2 = new Account({
-        userName: "saler123",
-        email: "tienthanh26071999@gmail.com",
+        userName: "saler001",
+        email: "saler001@gmail.com",
         password: "123456",
         role: "Saler",
         isActive: true,
     });
     const user2 = new User({
         userAccount: account2._id,
-        fullName: "Saler",
-        email: "tienthanh26071999@gmail.com",
+        fullName: "Saler 001",
+        email: "saler001@gmail.com",
         phone: "0367662607",
         isAcc: true,
         dayOfBirth: "06-14-1999",
@@ -45,33 +83,68 @@ exports.user = asyncMiddleware(async(req, res, next) => {
     });
 
     const account3 = new Account({
-        userName: "cus123",
-        email: "anhruemngu123@gmail.com",
+        userName: "saler002",
+        email: "saler002@gmail.com",
         password: "123456",
+        role: "Saler",
         isActive: true,
     });
     const user3 = new User({
         userAccount: account3._id,
-        fullName: "Customer",
-        email: "anhruemngu123@gmail.com",
+        fullName: "Saler 002",
+        email: "saler002@gmail.com",
         phone: "0367662607",
         isAcc: true,
         dayOfBirth: "06-14-1999",
         gender: "Male",
     });
 
-    const account4 = new Account({
-        userName: "admin9999",
-        email: "admin9999@gmail.com",
+    //********************************************************************** */
+
+    // Customer
+    const account6 = new Account({
+        userName: "cus001",
+        email: "cus001@gmail.com",
         password: "123456",
-        role: "Admin",
         isActive: true,
     });
-    const user4 = new User({
-        userAccount: account4._id,
-        fullName: "Admin 9999",
-        email: "admin9999@gmail.com",
-        phone: "0367669999",
+    const user6 = new User({
+        userAccount: account6._id,
+        fullName: "Customer 001",
+        email: "cus001@gmail.com",
+        phone: "0367662607",
+        isAcc: true,
+        dayOfBirth: "06-14-1999",
+        gender: "Male",
+    });
+
+    const account7 = new Account({
+        userName: "cus002",
+        email: "cus002@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user7 = new User({
+        userAccount: account7._id,
+        fullName: "Customer 002",
+        email: "cus002@gmail.com",
+        phone: "0367662607",
+        isAcc: true,
+        dayOfBirth: "06-14-1999",
+        gender: "Male",
+    });
+
+    const account8 = new Account({
+        userName: "cus003",
+        email: "cus003@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user8 = new User({
+        userAccount: account8._id,
+        fullName: "Customer 003",
+        email: "cus003@gmail.com",
+        phone: "0367662607",
         isAcc: true,
         dayOfBirth: "06-14-1999",
         gender: "Male",
@@ -85,6 +158,15 @@ exports.user = asyncMiddleware(async(req, res, next) => {
     await user3.save();
     await account4.save();
     await user4.save();
+
+    await account5.save();
+    await user5.save();
+    await account6.save();
+    await user6.save();
+    await account7.save();
+    await user7.save();
+    await account8.save();
+    await user8.save();
 
     // return res
     //     .status(201)
@@ -175,6 +257,42 @@ exports.vouchers = asyncMiddleware(async(req, res, next) => {
     //     .json(new SuccessResponse(201, "Created vouchers successfully. =_="));
 });
 
+// Data Promotions
+exports.promotions = asyncMiddleware(async(req, res, next) => {
+    const promotion1 = new Promotion({
+        _id: "61950cbcec9e962a3c0009fd",
+        promotion_name: "Event 30/4 & 1/5",
+        promotion_desc: ".....",
+        discount: 0.1,
+        type: "Percent",
+        startDate: "2021-04-30T00:00:00.000Z",
+        endDate: "2021-05-01T00:00:00.000Z",
+        products: [
+            { productSku: "J0020207", name: "Quần Dài Jean Slimfit Đơn Giản M4" },
+            { productSku: "J0019174", name: "Quần Dài Jean Slimfit Đơn Giản B19" },
+            { productSku: "J0019585", name: "Quần Dài Jean Slimfit Đơn Giản B35" },
+            { productSku: "J0020208", name: "Quần Dài Jean Slimfit Đơn Giản M41" },
+            { productSku: "J0020188", name: "Quần Dài Jean Straight Đặc Biệt M1" },
+        ],
+    });
+    const promotion2 = new Promotion({
+        _id: "61966d2ce699223ca4b7dfa3",
+        promotion_name: "Event Happy new year",
+        promotion_desc: "Happy new year 2022",
+        discount: 3,
+        type: "Money",
+        startDate: "2021-12-30T00:00:00.000Z",
+        endDate: "2022-01-10T00:00:00.000Z",
+        products: [
+            { productSku: "H0019519", name: "PKTT Nón Đặc Biệt A16" },
+            { productSku: "H0019781", name: "PKTT Nón 12VAHDT Kỳ Lau Vạn Định Ver1" },
+        ],
+    });
+
+    await promotion1.save();
+    await promotion2.save();
+});
+
 // Data Product
 exports.products = asyncMiddleware(async(req, res, next) => {
     const product1 = new Product({
@@ -190,6 +308,8 @@ exports.products = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/GuDDuwr.jpg",
             "https://i.imgur.com/sKvfzAD.jpg",
         ],
+        isPromotion: true,
+        promotionId: "61950cbcec9e962a3c0009fd",
     });
     const product2 = new Product({
         name: "Quần Dài Jean Slimfit Đơn Giản B19",
@@ -207,6 +327,8 @@ exports.products = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/aPGcVu2.jpg",
             "https://i.imgur.com/rRhs6xJ.jpg",
         ],
+        isPromotion: true,
+        promotionId: "61950cbcec9e962a3c0009fd",
     });
     const product3 = new Product({
         name: "Sơ Mi Tay Ngắn Y Nguyên Bản 18- Summer Ver2",
@@ -245,6 +367,8 @@ exports.products = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/J4rJCIy.jpg",
             "https://i.imgur.com/rRhs6xJ.jpg",
         ],
+        isPromotion: true,
+        promotionId: "61950cbcec9e962a3c0009fd",
     });
     const product5 = new Product({
         name: "PKTT Nón Đơn Giản A21",
@@ -274,9 +398,11 @@ exports.products = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/CrEW7yF.jpg",
             "https://i.imgur.com/IFeYJIV.jpg",
         ],
+        isPromotion: true,
+        promotionId: "61966d2ce699223ca4b7dfa3",
     });
     const product10 = new Product({
-        name: "Quần Dài Jean Slimfit Đơn Giản M4",
+        name: "Quần Dài Jean Slimfit Đơn Giản M41",
         price: 18.7,
         quantity: 100,
         description: "Chất liệu: Jean Cotton \nThành phần: 78% cotton 21% recycle poly 1% spandex \nTính Năng Cân Bằng Nhiệt Độ",
@@ -288,6 +414,8 @@ exports.products = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/GuDDuwr.jpg",
             "https://i.imgur.com/sKvfzAD.jpg",
         ],
+        isPromotion: true,
+        promotionId: "61950cbcec9e962a3c0009fd",
     });
 
     const product11 = new Product({
@@ -303,6 +431,8 @@ exports.products = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/ksnJYi8.jpg",
             "https://i.imgur.com/CdpqIDD.jpg",
         ],
+        isPromotion: true,
+        promotionId: "61950cbcec9e962a3c0009fd",
     });
 
     const product12 = new Product({
@@ -610,6 +740,8 @@ exports.products = asyncMiddleware(async(req, res, next) => {
             "https://i.imgur.com/yyem4ud.jpg",
             "https://i.imgur.com/zW3T3U4.jpg",
         ],
+        isPromotion: true,
+        promotionId: "61966d2ce699223ca4b7dfa3",
     });
 
     const product32 = new Product({
@@ -994,6 +1126,7 @@ exports.data = asyncMiddleware(async(req, res, next) => {
     this.categories();
     this.user();
     this.vouchers();
+    this.promotions();
     return res
         .status(201)
         .json(new SuccessResponse(201, "Created database successfully. =_="));

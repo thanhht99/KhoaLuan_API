@@ -10,6 +10,8 @@ const errorMiddleware = require("./middleware/errorMiddleware");
 const { ConnectMongo } = require("./database/connectDB");
 // const connectDB = require("./database/connectDB");
 const MailService = require("./utility/mail");
+const socketio = require("socket.io");
+const http = require("http");
 
 const auth = require("./routes/auth");
 const user = require("./routes/user");
@@ -23,6 +25,9 @@ const bill = require("./routes/bill");
 const feedback = require("./routes/feedback");
 const data = require("./routes/data");
 const firebase = require("./routes/firebase");
+const conversation = require("./routes/conversation");
+const messages = require("./routes/messages");
+const morgan = require("morgan");
 
 // using MongoDB
 ConnectMongo.getConnect();
@@ -40,6 +45,7 @@ app.use(
 );
 // Cho phép lý dữ liệu từ form method POST
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan("tiny"));
 
 app.use(validator());
 app.use(
@@ -64,6 +70,8 @@ app.use("/api/bill", bill);
 app.use("/api/feedback", feedback);
 app.use("/api/data", data);
 app.use("/api/firebase", firebase);
+app.use("/api/conversation", conversation);
+app.use("/api/messages", messages);
 
 app.get("/", (req, res) => {
     res.send(`Hello. *_* Alo Alo!`);
@@ -74,6 +82,57 @@ app.use(errorMiddleware);
 
 //SET  Server  Port & Start Server
 app.set("port", process.env.PORT || 5000);
-app.listen(app.get("port"), () => {
+const server = app.listen(app.get("port"), () => {
     console.log(`Hello QTD, I'm running at ${app.get("port")}`.red);
+});
+
+console.log(`server`, `http://localhost:${app.get("port")}`.blue);
+
+// chat real time
+const io = socketio(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        // origin: "https://clothes-store-99.vercel.app/",
+    },
+});
+
+let users = [];
+
+const addUser = (userId, socketId) => {
+    !users.some((user) => user.userId === userId) &&
+        users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+    users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+    return users.find((user) => user.userId === userId);
+};
+
+io.on("connection", (socket) => {
+    console.log(`Client connected`.rainbow);
+
+    //take userId and socketId from user
+    socket.on("addUser", (userId) => {
+        addUser(userId, socket.id);
+        io.emit("getUsers", users);
+    });
+
+    //send and get message
+    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+        const user = getUser(receiverId);
+        io.to(user.socketId).emit("getMessage", {
+            senderId,
+            text,
+        });
+    });
+
+    //when disconnect
+    socket.on("disconnect", () => {
+        console.log("a user disconnected!");
+        removeUser(socket.id);
+        io.emit("getUsers", users);
+    });
 });
