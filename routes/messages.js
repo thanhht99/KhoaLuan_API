@@ -6,6 +6,6 @@ const messagesController = require("../controllers/messagesController");
 
 router.post("/", jwtAuth, messagesController.newMessage);
 
-router.get("/:conversationId", jwtAuth, messagesController.getMessageByUser);
+router.get("/:conversationId", jwtAuth, messagesController.getMessageByConversation);
 
 module.exports = router;

@@ -17,6 +17,13 @@ router.get("/", jwtAuth, userController.getUser);
 
 router.get("/acc/info", jwtAuth, userController.getAcc);
 
+router.get(
+    "/acc/_id/:id",
+    jwtAuth,
+    authorize("Admin", "Saler"),
+    userController.getAccById
+);
+
 router.patch("/updatePassword", jwtAuth, userController.updatePassword);
 
 router.patch("/updateUser", jwtAuth, userController.updateUser);

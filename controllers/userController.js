@@ -58,6 +58,31 @@ exports.getAcc = asyncMiddleware(async(req, res, next) => {
     return res.status(200).json(new SuccessResponse(200, acc));
 });
 
+// Get Account By Id
+exports.getAccById = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    try {
+        const { id } = req.params;
+        if (!id.trim()) {
+            return next(new ErrorResponse(422, "Id is empty"));
+        }
+
+        const acc = await Account.findOne({ _id: id })
+            .populate({
+                path: "user_detail",
+            })
+            .select(" -updatedAt -createdAt -__v");
+        if (!acc) {
+            return next(new ErrorResponse(404, "Account is not found"));
+        }
+        res.status(200).json(new SuccessResponse(200, acc));
+    } catch (err) {
+        return next(new ErrorResponse(500, err));
+    }
+});
+
 // Find User By UserName
 exports.findUserByUserName = asyncMiddleware(async(req, res, next) => {
     const { userName } = req.params;

@@ -10,11 +10,38 @@ exports.newConversation = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(401, "End of login session"));
     }
     const newConversation = new Conversation({
-        members: [req.body.senderId, req.body.receiverId],
+        members: [
+            req.body.senderId,
+            req.body.receiverId ? req.body.receiverId : "Waiting",
+        ],
     });
     try {
         const savedConversation = await newConversation.save();
         res.status(201).json(new SuccessResponse(201, savedConversation));
+    } catch (err) {
+        return next(new ErrorResponse(500, err));
+    }
+});
+
+// update Conversation
+exports.updateConversation = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+
+    try {
+        const { id } = req.params;
+        if (!id.trim()) {
+            return next(new ErrorResponse(422, "Id is empty"));
+        }
+        const conversation = await Conversation.findOne({ _id: id });
+        if (!conversation) {
+            return next(new ErrorResponse(404, "Conversation not exist"));
+        }
+        if (conversation) {
+            const updatedConversation = await Conversation.findOneAndUpdate({ _id: id }, { members: [req.body.senderId, req.body.receiverId] }, { new: true });
+            res.status(200).json(new SuccessResponse(200, updatedConversation));
+        }
     } catch (err) {
         return next(new ErrorResponse(500, err));
     }
@@ -29,6 +56,23 @@ exports.getConversationByUser = asyncMiddleware(async(req, res, next) => {
         const conversation = await Conversation.find({
             members: { $in: [req.params.userId] },
         });
+        res.status(200).json(new SuccessResponse(200, conversation));
+    } catch (err) {
+        return next(new ErrorResponse(500, err));
+    }
+});
+
+// get conv of _id
+exports.getConversationById = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    try {
+        const { id } = req.params;
+        if (!id.trim()) {
+            return next(new ErrorResponse(422, "Id is empty"));
+        }
+        const conversation = await Conversation.findOne({ _id: id });
         res.status(200).json(new SuccessResponse(200, conversation));
     } catch (err) {
         return next(new ErrorResponse(500, err));

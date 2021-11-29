@@ -20,7 +20,7 @@ exports.newMessage = asyncMiddleware(async(req, res, next) => {
 });
 
 // get mess of a user
-exports.getMessageByUser = asyncMiddleware(async(req, res, next) => {
+exports.getMessageByConversation = asyncMiddleware(async(req, res, next) => {
     if (!req.session.account) {
         return next(new ErrorResponse(401, "End of login session"));
     }

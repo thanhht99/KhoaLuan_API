@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const bcrypt = require('bcryptjs');
-const validator = require('mongoose-validator')
+const bcrypt = require("bcryptjs");
+const validator = require("mongoose-validator");
 
 const AccountSchema = new Schema({
     userName: {
@@ -19,9 +19,9 @@ const AccountSchema = new Schema({
         lowercase: true,
         validate: [
             validator({
-                validator: 'isEmail',
-                message: 'Oops..please enter valid email'
-            })
+                validator: "isEmail",
+                message: "Oops..please enter valid email",
+            }),
         ],
         unique: true,
     },
@@ -35,7 +35,7 @@ const AccountSchema = new Schema({
     role: {
         type: String,
         enum: ["Admin", "Customer", "Saler"],
-        default: "Customer"
+        default: "Customer",
     },
     verifyCode: {
         type: Number,
@@ -43,12 +43,12 @@ const AccountSchema = new Schema({
     },
     isLogin: {
         type: Boolean,
-        default: false
+        default: false,
     },
     isActive: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 }, {
     toJSON: { virtuals: true },
     timestamps: true,
@@ -58,10 +58,20 @@ AccountSchema.pre("save", async function(next) {
     const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
     next();
-})
+});
 
-AccountSchema.statics.comparePassword = async function(password, hashPassword) {
-    return await bcrypt.compare(password, hashPassword)
-}
+AccountSchema.statics.comparePassword = async function(
+    password,
+    hashPassword
+) {
+    return await bcrypt.compare(password, hashPassword);
+};
 
-module.exports = mongoose.model('Account', AccountSchema);
+AccountSchema.virtual("user_detail", {
+    ref: "User",
+    foreignField: "email",
+    localField: "email",
+    justOne: true,
+});
+
+module.exports = mongoose.model("Account", AccountSchema);
