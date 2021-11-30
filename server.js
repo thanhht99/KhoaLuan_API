@@ -82,11 +82,10 @@ app.use(errorMiddleware);
 
 //SET  Server  Port & Start Server
 app.set("port", process.env.PORT || 5000);
-const server = app.listen(app.get("port"), () => {
+app.listen(app.get("port"), () => {
     console.log(`Hello QTD, I'm running at ${app.get("port")}`.red);
 });
 
-console.log(`server`, `http://localhost:${app.get("port")}`.blue);
 
 // chat real time
 // const io = socketio(server, {
