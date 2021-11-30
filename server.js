@@ -99,10 +99,6 @@ const io = socketio(server, {
 let users = [];
 let conversations = [];
 
-const addUser = (userId, socketId) => {
-    !users.some((user) => user.userId === userId) &&
-        users.push({ userId, socketId });
-};
 
 const addConversation = (conversationId, socketId) => {
     !conversations.some(
@@ -120,10 +116,6 @@ const removeConversation = (conversationId) => {
     );
 };
 
-const getUser = (userId) => {
-    return users.find((user) => user.userId === userId);
-};
-
 const getConversation = (conversationId) => {
     return conversations.find(
         (conversation) => conversation.conversationId === conversationId
@@ -132,12 +124,6 @@ const getConversation = (conversationId) => {
 
 io.on("connection", (socket) => {
     console.log(`Client connected`.rainbow);
-
-    //take userId and socketId from user
-    socket.on("addUser", (userId) => {
-        addUser(userId, socket.id);
-        io.emit("getUsers", users);
-    });
 
     //take userId and socketId from user    YES
     socket.on("waitingRoom", (get) => {
@@ -162,6 +148,7 @@ io.on("connection", (socket) => {
     // customer leave room   YES
     socket.on("customer_leaveRoom", ({ conversationId }) => {
         socket.leave(conversationId);
+        io.socketsLeave(conversationId);
     });
 
     //send and get message              YES
@@ -194,6 +181,5 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("a user disconnected!");
         removeUser(socket.id);
-        io.emit("getUsers", users);
     });
 });
