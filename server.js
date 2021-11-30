@@ -28,7 +28,6 @@ const firebase = require("./routes/firebase");
 const conversation = require("./routes/conversation");
 const messages = require("./routes/messages");
 
-
 // using MongoDB
 ConnectMongo.getConnect();
 
@@ -85,103 +84,95 @@ app.use(errorMiddleware);
 
 //SET  Server  Port & Start Server
 app.set("port", process.env.PORT || 5000);
-app.listen(app.get("port"), () => {
+const server = app.listen(app.get("port"), () => {
     console.log(`Hello QTD, I'm running at ${app.get("port")}`.red);
 });
 
-
 // chat real time
-// const io = socketio(server, {
-//     cors: {
-//         // origin: "http://localhost:3000",
-//         origin: "https://clothes-store-99.vercel.app/",
-//     },
-// });
+const io = socketio(server, {
+    cors: {
+        // origin: "http://localhost:3000",
+        origin: "https://clothes-store-99.vercel.app/",
+    },
+});
 
-// let users = [];
-// let conversations = [];
+let conversations = [];
 
+const addConversation = (conversationId, socketId) => {
+    !conversations.some(
+        (conversation) => conversation.conversationId === conversationId
+    ) && conversations.push({ conversationId, socketId });
+};
 
-// const addConversation = (conversationId, socketId) => {
-//     !conversations.some(
-//         (conversation) => conversation.conversationId === conversationId
-//     ) && conversations.push({ conversationId, socketId });
-// };
+const removeConversation = (conversationId) => {
+    conversations = conversations.filter(
+        (conversation) => conversation.conversationId !== conversationId
+    );
+};
 
-// const removeUser = (socketId) => {
-//     users = users.filter((user) => user.socketId !== socketId);
-// };
+const getConversation = (conversationId) => {
+    return conversations.find(
+        (conversation) => conversation.conversationId === conversationId
+    );
+};
 
-// const removeConversation = (conversationId) => {
-//     conversations = conversations.filter(
-//         (conversation) => conversation.conversationId !== conversationId
-//     );
-// };
+io.on("connection", (socket) => {
+    console.log(`Client connected`.rainbow);
 
-// const getConversation = (conversationId) => {
-//     return conversations.find(
-//         (conversation) => conversation.conversationId === conversationId
-//     );
-// };
+    //take userId and socketId from user    YES
+    socket.on("waitingRoom", (get) => {
+        const conversation = getConversation(get.conversationId);
+        if (!conversation) {
+            addConversation(get.conversationId, socket.id);
+        }
+        socket.join(get.conversationId);
+        io.emit("getWaitingRoom", conversations);
+    });
 
-// io.on("connection", (socket) => {
-//     console.log(`Client connected`.rainbow);
+    // leave room   YES
+    socket.on("leaveRoom", ({ conversationId, senderId, receiverId, text }) => {
+        socket.leave(conversationId);
+        socket.to(conversationId).emit("receive_message", {
+            receiverId,
+            senderId: "Waiting",
+            text,
+        });
+    });
 
-//     //take userId and socketId from user    YES
-//     socket.on("waitingRoom", (get) => {
-//         const conversation = getConversation(get.conversationId);
-//         if (!conversation) {
-//             addConversation(get.conversationId, socket.id);
-//         }
-//         socket.join(get.conversationId);
-//         io.emit("getWaitingRoom", conversations);
-//     });
+    // customer leave room   YES
+    socket.on("customer_leaveRoom", ({ conversationId }) => {
+        socket.leave(conversationId);
+        io.socketsLeave(conversationId);
+    });
 
-//     // leave room   YES
-//     socket.on("leaveRoom", ({ conversationId, senderId, receiverId, text }) => {
-//         socket.leave(conversationId);
-//         socket.to(conversationId).emit("receive_message", {
-//             receiverId,
-//             senderId: "Waiting",
-//             text,
-//         });
-//     });
+    //send and get message              YES
+    socket.on("sendMessage", ({ conversationId, senderId, receiverId, text }) => {
+        socket.to(conversationId).emit("receive_message", {
+            receiverId,
+            senderId,
+            text,
+        });
+    });
 
-//     // customer leave room   YES
-//     socket.on("customer_leaveRoom", ({ conversationId }) => {
-//         socket.leave(conversationId);
-//         io.socketsLeave(conversationId);
-//     });
+    //sp send and get message              YES
+    socket.on(
+        "spSendMessage",
+        ({ conversationId, senderId, receiverId, text }) => {
+            removeConversation(conversationId);
+            io.emit("getWaitingRoom", conversations);
+            io.emit("removeConversation", conversationId);
 
-//     //send and get message              YES
-//     socket.on("sendMessage", ({ conversationId, senderId, receiverId, text }) => {
-//         socket.to(conversationId).emit("receive_message", {
-//             receiverId,
-//             senderId,
-//             text,
-//         });
-//     });
+            socket.join(conversationId);
+            socket.to(conversationId).emit("getMessageSP", {
+                receiverId,
+                senderId,
+                text,
+            });
+        }
+    );
 
-//     //sp send and get message              YES
-//     socket.on(
-//         "spSendMessage",
-//         ({ conversationId, senderId, receiverId, text }) => {
-//             removeConversation(conversationId);
-//             io.emit("getWaitingRoom", conversations);
-//             io.emit("removeConversation", conversationId);
-
-//             socket.join(conversationId);
-//             socket.to(conversationId).emit("getMessageSP", {
-//                 receiverId,
-//                 senderId,
-//                 text,
-//             });
-//         }
-//     );
-
-//     //when disconnect
-//     socket.on("disconnect", () => {
-//         console.log("a user disconnected!");
-//         removeUser(socket.id);
-//     });
-// });
+    //when disconnect
+    socket.on("disconnect", () => {
+        console.log("a user disconnected!");
+    });
+});
