@@ -11,32 +11,35 @@ const mongoUpload = require("../middleware/mongoUpload");
 
 // Data user
 exports.user = asyncMiddleware(async(req, res, next) => {
+    // Admin: 4 & saler: 4 
+    // Customer: 10
+
     // Admin
     const account1 = new Account({
-        userName: "admin123",
-        email: "clothes.store.at99@gmail.com",
+        userName: "admin001",
+        email: "admin001@gmail.com",
         password: "123456",
         role: "Admin",
         isActive: true,
     });
     const user1 = new User({
         userAccount: account1._id,
-        fullName: "Admin 123",
-        email: "clothes.store.at99@gmail.com",
+        fullName: "Admin 001",
+        email: "admin001@gmail.com",
         phone: "0367662607",
         isAcc: true,
         dayOfBirth: "07-26-1999",
         gender: "Male",
     });
 
-    const account4 = new Account({
+    const account2 = new Account({
         userName: "admin009",
         email: "admin009@gmail.com",
         password: "123456",
         role: "Admin",
         isActive: true,
     });
-    const user4 = new User({
+    const user2 = new User({
         userAccount: account4._id,
         fullName: "Admin 009",
         email: "admin009@gmail.com",
@@ -46,36 +49,20 @@ exports.user = asyncMiddleware(async(req, res, next) => {
         gender: "Male",
     });
 
-    const account5 = new Account({
-        userName: "admin008",
-        email: "admin008@gmail.com",
-        password: "123456",
-        role: "Admin",
-        isActive: true,
-    });
-    const user5 = new User({
-        userAccount: account5._id,
-        fullName: "Admin 008",
-        email: "admin008@gmail.com",
-        phone: "0367669999",
-        isAcc: true,
-        dayOfBirth: "06-14-1999",
-        gender: "Male",
-    });
     //********************************************************************** */
 
     // Saler
-    const account2 = new Account({
-        userName: "saler001",
-        email: "saler001@gmail.com",
+    const account5 = new Account({
+        userName: "saler005",
+        email: "saler005@gmail.com",
         password: "123456",
         role: "Saler",
         isActive: true,
     });
-    const user2 = new User({
-        userAccount: account2._id,
-        fullName: "Saler 001",
-        email: "saler001@gmail.com",
+    const user5 = new User({
+        userAccount: account5._id,
+        fullName: "Saler 005",
+        email: "saler005@gmail.com",
         phone: "0367662607",
         isAcc: true,
         dayOfBirth: "06-14-1999",
