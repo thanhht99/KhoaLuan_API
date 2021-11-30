@@ -27,7 +27,7 @@ const data = require("./routes/data");
 const firebase = require("./routes/firebase");
 const conversation = require("./routes/conversation");
 const messages = require("./routes/messages");
-const morgan = require("morgan");
+
 
 // using MongoDB
 ConnectMongo.getConnect();
@@ -44,7 +44,10 @@ app.use(
     })
 );
 // Cho phép lý dữ liệu từ form method POST
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+
+// DEV
+// const morgan = require("morgan");
 // app.use(morgan("tiny"));
 
 app.use(validator());
