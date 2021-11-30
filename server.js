@@ -44,8 +44,8 @@ app.use(
     })
 );
 // Cho phép lý dữ liệu từ form method POST
-app.use(express.urlencoded({ extended: true }));
-app.use(morgan("tiny"));
+// app.use(express.urlencoded({ extended: true }));
+// app.use(morgan("tiny"));
 
 app.use(validator());
 app.use(
