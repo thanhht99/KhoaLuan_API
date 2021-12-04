@@ -6,6 +6,7 @@ const Category = require("../model/database/Category");
 const Product = require("../model/database/Product");
 const Voucher = require("../model/database/Voucher");
 const Promotion = require("../model/database/Promotion");
+const Order = require("../model/database/Order");
 const asyncMiddleware = require("../middleware/asyncMiddleware");
 const mongoUpload = require("../middleware/mongoUpload");
 
@@ -751,8 +752,6 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         ],
     });
 
-    //Data T-Shirt:10
-
     const product20 = new Product({
         name: "Áo Thun Cổ Tròn Linh Vật Bbuff Ver1",
         price: 7.8,
@@ -939,6 +938,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu : Kaki\nThành phần: 100% cotton\n- Thêu chỉ kim tuyến Cửu Long\n- Phản quang bản đồ Đồng bằng sông Cửu Long",
         category: "Hat",
         sku: "H0019865",
+        sold: 4,
         image: "https://i.imgur.com/ReEva11.jpg",
         listImage: [
             "https://i.imgur.com/zkiBMsi.jpg",
@@ -954,6 +954,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu : Kaki\nThành phần: 100% cotton",
         category: "Hat",
         sku: "H0019725",
+        sold: 4,
         image: "https://i.imgur.com/L0X0pn3.jpg",
         listImage: [
             "https://i.imgur.com/yM7gurr.jpg",
@@ -971,6 +972,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu : Kaki\nThành phần: 100% cotton\n Phản quang hình in dơi",
         category: "Hat",
         sku: "H0019796",
+        sold: 3,
         image: "https://i.imgur.com/BpxGjOh.jpg",
         listImage: [
             "https://i.imgur.com/FTkzM1E.jpg",
@@ -1036,6 +1038,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu : Kaki\nThành phần: 100% cotton\n- Kỹ thuật in cao logo Horus\n- Họa tiết ngôi sao 6 cánh thêu chỉ kim tuyến bạc\n- Họa tiết con mắt phải của thần Horus thêu kỹ thuật số chỉ màu đỏ",
         category: "Hat",
         sku: "H0019917",
+        sold: 4,
         image: "https://i.imgur.com/DMjWPrs.jpg",
         listImage: [
             "https://i.imgur.com/S4dBLGP.jpg",
@@ -1306,6 +1309,63 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     await product6.save();
 
     // ORDER
+    const order1 = new Order({
+        imagePayment: null,
+        orderStatus: "Has received the goods",
+        voucherCode: null,
+        discount: null,
+        note: null,
+        address: "42 Quốc lộ 13, TP TDM, Bình Dương",
+        intendedArrivalDate: "5-7 Day",
+        payments: "COD",
+        phone: "0909777888",
+        email: "order1@gmail.com",
+        fullName: "Order 1",
+        orderCode: "11114112021",
+        orderDate: "2021-11-04T09:11:14.000+00:00",
+        totalProduct: 15,
+        totalPayment: 79.51,
+        temporaryMoney: 78,
+        transportFee: 1.51,
+        products: [{
+                id: product31._id,
+                quantity: 4,
+                price: product31.price,
+                discount: 0,
+                sku: "H0019865",
+            },
+            {
+                id: product33._id,
+                quantity: 4,
+                price: product33.price,
+                discount: 0,
+                sku: "H0019725",
+            },
+            {
+                id: product34._id,
+                quantity: 3,
+                price: product34.price,
+                discount: 0,
+                sku: "H0019796",
+            },
+            {
+                id: product38._id,
+                quantity: 4,
+                price: product38.price,
+                discount: 0,
+                sku: "H0019917",
+            },
+        ],
+    });
+
+    // 3 order products:1
+    // 1 order products:2
+    // 2 order products:3
+    // 1 order products:4
+    // 2 order products:5
+    // 1 order products:6
+
+    await order1.save();
 
     return res
         .status(201)
