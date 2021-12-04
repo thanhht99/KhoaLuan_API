@@ -33,20 +33,54 @@ exports.user = asyncMiddleware(async(req, res, next) => {
     });
 
     const account2 = new Account({
-        userName: "admin009",
-        email: "admin009@gmail.com",
+        userName: "admin002",
+        email: "admin002@gmail.com",
         password: "123456",
         role: "Admin",
         isActive: true,
     });
     const user2 = new User({
-        userAccount: account4._id,
-        fullName: "Admin 009",
-        email: "admin009@gmail.com",
+        userAccount: account2._id,
+        fullName: "Admin 002",
+        email: "admin002@gmail.com",
         phone: "0367669999",
         isAcc: true,
         dayOfBirth: "06-14-1999",
         gender: "Male",
+    });
+
+    const account3 = new Account({
+        userName: "admin003",
+        email: "admin003@gmail.com",
+        password: "123456",
+        role: "Admin",
+        isActive: true,
+    });
+    const user3 = new User({
+        userAccount: account3._id,
+        fullName: "Admin 003",
+        email: "admin003@gmail.com",
+        phone: "0367668899",
+        isAcc: true,
+        dayOfBirth: "08-08-1995",
+        gender: "Female",
+    });
+
+    const account4 = new Account({
+        userName: "admin004",
+        email: "admin004@gmail.com",
+        password: "123456",
+        role: "Admin",
+        isActive: true,
+    });
+    const user4 = new User({
+        userAccount: account4._id,
+        fullName: "Admin 004",
+        email: "admin004@gmail.com",
+        phone: "0367661028",
+        isAcc: true,
+        dayOfBirth: "03-08-1998",
+        gender: "Female",
     });
 
     //********************************************************************** */
@@ -69,72 +103,218 @@ exports.user = asyncMiddleware(async(req, res, next) => {
         gender: "Male",
     });
 
-    const account3 = new Account({
-        userName: "saler002",
-        email: "saler002@gmail.com",
+    const account6 = new Account({
+        userName: "saler006",
+        email: "saler006@gmail.com",
         password: "123456",
         role: "Saler",
         isActive: true,
     });
-    const user3 = new User({
-        userAccount: account3._id,
-        fullName: "Saler 002",
-        email: "saler002@gmail.com",
-        phone: "0367662607",
+    const user6 = new User({
+        userAccount: account6._id,
+        fullName: "Saler 006",
+        email: "saler006@gmail.com",
+        phone: "0367662333",
         isAcc: true,
-        dayOfBirth: "06-14-1999",
+        dayOfBirth: "02-20-1997",
         gender: "Male",
+    });
+
+    const account7 = new Account({
+        userName: "saler007",
+        email: "saler007@gmail.com",
+        password: "123456",
+        role: "Saler",
+        isActive: true,
+    });
+    const user7 = new User({
+        userAccount: account7._id,
+        fullName: "Saler 007",
+        email: "saler007@gmail.com",
+        phone: "0367234333",
+        isAcc: true,
+        dayOfBirth: "05-09-1998",
+        gender: "Female",
+    });
+
+    const account8 = new Account({
+        userName: "saler008",
+        email: "saler008@gmail.com",
+        password: "123456",
+        role: "Saler",
+        isActive: true,
+    });
+    const user8 = new User({
+        userAccount: account8._id,
+        fullName: "Saler 008",
+        email: "saler008@gmail.com",
+        phone: "0367234098",
+        isAcc: true,
+        dayOfBirth: "05-19-1998",
+        gender: "Female",
     });
 
     //********************************************************************** */
 
     // Customer
-    const account6 = new Account({
-        userName: "cus001",
-        email: "cus001@gmail.com",
+    const account9 = new Account({
+        userName: "cus009",
+        email: "cus009@gmail.com",
         password: "123456",
         isActive: true,
     });
-    const user6 = new User({
-        userAccount: account6._id,
-        fullName: "Customer 001",
-        email: "cus001@gmail.com",
-        phone: "0367662607",
+    const user9 = new User({
+        userAccount: account9._id,
+        fullName: "Customer 009",
+        email: "cus009@gmail.com",
+        phone: "0366662607",
         isAcc: true,
-        dayOfBirth: "06-14-1999",
+        dayOfBirth: "07-15-1999",
         gender: "Male",
     });
 
-    const account7 = new Account({
-        userName: "cus002",
-        email: "cus002@gmail.com",
+    const account10 = new Account({
+        userName: "cus0010",
+        email: "cus0010@gmail.com",
         password: "123456",
         isActive: true,
     });
-    const user7 = new User({
-        userAccount: account7._id,
-        fullName: "Customer 002",
-        email: "cus002@gmail.com",
-        phone: "0367662607",
+    const user10 = new User({
+        userAccount: account10._id,
+        fullName: "Customer 0010",
+        email: "cus0010@gmail.com",
+        phone: "0367662608",
         isAcc: true,
-        dayOfBirth: "06-14-1999",
+        dayOfBirth: "07-16-1999",
         gender: "Male",
     });
 
-    const account8 = new Account({
-        userName: "cus003",
-        email: "cus003@gmail.com",
+    const account11 = new Account({
+        userName: "cus0011",
+        email: "cus0011@gmail.com",
         password: "123456",
         isActive: true,
     });
-    const user8 = new User({
-        userAccount: account8._id,
-        fullName: "Customer 003",
-        email: "cus003@gmail.com",
-        phone: "0367662607",
+    const user11 = new User({
+        userAccount: account11._id,
+        fullName: "Customer 0011",
+        email: "cus0011@gmail.com",
+        phone: "0987662607",
         isAcc: true,
-        dayOfBirth: "06-14-1999",
+        dayOfBirth: "08-17-1999",
         gender: "Male",
+    });
+
+    const account12 = new Account({
+        userName: "cus0012",
+        email: "cus0012@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user12 = new User({
+        userAccount: account12._id,
+        fullName: "Customer 0012",
+        email: "cus0012@gmail.com",
+        phone: "0988962607",
+        isAcc: true,
+        dayOfBirth: "09-18-1999",
+        gender: "Male",
+    });
+
+    const account13 = new Account({
+        userName: "cus0013",
+        email: "cus0013@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user13 = new User({
+        userAccount: account13._id,
+        fullName: "Customer 0013",
+        email: "cus0013@gmail.com",
+        phone: "0980892607",
+        isAcc: true,
+        dayOfBirth: "10-19-1999",
+        gender: "Male",
+    });
+
+    const account14 = new Account({
+        userName: "cus0014",
+        email: "cus0014@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user14 = new User({
+        userAccount: account14._id,
+        fullName: "Customer 0014",
+        email: "cus0014@gmail.com",
+        phone: "0980893787",
+        isAcc: true,
+        dayOfBirth: "11-20-1999",
+        gender: "Female",
+    });
+
+    const account15 = new Account({
+        userName: "cus0015",
+        email: "cus0015@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user15 = new User({
+        userAccount: account15._id,
+        fullName: "Customer 0015",
+        email: "cus0015@gmail.com",
+        phone: "0980893777",
+        isAcc: true,
+        dayOfBirth: "12-21-1999",
+        gender: "Female",
+    });
+
+    const account16 = new Account({
+        userName: "cus0016",
+        email: "cus0016@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user16 = new User({
+        userAccount: account16._id,
+        fullName: "Customer 0016",
+        email: "cus0016@gmail.com",
+        phone: "0980893666",
+        isAcc: true,
+        dayOfBirth: "11-26-1996",
+        gender: "Female",
+    });
+
+    const account17 = new Account({
+        userName: "cus0017",
+        email: "cus0017@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user17 = new User({
+        userAccount: account17._id,
+        fullName: "Customer 0017",
+        email: "cus0017@gmail.com",
+        phone: "0980893677",
+        isAcc: true,
+        dayOfBirth: "12-27-1997",
+        gender: "Female",
+    });
+
+    const account18 = new Account({
+        userName: "cus0018",
+        email: "cus0018@gmail.com",
+        password: "123456",
+        isActive: true,
+    });
+    const user18 = new User({
+        userAccount: account18._id,
+        fullName: "Customer 0018",
+        email: "cus0018@gmail.com",
+        phone: "0980893688",
+        isAcc: true,
+        dayOfBirth: "12-27-1998",
+        gender: "Female",
     });
 
     await account1.save();
@@ -154,6 +334,27 @@ exports.user = asyncMiddleware(async(req, res, next) => {
     await user7.save();
     await account8.save();
     await user8.save();
+
+    await account9.save();
+    await user9.save();
+    await account10.save();
+    await user10.save();
+    await account11.save();
+    await user11.save();
+    await account12.save();
+    await user12.save();
+    await account13.save();
+    await user13.save();
+    await account14.save();
+    await user14.save();
+    await account15.save();
+    await user15.save();
+    await account16.save();
+    await user16.save();
+    await account17.save();
+    await user17.save();
+    await account18.save();
+    await user18.save();
 
     // return res
     //     .status(201)
