@@ -11,7 +11,7 @@ const mongoUpload = require("../middleware/mongoUpload");
 
 // Data user
 exports.user = asyncMiddleware(async(req, res, next) => {
-    // Admin: 4 & saler: 4 
+    // Admin: 4 & saler: 4
     // Customer: 10
 
     // Admin
@@ -1103,6 +1103,9 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     await product4.save();
     await product5.save();
     await product6.save();
+
+    // ORDER
+
     return res
         .status(201)
         .json(new SuccessResponse(201, "Created product successfully. =_="));

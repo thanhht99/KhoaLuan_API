@@ -27,6 +27,8 @@ const data = require("./routes/data");
 const firebase = require("./routes/firebase");
 const conversation = require("./routes/conversation");
 const messages = require("./routes/messages");
+const ml = require("./routes/ml");
+const home = require("./routes/home");
 
 // using MongoDB
 ConnectMongo.getConnect();
@@ -74,6 +76,8 @@ app.use("/api/data", data);
 app.use("/api/firebase", firebase);
 app.use("/api/conversation", conversation);
 app.use("/api/messages", messages);
+app.use("/api/ml", ml);
+app.use("/api/home", home);
 
 app.get("/", (req, res) => {
     res.send(`Hello. *_* Alo Alo!`);
@@ -91,8 +95,6 @@ const server = app.listen(app.get("port"), () => {
 // chat real time
 const io = (module.exports.io = require("socket.io")(server, {
     cors: {
-        // origin: "http://localhost:3000",
-        // origin: "https://clothes-store-99.vercel.app/",
         origin: "*",
     },
 }));
