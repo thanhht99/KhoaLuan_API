@@ -649,6 +649,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex ",
         category: "Jeans",
         sku: "J0020180",
+        sold: 2,
         image: "https://i.imgur.com/WAfTKwJ.jpg",
         listImage: [
             "https://i.imgur.com/vbE55rc.jpg",
@@ -682,6 +683,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Jean Cotton \nThành phần: 98% cotton 2% spandex \n- Khắc laser logo Vạn Xuân Kiến Quốc \n- Rách gối phong cách ",
         category: "Jeans",
         sku: "J0020148",
+        sold: 3,
         image: "https://i.imgur.com/MJBqpKf.jpg",
         listImage: [
             "https://i.imgur.com/qhrjCZv.jpg",
@@ -715,6 +717,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Jean Cotton \nThành phần: 98% cotton 2% spandex \n- In logo Vạn Xuân Kiến Quốc ",
         category: "Jeans",
         sku: "J0020130",
+        sold: 3,
         image: "https://i.imgur.com/Y2SFkHJ.jpg",
         listImage: [
             "https://i.imgur.com/6nSuOc4.jpg",
@@ -732,6 +735,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n- In Logo Y2010 phía sau túi",
         category: "Jeans",
         sku: "J0020118",
+        sold: 2,
         image: "https://i.imgur.com/cXkixjd.jpg",
         listImage: [
             "https://i.imgur.com/vemfuoQ.jpg",
@@ -747,6 +751,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n- Mềm mại \n- Thoáng mát \n- Thấm hút \nHDSD: \n- Hãy lộn mặt trái của sản phẩm trước khi giặt để hạn chế bay màu vải. \n- Không nên sử dụng các chất tẩy rửa mạnh trong quá trình giặt.",
         category: "Jeans",
         sku: "J0019946",
+        sold: 2,
         image: "https://i.imgur.com/CFR3UrV.jpg",
         listImage: [
             "https://i.imgur.com/CZYsCUF.jpg",
@@ -814,6 +819,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Cotton 4 Chiều Tie Dye\nThành phần: 92% cotton 8% spandex\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại, ít nhăn\n- Co giãn tối ưu\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết thêu + may đắp logo\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
         category: "T-Shirt",
         sku: "TS0020254",
+        sold: 2,
         image: "https://i.imgur.com/sQ9jeaF.jpg",
         listImage: [
             "https://i.imgur.com/L82zJQt.jpg",
@@ -831,6 +837,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Cotton Compact\nThành phần: 100% Cotton\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết in nước\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
         category: "T-Shirt",
         sku: "TS0020193",
+        sold: 2,
         image: "https://i.imgur.com/ovjFiH2.jpg",
         listImage: [
             "https://i.imgur.com/kTlOK6r.jpg",
@@ -846,6 +853,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Cotton Compact\nThành phần: 100% cotton\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết in dẻo\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
         category: "T-Shirt",
         sku: "TS0020157",
+        sold: 4,
         image: "https://i.imgur.com/NsaQ9aJ.jpg",
         listImage: [
             "https://i.imgur.com/nTCAkMK.jpg",
@@ -1015,6 +1023,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu : Kaki\nThành phần: 100% cotton",
         category: "Hat",
         sku: "H0019776",
+        sold: 4,
         image: "https://i.imgur.com/VtZhqDe.jpg",
         listImage: [
             "https://i.imgur.com/cw2iDNu.jpg",
@@ -1030,6 +1039,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu : Kaki\nThành phần: 100% cotton",
         category: "Hat",
         sku: "H0019100",
+        sold: 2,
         image: "https://i.imgur.com/mFEvFDg.jpg",
         listImage: [
             "https://i.imgur.com/uWaz8Vg.jpg",
@@ -1097,6 +1107,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Vải dù - in chuyển nhiệt\nThành phần: 100% poly\n- Co giãn 2 chiều\n- Bề mặt mềm mại\n- Nhanh khô\n- Độ bền cao\n- HDSD:\n+ Nên sử dụng các loại bột giặt dịu nhẹ hoặc đã được pha loãng tránh các chất hóa học mạnh sẽ làm hổng chất lượng vải.\n+ Nên lộn mặt trái sản phẩm khi giặt, không nên dùng bàn chải quá cứng chà xát mạnh lên bề mặt vải.\n+ GIặt ủi nhiệt độ thường tránh nhiệt độ quá cao sẽ ảnh hưởng đến chất lượng hình in.\n+ Phơi trong bóng râm tránh nắng gắt .",
         category: "Shirt",
         sku: "S0020246",
+        sold: 5,
         image: "https://i.imgur.com/ma8Kl3s.jpg",
         listImage: [
             "https://i.imgur.com/raZXqHb.jpg",
@@ -1114,6 +1125,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Vải Sơ Mi Cotton\nThành phần: 100% Cotton",
         category: "Shirt",
         sku: "S0020231",
+        sold: 3,
         image: "https://i.imgur.com/idkL60Y.jpg",
         listImage: [
             "https://i.imgur.com/JvX10cn.jpg",
@@ -1129,6 +1141,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Vải Sơ Mi \nThành phần: 63% poly 33% rayon 4% spandex \n- Mềm mại, bề mặt vải trơn mịn, cảm giác mát nhẹ khi mặc.",
         category: "Shirt",
         sku: "S0020220",
+        sold: 3,
         image: "https://i.imgur.com/CNn9gz9.jpg",
         listImage: [
             "https://i.imgur.com/hvuaywh.jpg",
@@ -1198,6 +1211,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Vài Dù\nThành phần: 100% poly\n- Chống tia UV UPF 50 +\n- Kháng Khuẩn\n- Trượt nước (khi đi dưới mưa nhỏ)\n- Siêu nhẹ\n- Siêu mỏng - Nhanh khô\n- Thiết kế mới\n+ Có lưới bên trong giảm ma sát và hạn chế bết dính\n+ Thoáng khí dưới lưng áo\n- Khóa cao qua cằm (che nắng được vùng cổ)\n- Cổ tay bo thun\n- 2 túi trong tiện lợi\n- 2 túi trước có dây kéo\n- Reverse Coil Zipper\n(Những chiếc khoá túi này có bề mặt ngoài dẹp, phẳng trong khi răng khoá thì ở trong)",
         category: "Coat",
         sku: "C0020100",
+        sold: 2,
         image: "https://i.imgur.com/vwr0xwh.jpg",
         listImage: [
             "https://i.imgur.com/Rlg3wSr.jpg",
@@ -1213,6 +1227,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "Chất liệu: Vải Dù\nThành phần: 100% poly\n- Cản gió\n- Trượt nước\n- Thoáng Khí\n- Vừa vặn Tối ưu\n- Chống thấm nước nhiều giờ liền\n- Bảo vệ chống tác động môi trường \n+ Reverse Coil Zipper\n(Những chiếc khoá túi này có bề mặt ngoài dẹp, phẳng trong khi răng khoá thì ở trong)\n+ Hai túi trong có dây kéo\n+ Nón rộng\n+ Gấu áo có dây rút phản quang điều chỉnh độ rộng phù hợp người dùng\n+ Dây kéo viền phản quang\n+ Họa tiết in chuyển nhiệt",
         category: "Coat",
         sku: "C0020029",
+        sold: 4,
         image: "https://i.imgur.com/ElULFrZ.jpg",
         listImage: [
             "https://i.imgur.com/il7Kszz.jpg",
@@ -1230,6 +1245,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         description: "95% POLY \n- Hạn chế bám bẩn trong suốt quá trình sử dụng\n- Ít nhăn\n5% SPANDEX\nGiúp áo co giãn tối ưu\n \nHDSD:\n- Để đảm bảo cho chất liệu không bị xù lông, trong quá trình giặt bạn nên giặt mặt sau của vải này để tránh được những nguyên nhân làm vải polyester xuống màu.",
         category: "Coat",
         sku: "C0019791",
+        sold: 4,
         image: "https://i.imgur.com/4wGqb3j.jpg",
         listImage: [
             "https://i.imgur.com/3xeQjEK.jpg",
@@ -1577,11 +1593,193 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
     
     // 2 order products:5
-    
+    const order8 = new Order({
+        imagePayment: null,
+        orderStatus: "Has received the goods",
+        voucherCode: null,
+        discount: null,
+        note: null,
+        address: "42 Quốc lộ 13, TP TDM, Bình Dương",
+        intendedArrivalDate: "5-7 Day",
+        payments: "COD",
+        phone: "0909777888",
+        email: "order8@gmail.com",
+        fullName: "Order 8",
+        orderCode: "118811112021",
+        orderDate: "2021-11-11T09:11:14.000+00:00",
+        totalProduct: 10,
+        totalPayment: 108.71,
+        temporaryMoney: 107.2,
+        transportFee: 1.51,
+        products: [{
+                id: product13._id,  //18do 36
+                quantity: 2,
+                price: product13.price,
+                discount: 0,
+                sku: "J0020180",
+            },
+            {
+                id: product23._id,  //7.8do 15.6
+                quantity: 2,
+                price: product23.price,
+                discount: 0,
+                sku: "TS0020254",
+            },
+            {
+                id: product24._id,  //8.3do 16.6
+                quantity: 2,
+                price: product24.price,
+                discount: 0,
+                sku: "TS0020193",
+            },
+            {
+                id: product37._id,  //6.5do 13
+                quantity: 2,
+                price: product37.price,
+                discount: 0,
+                sku: "H0019100",
+            },
+            {
+                id: product47._id,  //13do 26
+                quantity: 2,
+                price: product47.price,
+                discount: 0,
+                sku: "C0020100",
+            },
+        ],
+    });
+
+    const order9 = new Order({
+        imagePayment: null,
+        orderStatus: "Has received the goods",
+        voucherCode: null,
+        discount: null,
+        note: null,
+        address: "42 Quốc lộ 13, TP TDM, Bình Dương",
+        intendedArrivalDate: "5-7 Day",
+        payments: "COD",
+        phone: "0909777888",
+        email: "order9@gmail.com",
+        fullName: "Order 9",
+        orderCode: "119912112021",
+        orderDate: "2021-11-12T09:11:14.000+00:00",
+        totalProduct: 19,
+        totalPayment: 217.81,
+        temporaryMoney: 216.3,
+        transportFee: 1.51,
+        products: [{
+                id: product15._id,  //18.3do 54.9
+                quantity: 3,
+                price: product15.price,
+                discount: 0,
+                sku: "J0020148",
+            },
+            {
+                id: product17._id,  //18.3do 54.9
+                quantity: 3,
+                price: product17.price,
+                discount: 0,
+                sku: "J0020130",
+            },
+            {
+                id: product25._id,  //8.5do 34
+                quantity: 4,
+                price: product25.price,
+                discount: 0,
+                sku: "TS0020157",
+            },
+            {
+                id: product36._id,  //6do 24
+                quantity: 4,
+                price: product36.price,
+                discount: 0,
+                sku: "H0019776",
+            },
+            {
+                id: product41._id,  //9.7do 48.5
+                quantity: 5,
+                price: product41.price,
+                discount: 0,
+                sku: "S0020246",
+            },
+        ],
+    });
 
     // 1 order products:6
+    const order10 = new Order({
+        imagePayment: null,
+        orderStatus: "Has received the goods",
+        voucherCode: null,
+        discount: null,
+        note: null,
+        address: "42 Quốc lộ 13, TP TDM, Bình Dương",
+        intendedArrivalDate: "5-7 Day",
+        payments: "COD",
+        phone: "0909777888",
+        email: "order10@gmail.com",
+        fullName: "Order 10",
+        orderCode: "120013112021",
+        orderDate: "2021-11-13T09:11:14.000+00:00",
+        totalProduct: 18,
+        totalPayment: 272.91,
+        temporaryMoney: 271.4,
+        transportFee: 1.51,
+        products: [{
+                id: product18._id,  //18do 36
+                quantity: 2,
+                price: product18.price,
+                discount: 0,
+                sku: "J0020118",
+            },
+            {
+                id: product19._id,  //18.3do 36.6
+                quantity: 2,
+                price: product19.price,
+                discount: 0,
+                sku: "J0019946",
+            },
+            {
+                id: product42._id,  //11do 33
+                quantity: 3,
+                price: product42.price,
+                discount: 0,
+                sku: "S0020231",
+            },
+            {
+                id: product43._id,  //11do 33
+                quantity: 3,
+                price: product43.price,
+                discount: 0,
+                sku: "S0020220",
+            },
+            {
+                id: product48._id,  //20.2do 80.8
+                quantity: 4,
+                price: product48.price,
+                discount: 0,
+                sku: "C0020029",
+            },
+            {
+                id: product49._id,  //13do 52
+                quantity: 4,
+                price: product49.price,
+                discount: 0,
+                sku: "C0019791",
+            },
+        ],
+    });
 
     await order1.save();
+    await order2.save();
+    await order3.save();
+    await order4.save();
+    await order5.save();
+    await order6.save();
+    await order7.save();
+    await order8.save();
+    await order9.save();
+    await order10.save();
+
 
     return res
         .status(201)
