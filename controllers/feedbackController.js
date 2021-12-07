@@ -4,6 +4,7 @@ const asyncMiddleware = require("../middleware/asyncMiddleware");
 const Order = require("../model/database/Order");
 const Product = require("../model/database/Product");
 const Feedback = require("../model/database/Feedback");
+const User = require("../model/database/User");
 
 // Feedback
 exports.feedback = asyncMiddleware(async(req, res, next) => {
@@ -11,43 +12,144 @@ exports.feedback = asyncMiddleware(async(req, res, next) => {
     if (!id.trim()) {
         return next(new ErrorResponse(400, "Id is empty"));
     }
-    const order = await Order.findOne({ _id: id, userEmail: req.session.account.email, isActive: true })
-        .select("-updatedAt -createdAt -__v");
-    // console.log(order);
-    if (!order) {
-        return next(new ErrorResponse(404, "No order"));
-    }
-    if (order.isFeedback) {
-        return next(new ErrorResponse(403, "Feedback already"));
-    }
-    if (order.orderStatus !== "Has received the goods") {
-        return next(new ErrorResponse(403, "The order has not been delivered"));
-    }
+    try {
+        const order = await Order.findOne({
+            _id: id,
+            isActive: true,
+        }).select("-updatedAt -createdAt -__v");
+        if (!order) {
+            return next(new ErrorResponse(404, "Order is not available"));
+        }
+        if (order) {
+            if (order.email !== req.session.account.email) {
+                return next(
+                    new ErrorResponse(400, "Are you a hacker? Get out of here now")
+                );
+            }
+            if (order.isFeedback) {
+                return next(new ErrorResponse(403, "Feedback already"));
+            }
+            if (order.orderStatus !== "Has received the goods") {
+                return next(new ErrorResponse(403, "The order has not been delivered"));
+            }
 
-    const products = req.body.products;
-    if (products.length !== order.products.length) {
-        return next(new ErrorResponse(403, "Products are not the same as ordered products"));
-    }
-    const newFeedback = new Feedback({ orderId: id, userEmail: req.session.account.email, products });
+            const products = req.body.products;
+            if (products.length !== order.products.length) {
+                return next(
+                    new ErrorResponse(
+                        403,
+                        "Products are not the same as ordered products"
+                    )
+                );
+            }
 
-    const res_Feedback = await newFeedback.save();
-    if (!res_Feedback) {
-        return next(new ErrorResponse(400, "Feedback is failed"));
+            products.forEach(async(item) => {
+                const findProduct = await Product.findOne({ _id: item.productId });
+                const updateNumberRating = findProduct.numRating + 1;
+                const updateRating =
+                    (parseFloat(findProduct.rating) * findProduct.numRating +
+                        item.rating) /
+                    parseFloat(updateNumberRating);
+                await Product.findOneAndUpdate({ _id: item.productId }, {
+                    numRating: updateNumberRating,
+                    rating: updateRating.toFixed(5),
+                });
+                const feedback = new Feedback({
+                    orderCode: order.orderCode,
+                    sku: item.sku,
+                    rating: item.rating,
+                    contentFeedback: item.contentFeedback,
+                });
+                await feedback.save();
+            });
+            await Order.findOneAndUpdate({ _id: order._id }, { isFeedback: true }, { new: true });
+            return res.status(201).json(new SuccessResponse(201, "Successfully"));
+        }
+    } catch (err) {
+        return next(new ErrorResponse(500, err));
+    }
+});
+
+// Get form to Feedback
+exports.getFormToFeedback = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
     }
     try {
-        await Order.findOneAndUpdate({ _id: order._id }, { isFeedback: true }, { new: true });
-        products.map(async(product) => {
-            const findOrder = order.products.find((val) => {
-                return val.productId == product.productId;
+        const id = req.params.orderId;
+        if (!id.trim()) {
+            return next(new ErrorResponse(422, "Id is empty"));
+        }
+        const order = await Order.findOne({
+            _id: id,
+            isActive: true,
+        }).select("email products");
+        if (!order) {
+            return next(new ErrorResponse(404, "Order is not available"));
+        }
+        if (order) {
+            if (order.email !== req.session.account.email) {
+                return next(
+                    new ErrorResponse(400, "Are you a hacker? Get out of here now")
+                );
+            }
+
+            let getProducts = [];
+            order.products.forEach(async(product) => {
+                const find = await Product.findOne({
+                    sku: product.sku,
+                    isActive: true,
+                }).select(" name price sku image category");
+
+                if (find) {
+                    getProducts.push(find);
+                }
+                if (order.products.length === getProducts.length) {
+                    res.status(200).json(new SuccessResponse(200, getProducts));
+                }
+            });
+        }
+    } catch (err) {
+        return next(new ErrorResponse(500, err));
+    }
+});
+
+// Find Feedback
+exports.findFeedbackByProduct = asyncMiddleware(async(req, res, next) => {
+    try {
+        const sku = req.params.sku;
+        if (!sku.trim()) {
+            return next(new ErrorResponse(422, "Sku is empty"));
+        }
+
+        const feedback = await Feedback.find({ sku, isActive: true })
+            .populate({
+                path: "order_detail",
+                select: "_id email",
             })
-            const findProduct = await Product.findOne({ _id: product.productId });
-            const updateNumberRating = findProduct.numRating + 1;
-            const updateRating = (parseFloat(findProduct.rating) * findProduct.numRating + product.rating) / parseFloat(updateNumberRating);
-            const updateSold = findProduct.sold + findOrder.quantity;
-            await Product.findOneAndUpdate({ _id: product.productId }, { sold: updateSold, numRating: updateNumberRating, rating: updateRating.toFixed(5) });;
-        })
-        return res.status(201).json(new SuccessResponse(201, res_Feedback));
-    } catch (error) {
-        return next(new ErrorResponse(400, error));
+            .select("-updatedAt -__v");
+
+        let result = [];
+        feedback.forEach(async(item) => {
+            const findUser = await User.findOne({ email: item.order_detail.email });
+
+            if (findUser) {
+                const data = {
+                    fullName: findUser.fullName,
+                    image: findUser.image,
+                    orderCode: item.orderCode,
+                    sku: item.sku,
+                    rating: item.rating,
+                    contentFeedback: item.contentFeedback,
+                    createdAt: item.createdAt,
+                };
+                result.push(data);
+            }
+            if (feedback.length === result.length) {
+                res.status(200).json(new SuccessResponse(200, result));
+            }
+        });
+    } catch (err) {
+        return next(new ErrorResponse(500, err));
     }
 });
