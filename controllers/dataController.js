@@ -1766,7 +1766,6 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         ],
     });
 
-    //2 order 1 product
     const order11 = new Order({
         imagePayment: null,
         orderStatus: "Has received the goods",
@@ -1786,13 +1785,12 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         temporaryMoney: 36,
         transportFee: 1.51,
         products: [{
-                id: product18._id, //18do 36
-                quantity: 2,
-                price: product18.price,
-                discount: 0,
-                sku: "J0020118",
-            },
-        ],
+            id: product18._id, //18do 36
+            quantity: 2,
+            price: product18.price,
+            discount: 0,
+            sku: "J0020118",
+        }, ],
     });
 
     const order12 = new Order({
@@ -1805,7 +1803,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         intendedArrivalDate: "5-7 Day",
         payments: "COD",
         phone: "0909777888",
-        email: "cus0013@gmail.com",
+        email: "cus0016@gmail.com",
         fullName: "Order 12",
         orderCode: "122215112021",
         orderDate: "2021-11-15T09:11:14.000+00:00",
@@ -1814,16 +1812,14 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         temporaryMoney: 36.6,
         transportFee: 1.51,
         products: [{
-                id: product18._id, //18.3do 36.6
-                quantity: 2,
-                price: product18.price,
-                discount: 0,
-                sku: "J0019946",
-            },
-        ],
+            id: product18._id, //18.3do 36.6
+            quantity: 2,
+            price: product18.price,
+            discount: 0,
+            sku: "J0019946",
+        }, ],
     });
 
-    //3 order 2 product
     const order13 = new Order({
         imagePayment: null,
         orderStatus: "Has received the goods",
@@ -1834,7 +1830,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         intendedArrivalDate: "5-7 Day",
         payments: "COD",
         phone: "0909777888",
-        email: "cus0013@gmail.com",
+        email: "cus0016@gmail.com",
         fullName: "Order 13",
         orderCode: "123316112021",
         orderDate: "2021-11-16T09:11:14.000+00:00",
@@ -1869,7 +1865,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         intendedArrivalDate: "5-7 Day",
         payments: "COD",
         phone: "0909777888",
-        email: "cus0013@gmail.com",
+        email: "cus0015@gmail.com",
         fullName: "Order 14",
         orderCode: "124417112021",
         orderDate: "2021-11-17T09:11:14.000+00:00",
@@ -1904,7 +1900,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         intendedArrivalDate: "5-7 Day",
         payments: "COD",
         phone: "0909777888",
-        email: "cus0013@gmail.com",
+        email: "cus0015@gmail.com",
         fullName: "Order 15",
         orderCode: "125518112021",
         orderDate: "2021-11-18T09:11:14.000+00:00",
@@ -1929,8 +1925,6 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         ],
     });
 
-
-    //3 order 3 product
     const order16 = new Order({
         imagePayment: null,
         orderStatus: "Has received the goods",
@@ -1941,7 +1935,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         intendedArrivalDate: "5-7 Day",
         payments: "COD",
         phone: "0909777888",
-        email: "cus0013@gmail.com",
+        email: "cus0015@gmail.com",
         fullName: "Order 16",
         orderCode: "126619112021",
         orderDate: "2021-11-19T09:11:14.000+00:00",
@@ -2025,7 +2019,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         intendedArrivalDate: "5-7 Day",
         payments: "COD",
         phone: "0909777888",
-        email: "cus0013@gmail.com",
+        email: "cus0014@gmail.com",
         fullName: "Order 18",
         orderCode: "128821112021",
         orderDate: "2021-11-21T09:11:14.000+00:00",
@@ -2057,7 +2051,6 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         ],
     });
 
-    //2 order 4 product
     const order19 = new Order({
         imagePayment: null,
         orderStatus: "Has received the goods",
@@ -2068,7 +2061,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         intendedArrivalDate: "5-7 Day",
         payments: "COD",
         phone: "0909777888",
-        email: "cus0013@gmail.com",
+        email: "cus0014@gmail.com",
         fullName: "Order 19",
         orderCode: "129922112021",
         orderDate: "2021-11-22T09:11:14.000+00:00",
@@ -2117,7 +2110,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         intendedArrivalDate: "5-7 Day",
         payments: "COD",
         phone: "0909777888",
-        email: "cus0013@gmail.com",
+        email: "cus0014@gmail.com",
         fullName: "Order 20",
         orderCode: "130023112021",
         orderDate: "2021-11-23T09:11:14.000+00:00",
@@ -2147,7 +2140,7 @@ exports.products = asyncMiddleware(async(req, res, next) => {
                 sku: "S0020220",
             },
             {
-                id: product14._id,  //18.5do 74
+                id: product14._id, //18.5do 74
                 quantity: 4,
                 price: product14.price,
                 discount: 0,
