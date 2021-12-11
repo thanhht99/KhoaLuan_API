@@ -10,7 +10,7 @@ router.get("/all", baseAuth, categoryController.getAllCategories);
 router.get(
     "/allTrueAndFalse",
     jwtAuth,
-    authorize("Admin"),
+    authorize("Admin", "Saler"),
     categoryController.getAllTrueAndFalse
 );
 

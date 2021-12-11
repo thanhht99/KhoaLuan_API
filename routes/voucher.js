@@ -7,6 +7,8 @@ const { baseAuth } = require('../middleware/baseAuth');
 
 router.get("/all", jwtAuth, authorize("Admin"), voucherController.getAllVouchers);
 
+router.get("/allByActive", baseAuth, voucherController.getAllVouchersSortByIsActive);
+
 router.get("/:code", baseAuth, voucherController.getVoucher);
 
 router.post("/create", jwtAuth, authorize("Admin"), voucherController.createNewVoucher);

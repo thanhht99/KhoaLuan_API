@@ -4,7 +4,9 @@ const asyncMiddleware = require("../middleware/asyncMiddleware");
 const Voucher = require("../model/database/Voucher");
 const Product = require("../model/database/Product");
 const { uploadSingleImageFirebase } = require("./firebaseController");
-const { singleUploadMiddleware } = require("../middleware/multipleUploadMiddleware");
+const {
+    singleUploadMiddleware,
+} = require("../middleware/multipleUploadMiddleware");
 
 function getBoolean(value) {
     switch (value) {
@@ -38,6 +40,32 @@ exports.getAllVouchers = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(400, error));
     }
 });
+
+// All Vouchers SortByIsActive
+exports.getAllVouchersSortByIsActive = asyncMiddleware(
+    async(req, res, next) => {
+        try {
+            const isActive = getBoolean(req.query.isActive);
+            if (
+                isActive === null ||
+                isActive === undefined ||
+                typeof isActive !== "boolean"
+            ) {
+                return next(new ErrorResponse(404, "API invalid"));
+            }
+
+            const vouchers = await Voucher.find({ isActive }).select(
+                "-updatedAt -createdAt -__v"
+            );
+            if (!vouchers.length) {
+                return next(new ErrorResponse(404, "No vouchers"));
+            }
+            return res.status(200).json(new SuccessResponse(200, vouchers));
+        } catch (error) {
+            return next(new ErrorResponse(400, error));
+        }
+    }
+);
 
 // Find Vouchers
 exports.getVoucher = asyncMiddleware(async(req, res, next) => {
