@@ -73,7 +73,8 @@ exports.signUp = asyncMiddleware(async(req, res, next) => {
                 `\n<b>Email:</b> ${email}.<br>` +
                 `\n<b>Phone:</b> ${phone}.<br>` +
                 `\n<b>Your Verify Code:</b> <span style="color:red"><b>${newAccount.verifyCode}</b></span>.<br>` +
-                `\nClick on the link to verify:http://localhost:${process.env.PORT}/api/auth/signUp/verifyCode/${newAccount._id}.<br>`
+                // `\nClick on the link to verify:http://localhost:3000/account/verify-code/${newAccount._id}.<br>`
+                `\nClick on the link to verify:https://clothes-store-99.vercel.app/account/verify-code/${newAccount._id}.<br>`
             );
             return res
                 .status(201)
@@ -111,7 +112,7 @@ exports.verifyCode = asyncMiddleware(async(req, res, next) => {
     const acc = await Account.findOne({ _id: id });
     if (acc) {
         if (!acc.isActive) {
-            if (verifyCode === acc.verifyCode) {
+            if (verifyCode.toString() === acc.verifyCode.toString()) {
                 const updatedActiveAccount = await Account.findOneAndUpdate({ email: acc.email }, { isActive: true }, { new: true });
                 // console.log(updatedActiveAccount);
                 return res
@@ -319,4 +320,24 @@ exports.resetPassword = asyncMiddleware(async(req, res, next) => {
         }
     }
     return next(new ErrorResponse(406, "Verify code incorrect"));
+});
+
+// Find account
+exports.findAcc = asyncMiddleware(async(req, res, next) => {
+    try {
+        const { id } = req.params;
+        if (!id.trim()) {
+            return next(new ErrorResponse(422, "Id is empty"));
+        }
+
+        const acc = await Account.findOne({ _id: id, isActive: false }).select(
+            "-updatedAt -__v"
+        );
+        if (!acc) {
+            return next(new ErrorResponse(404, "Account not exist"));
+        }
+        res.status(200).json(new SuccessResponse(200, acc));
+    } catch (err) {
+        return next(new ErrorResponse(500, err));
+    }
 });

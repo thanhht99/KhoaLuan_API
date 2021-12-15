@@ -48,8 +48,8 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 
 // DEV
-// const morgan = require("morgan");
-// app.use(morgan("tiny"));
+const morgan = require("morgan");
+app.use(morgan("tiny"));
 
 app.use(validator());
 app.use(

@@ -6,6 +6,8 @@ const authController = require('../controllers/authController');
 
 router.post("/signUp", baseAuth, authController.signUp);
 
+router.get("/findAcc/:id", baseAuth, authController.findAcc);
+
 router.post("/signUp/verifyCode/:id", baseAuth, authController.verifyCode);
 
 router.post("/signIn", baseAuth, authController.signIn);
