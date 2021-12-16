@@ -78,11 +78,12 @@ exports.revenuePrediction = asyncMiddleware(async(req, res, next) => {
         }
     });
 
+    // console.log("🧧🧧🧧🧧🧧🧧", updateDate);
+
     updateDate.forEach((item) => {
         x.push(item.totalProduct);
         y.push(item.temporaryMoney);
     });
-    // console.log("🧧🧧🧧🧧🧧🧧", x, y);
 
     const regression = new SimpleLinearRegression(x, y);
 
@@ -103,4 +104,51 @@ exports.revenuePrediction = asyncMiddleware(async(req, res, next) => {
     const t = loaded.predict(quantity);
 
     res.status(200).json(new SuccessResponse(200, t.toFixed(2)));
+});
+
+exports.chartOrder = asyncMiddleware(async(req, res, next) => {
+    const orders = await Order.find({ isActive: true }).select("-updatedAt -__v");
+    if (!orders) {
+        return next(new ErrorResponse(404, "Orders is not available"));
+    }
+    const { quantity } = req.body;
+
+    const sortOrders = orders.sort(
+        (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
+    );
+
+    let dateSort = [];
+    let updateDate = sortOrders.map((item) => {
+        const date = item.orderDate.getDate();
+        const month = item.orderDate.getMonth() + 1;
+        const year = item.orderDate.getFullYear();
+        const data = date + "/" + month + "/" + year;
+        dateSort.push(data);
+        return item;
+    });
+
+    dateSort.forEach((item) => {
+        const index = dateSort.indexOf(item);
+        const checkIndex = dateSort.indexOf(item, index + 1);
+        if (checkIndex !== -1) {
+            updateDate[index].totalProduct += updateDate[checkIndex].totalProduct;
+            updateDate[index].temporaryMoney += updateDate[checkIndex].temporaryMoney;
+            updateDate.splice(checkIndex, 1);
+            dateSort.splice(checkIndex, 1);
+        }
+    });
+
+    const result = updateDate.map((item) => {
+        const date = item.orderDate.getDate();
+        const month = item.orderDate.getMonth() + 1;
+        const year = item.orderDate.getFullYear();
+        const ddmmyyyy = date + "/" + month + "/" + year;
+        const statistical = {
+            date: ddmmyyyy,
+            sold: item.totalProduct,
+            money: item.temporaryMoney,
+        };
+        return statistical;
+    });
+    res.status(200).json(new SuccessResponse(200, result));
 });

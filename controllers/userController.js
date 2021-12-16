@@ -108,6 +108,30 @@ exports.findUserByUserName = asyncMiddleware(async(req, res, next) => {
     }
 });
 
+// GET User By UserName
+exports.getUserByUserName = asyncMiddleware(async(req, res, next) => {
+    const { userName } = req.params;
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    try {
+        const account = await Account.findOne({ userName }).select(
+            "-password -updatedAt -createdAt -__v"
+        );
+        if (!account) {
+            return next(new ErrorResponse(404, "Account is not found"));
+        }
+        if (account) {
+            const user = await User.findOne({
+                email: account.email,
+            }).select("-updatedAt -__v");
+            return res.status(200).json(new SuccessResponse(200, user));
+        }
+    } catch (error) {
+        return next(new ErrorResponse(400, error));
+    }
+});
+
 // Avatar User
 exports.avatarUser = asyncMiddleware(async(req, res, next) => {
     // if (!req.session.account) {

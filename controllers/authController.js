@@ -12,10 +12,35 @@ Date.prototype.isDate = function() {
     return this !== "Invalid Date" && !isNaN(this) ? true : false;
 };
 
+function getBoolean(value) {
+    switch (value) {
+        case true:
+        case "true":
+        case 1:
+        case "1":
+            return true;
+        case false:
+        case "false":
+        case 0:
+        case "0":
+            return false;
+        default:
+            return value;
+    }
+}
+
 // Sign up
 exports.signUp = asyncMiddleware(async(req, res, next) => {
-    const { fullName, userName, email, phone, password, dayOfBirth, gender } =
-    req.body;
+    const {
+        fullName,
+        userName,
+        email,
+        phone,
+        password,
+        dayOfBirth,
+        gender,
+        role,
+    } = req.body;
     req.checkBody("fullName", "Full Name is empty!!").notEmpty();
     req.checkBody("userName", "User Name is empty!!").notEmpty();
     req.checkBody("email", "Email is empty!!").notEmpty();
@@ -48,6 +73,7 @@ exports.signUp = asyncMiddleware(async(req, res, next) => {
         userName,
         email,
         password,
+        role,
     });
     newAccount.verifyCode = Math.floor(Math.random() * 1000000);
     const newUser = new User({
@@ -339,5 +365,95 @@ exports.findAcc = asyncMiddleware(async(req, res, next) => {
         res.status(200).json(new SuccessResponse(200, acc));
     } catch (err) {
         return next(new ErrorResponse(500, err));
+    }
+});
+
+// Get Staffs
+exports.getStaff = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    const acc = await Account.find({ role: "Saler" }).select(
+        "-updatedAt -password -__v"
+    );
+    if (!acc) {
+        return next(new ErrorResponse(404, "Acc is not found"));
+    }
+    return res.status(200).json(new SuccessResponse(200, acc));
+});
+
+// Get customer
+exports.getCustomer = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    const acc = await Account.find({ role: "Customer" }).select(
+        "-updatedAt -password -__v"
+    );
+    if (!acc) {
+        return next(new ErrorResponse(404, "Acc is not found"));
+    }
+    return res.status(200).json(new SuccessResponse(200, acc));
+});
+
+// Update isActive Acc
+exports.updateActiveAcc = asyncMiddleware(async(req, res, next) => {
+    const { userName } = req.params;
+    const isActive = getBoolean(req.query.isActive);
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    if (!userName.trim()) {
+        return next(new ErrorResponse(400, "Username is empty"));
+    }
+    if (
+        isActive === null ||
+        isActive === undefined ||
+        typeof isActive !== "boolean"
+    ) {
+        return next(new ErrorResponse(404, "API invalid"));
+    }
+    const updatedAcc = await Account.findOneAndUpdate({ userName }, { isActive }, { new: true });
+    if (!updatedAcc) {
+        return next(new ErrorResponse(400, "Acc update failed"));
+    }
+    if (updatedAcc) {
+        const updatedUser = await User.findOneAndUpdate({ email: updatedAcc.email }, { isActive }, { new: true });
+        if (!updatedUser) {
+            return next(new ErrorResponse(400, "User update failed"));
+        }
+        if (updatedUser) {
+            return res
+                .status(200)
+                .json(new SuccessResponse(200, "Updated successfully"));
+        }
+    }
+});
+
+// Update IsLogin Acc
+exports.updateIsLogin = asyncMiddleware(async(req, res, next) => {
+    const { userName } = req.params;
+    const isLogin = getBoolean(req.query.isLogin);
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    if (!userName.trim()) {
+        return next(new ErrorResponse(400, "Username is empty"));
+    }
+    if (
+        isLogin === null ||
+        isLogin === undefined ||
+        typeof isLogin !== "boolean"
+    ) {
+        return next(new ErrorResponse(404, "API invalid"));
+    }
+    const updatedAcc = await Account.findOneAndUpdate({ userName }, { isLogin }, { new: true });
+    if (!updatedAcc) {
+        return next(new ErrorResponse(400, "Acc update isLogin failed"));
+    }
+    if (updatedAcc) {
+        return res
+            .status(200)
+            .json(new SuccessResponse(200, "Updated successfully"));
     }
 });

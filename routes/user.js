@@ -13,6 +13,8 @@ router.get("/avatar/:id", userController.avatarUser);
 
 router.get("/:userName", jwtAuth, userController.findUserByUserName);
 
+router.get("/detail/:userName", jwtAuth, authorize("Admin"), userController.getUserByUserName);
+
 router.get("/", jwtAuth, userController.getUser);
 
 router.get("/acc/info", jwtAuth, userController.getAcc);

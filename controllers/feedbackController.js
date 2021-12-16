@@ -6,6 +6,23 @@ const Product = require("../model/database/Product");
 const Feedback = require("../model/database/Feedback");
 const User = require("../model/database/User");
 
+function getBoolean(value) {
+    switch (value) {
+        case true:
+        case "true":
+        case 1:
+        case "1":
+            return true;
+        case false:
+        case "false":
+        case 0:
+        case "0":
+            return false;
+        default:
+            return value;
+    }
+}
+
 // Feedback
 exports.feedback = asyncMiddleware(async(req, res, next) => {
     const { id } = req.params;
@@ -151,5 +168,45 @@ exports.findFeedbackByProduct = asyncMiddleware(async(req, res, next) => {
         });
     } catch (err) {
         return next(new ErrorResponse(500, err));
+    }
+});
+
+// Get all Feedback
+exports.getAllFeedback = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    const feedback = await Feedback.find().select("-updatedAt -__v");
+    if (!feedback) {
+        return next(new ErrorResponse(404, "Feedback is not found"));
+    }
+    return res.status(200).json(new SuccessResponse(200, feedback));
+});
+
+// Update isActive
+exports.updateActive = asyncMiddleware(async(req, res, next) => {
+    const { _id } = req.params;
+    const isActive = getBoolean(req.query.isActive);
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    if (!_id.trim()) {
+        return next(new ErrorResponse(400, "Id is empty"));
+    }
+    if (
+        isActive === null ||
+        isActive === undefined ||
+        typeof isActive !== "boolean"
+    ) {
+        return next(new ErrorResponse(404, "API invalid"));
+    }
+    const feedback = await Feedback.findOneAndUpdate({ _id }, { isActive }, { new: true });
+    if (!feedback) {
+        return next(new ErrorResponse(400, "Feedback update failed"));
+    }
+    if (feedback) {
+        return res
+            .status(200)
+            .json(new SuccessResponse(200, "Updated successfully"));
     }
 });
