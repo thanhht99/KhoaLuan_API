@@ -3,6 +3,7 @@ const SuccessResponse = require("../model/statusResponse/SuccessResponse");
 const asyncMiddleware = require("../middleware/asyncMiddleware");
 const Product = require("../model/database/Product");
 const Order = require("../model/database/Order");
+const Account = require("../model/database/Account");
 const SimpleLinearRegression = require("ml-regression-simple-linear");
 
 exports.test = asyncMiddleware(async(req, res, next) => {
@@ -114,7 +115,7 @@ exports.chartOrder = asyncMiddleware(async(req, res, next) => {
     const { quantity } = req.body;
 
     const sortOrders = orders.sort(
-        (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
+        (a, b) => new Date(a.orderDate) - new Date(b.orderDate)
     );
 
     let dateSort = [];
@@ -128,13 +129,16 @@ exports.chartOrder = asyncMiddleware(async(req, res, next) => {
     });
 
     dateSort.forEach((item) => {
-        const index = dateSort.indexOf(item);
-        const checkIndex = dateSort.indexOf(item, index + 1);
-        if (checkIndex !== -1) {
+        let index = dateSort.indexOf(item);
+        let checkIndex = dateSort.indexOf(item, index + 1);
+        while (checkIndex !== -1) {
             updateDate[index].totalProduct += updateDate[checkIndex].totalProduct;
             updateDate[index].temporaryMoney += updateDate[checkIndex].temporaryMoney;
             updateDate.splice(checkIndex, 1);
             dateSort.splice(checkIndex, 1);
+
+            index = dateSort.indexOf(item);
+            checkIndex = dateSort.indexOf(item, index + 1);
         }
     });
 
@@ -150,5 +154,51 @@ exports.chartOrder = asyncMiddleware(async(req, res, next) => {
         };
         return statistical;
     });
+    res.status(200).json(new SuccessResponse(200, result));
+});
+
+exports.chartCustomer = asyncMiddleware(async(req, res, next) => {
+    const account = await Account.find({ role: "Customer" }).select(
+        "-updatedAt -password -__v"
+    );
+    if (!account) {
+        return next(new ErrorResponse(404, "Accounts is not available"));
+    }
+    const { quantity } = req.body;
+
+    const sortAccounts = account.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    );
+
+    let dateSort = [];
+    let updateDate = sortAccounts.map((item) => {
+        const date = item.createdAt.getDate();
+        const month = item.createdAt.getMonth() + 1;
+        const year = item.createdAt.getFullYear();
+        const data = date + "/" + month + "/" + year;
+        dateSort.push(data);
+        return item;
+    });
+
+    let result = [];
+    dateSort.forEach((item) => {
+        let index = dateSort.indexOf(item);
+        let checkIndex = dateSort.indexOf(item, index + 1);
+        let total = 1;
+        while (checkIndex !== -1) {
+            total++;
+            dateSort.splice(checkIndex, 1);
+
+            index = dateSort.indexOf(item);
+            checkIndex = dateSort.indexOf(item, index + 1);
+        }
+
+        const body = {
+            date: item,
+            total,
+        };
+        result.push(body);
+    });
+
     res.status(200).json(new SuccessResponse(200, result));
 });

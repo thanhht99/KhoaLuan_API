@@ -10,4 +10,6 @@ router.post("/revenuePrediction", jwtAuth, authorize("Admin"), mlController.reve
 
 router.get("/chartOrder", jwtAuth, authorize("Admin"), mlController.chartOrder);
 
+router.get("/chartCustomer", jwtAuth, authorize("Admin"), mlController.chartCustomer);
+
 module.exports = router;

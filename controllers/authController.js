@@ -7,6 +7,7 @@ const Token = require("../model/database/Token");
 const asyncMiddleware = require("../middleware/asyncMiddleware");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const { OAuth2Client } = require("google-auth-library");
 
 Date.prototype.isDate = function() {
     return this !== "Invalid Date" && !isNaN(this) ? true : false;
@@ -214,6 +215,88 @@ exports.signIn = asyncMiddleware(async(req, res, next) => {
         return next(new ErrorResponse(403, "Account locked"));
     }
     return next(new ErrorResponse(404, "User Name Or Email not exist"));
+});
+
+// Sign In Google
+const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+exports.signInGoogle = asyncMiddleware(async(req, res, next) => {
+    const { tokenGoogle } = req.body;
+    const ticket = await client.verifyIdToken({
+        idToken: tokenGoogle,
+        audience: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+    });
+    const { name, email, picture } = ticket.getPayload();
+
+    const checkUser = await User.findOne({
+        email,
+        isAcc: true,
+    });
+    if (checkUser) {
+        return next(
+            new ErrorResponse(
+                400,
+                "You already have an account in our store, please login with that account"
+            )
+        );
+    }
+    if (!checkUser) {
+        const checkAccount = await Account.findOne({
+            email,
+        });
+        const login = async(check) => {
+            if (check.isLogin) {
+                return next(
+                    new ErrorResponse(403, "Account is logged in somewhere else")
+                );
+            }
+            const token = jwt.sign({
+                    userName: check.userName,
+                    email: check.email,
+                    role: check.role,
+                },
+                process.env.SECRETKEY, { expiresIn: "2d" }
+            );
+            res.cookie("token", token, {
+                maxAge: 365 * 24 * 60 * 60 * 100,
+                httpOnly: true,
+                // secure: true;
+            });
+            await Account.findOneAndUpdate({ email }, { isLogin: true }, { new: true });
+            setTimeout(async function() {
+                await Account.findOneAndUpdate({ email: jwt.decode(token).email }, { isLogin: false }, { new: true });
+                console.log(
+                    "Run setTimeout() Account update isLogin(false) success !!! !!! !!!"
+                );
+            }, 1000 * 60 * 60 * 20);
+            return res.status(200).json(new SuccessResponse(200, token));
+        };
+        if (checkAccount) {
+            login(checkAccount);
+        }
+        if (!checkAccount) {
+            const accountCreate = new Account({
+                userName: email.slice(0, email.indexOf("@gmail.com")),
+                email,
+                password: "123456789",
+                isActive: true,
+            });
+            const userCreate = new User({
+                userAccount: accountCreate._id,
+                fullName: name,
+                email,
+                phone: "0345678900",
+                isAcc: false,
+                dayOfBirth: "01-01-2021",
+                gender: "Male",
+            });
+            await accountCreate.save();
+            await userCreate.save();
+            const checkAccountAgain = await Account.findOne({
+                email,
+            });
+            login(checkAccountAgain);
+        }
+    }
 });
 
 // Logout

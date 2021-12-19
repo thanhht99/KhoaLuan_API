@@ -13,6 +13,8 @@ router.post("/signUp/verifyCode/:id", baseAuth, authController.verifyCode);
 
 router.post("/signIn", baseAuth, authController.signIn);
 
+router.post("/signInGoogle", authController.signInGoogle);
+
 router.post("/logout", jwtAuth, authController.logout);
 
 router.post("/forgetPassword", baseAuth, authController.forgetPassword);
