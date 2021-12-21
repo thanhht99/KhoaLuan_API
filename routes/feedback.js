@@ -9,6 +9,8 @@ router.post("/:id", jwtAuth, feedbackController.feedback);
 
 router.get("/form/:orderId", jwtAuth, feedbackController.getFormToFeedback);
 
+router.get("/show/:orderCode", jwtAuth, feedbackController.getFeedback);
+
 router.get("/find/:sku", baseAuth, feedbackController.findFeedbackByProduct);
 
 router.get(

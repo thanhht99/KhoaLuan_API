@@ -445,6 +445,39 @@ exports.updateActiveOrder = asyncMiddleware(async(req, res, next) => {
     return res.status(200).json(new SuccessResponse(200, updatedOrder));
 });
 
+// Cancel Order
+exports.cancelOrder = asyncMiddleware(async(req, res, next) => {
+    const { id } = req.params;
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    if (!id.trim()) {
+        return next(new ErrorResponse(400, "Id is empty"));
+    }
+
+    const updatedOrder = await Order.findOneAndUpdate({ _id: id }, { isActive: false, orderStatus: "Cancel order" }, { new: true });
+    if (!updatedOrder) {
+        return next(new ErrorResponse(404, "Not found to updated"));
+    }
+    if (updatedOrder) {
+        // console.log("💯💯💯💯💯💯 updatedOrder", updatedOrder);
+        updatedOrder.products.forEach(async(item) => {
+            const product = await Product.findOne({
+                _id: item.id,
+                isActive: true,
+            });
+            if (product) {
+                product.quantity += +item.quantity;
+                product.sold -= item.quantity;
+                await product.save();
+            }
+        });
+        return res
+            .status(200)
+            .json(new SuccessResponse(200, "Canceled order successfully"));
+    }
+});
+
 // Confirmation of receipt of goods
 exports.confirmationOfReceiptOfGoods = asyncMiddleware(
     async(req, res, next) => {

@@ -18,6 +18,8 @@ router.post("/changeOrderStatus/:id", jwtAuth, authorize("Admin", "Saler"),
 
 router.patch("/updateActive/:id", jwtAuth, authorize("Admin", "Saler"), orderController.updateActiveOrder);
 
+router.patch("/cancel/:id", jwtAuth, orderController.cancelOrder);
+
 // Confirmation of receipt of goods
 router.post("/confirmationOfReceiptOfGoods/:id", jwtAuth, orderController.confirmationOfReceiptOfGoods);
 

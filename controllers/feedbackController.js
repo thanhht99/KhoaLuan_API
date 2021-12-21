@@ -131,6 +131,27 @@ exports.getFormToFeedback = asyncMiddleware(async(req, res, next) => {
     }
 });
 
+// Get Feedback
+exports.getFeedback = asyncMiddleware(async(req, res, next) => {
+    if (!req.session.account) {
+        return next(new ErrorResponse(401, "End of login session"));
+    }
+    try {
+        const orderCode = req.params.orderCode;
+        const feedback = await Feedback.find({
+            orderCode,
+        });
+        if (!feedback) {
+            return next(new ErrorResponse(404, "Feedback is not available"));
+        }
+        if (feedback) {
+            res.status(200).json(new SuccessResponse(200, feedback));
+        }
+    } catch (err) {
+        return next(new ErrorResponse(500, err));
+    }
+});
+
 // Find Feedback
 exports.findFeedbackByProduct = asyncMiddleware(async(req, res, next) => {
     try {
