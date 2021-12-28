@@ -29,11 +29,15 @@ const conversation = require("./routes/conversation");
 const messages = require("./routes/messages");
 const ml = require("./routes/ml");
 const home = require("./routes/home");
+const payment = require("./routes/payment");
 
 // using MongoDB
 ConnectMongo.getConnect();
 
 MailService.init();
+
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + "/public"));
 
 // middleware parse body
 app.use(express.json());
@@ -44,6 +48,7 @@ app.use(
         credentials: true, //Để bật cookie HTTP qua CORS
     })
 );
+
 // Cho phép lý dữ liệu từ form method POST
 app.use(express.urlencoded({ extended: true }));
 
@@ -78,6 +83,7 @@ app.use("/api/conversation", conversation);
 app.use("/api/messages", messages);
 app.use("/api/ml", ml);
 app.use("/api/home", home);
+app.use("/api/payment", payment);
 
 app.get("/", (req, res) => {
     res.send(`Hello. *_* Alo Alo!`);

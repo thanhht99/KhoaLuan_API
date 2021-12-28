@@ -153,10 +153,6 @@ exports.createOrderPostman = asyncMiddleware(async(req, res, next) => {
             newOrder.discount = discount;
             newOrder.isVoucher = true;
         }
-        console.log(
-            "🚀 ~ file: orderController.js ~ line 106 ~ exports.createOrder=asyncMiddleware ~ newOrder",
-            newOrder
-        );
 
         const link = process.env.linkPayment;
         if (payments === "Momo") {
@@ -297,8 +293,6 @@ exports.createOrder = asyncMiddleware(async(req, res, next) => {
                 Math.floor(Math.random() * 10000) + `${day}${month}${year}`;
             checkOrderCode = await Order.findOne({ orderCode: newOrder.orderCode });
         }
-
-        // console.log("💯💯💯💯💯💯 newOrder", newOrder);
 
         for (let i = 0; i < newOrder.products.length; i++) {
             const product = await Product.findOne({

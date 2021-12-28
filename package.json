@@ -27,6 +27,7 @@
         "cors": "^2.8.5",
         "crypto": "^1.0.1",
         "dotenv": "^10.0.0",
+        "ejs": "^3.1.6",
         "express": "^4.17.1",
         "express-session": "^1.17.2",
         "express-validator": "^5.3.1",
@@ -43,6 +44,7 @@
         "multer-gridfs-storage": "^4.2.0",
         "nodemailer": "^6.4.18",
         "nodemon": "^2.0.12",
+        "paypal-rest-sdk": "^1.8.1",
         "socket.io": "^4.4.0"
     },
     "devDependencies": {

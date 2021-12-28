@@ -65,7 +65,7 @@ const OrderSchema = new Schema({
     },
     payments: {
         type: String,
-        enum: ["Momo", "COD", "Bank account"],
+        enum: ["Momo", "COD", "Bank account", "Paypal"],
     },
     imagePayment: {
         type: String,
