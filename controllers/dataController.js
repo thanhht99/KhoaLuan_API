@@ -457,11 +457,11 @@ exports.promotions = asyncMiddleware(async(req, res, next) => {
         startDate: "2021-04-30T00:00:00.000Z",
         endDate: "2021-05-01T00:00:00.000Z",
         products: [
-            { productSku: "J0020207", name: "Quần Dài Jean Slimfit Đơn Giản M4" },
-            { productSku: "J0019174", name: "Quần Dài Jean Slimfit Đơn Giản B19" },
-            { productSku: "J0019585", name: "Quần Dài Jean Slimfit Đơn Giản B35" },
-            { productSku: "J0020208", name: "Quần Dài Jean Slimfit Đơn Giản M41" },
-            { productSku: "J0020188", name: "Quần Dài Jean Straight Đặc Biệt M1" },
+            { productSku: "J0020207", name: "Long Jean Slimfit Basic M4" },
+            { productSku: "J0019174", name: "Long Jean Slimfit Basic B19" },
+            { productSku: "J0019585", name: "Long Jean Slimfit Basic B35" },
+            { productSku: "J0020208", name: "Long Jean Slimfit Basic M41" },
+            { productSku: "J0020188", name: "Long Jean Straight Special M1" },
         ],
     });
     const promotion2 = new Promotion({
@@ -473,8 +473,8 @@ exports.promotions = asyncMiddleware(async(req, res, next) => {
         startDate: "2021-12-30T00:00:00.000Z",
         endDate: "2022-01-10T00:00:00.000Z",
         products: [
-            { productSku: "H0019519", name: "PKTT Nón Đặc Biệt A16" },
-            { productSku: "H0019781", name: "PKTT Nón 12VAHDT Kỳ Lau Vạn Định Ver1" },
+            { productSku: "H0019519", name: "PKTT Special Hat A16" },
+            { productSku: "H0019781", name: "PKTT Hat 12VAHDT Ky Lau Van Dinh Ver1" },
         ],
     });
 
@@ -485,10 +485,10 @@ exports.promotions = asyncMiddleware(async(req, res, next) => {
 // Data Product
 exports.products = asyncMiddleware(async(req, res, next) => {
     const product1 = new Product({
-        name: "Quần Dài Jean Slimfit Đơn Giản M4",
+        name: "Long Jean Slimfit Basic M4",
         price: 18.7,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 78% cotton 21% recycle poly 1% spandex \nTính Năng Cân Bằng Nhiệt Độ",
+        description: "Material: Jean Cotton \nIngredients: 78% cotton 21% recycle poly 1% spandex \nTemperature Balance Feature",
         category: "Jeans",
         sku: "J0020207",
         image: "https://imgur.com/XCvL9Xo.jpg",
@@ -501,10 +501,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         promotionId: "61950cbcec9e962a3c0009fd",
     });
     const product2 = new Product({
-        name: "Quần Dài Jean Slimfit Đơn Giản B19",
+        name: "Long Jean Slimfit Basic B19",
         price: 18.7,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 98% cotton 2% spandex",
+        description: "Material: Jean Cotton \nIngredients: 98% cotton 2% spandex",
         category: "Jeans",
         sku: "J0019174",
         image: "https://imgur.com/NkM2kYo.jpg",
@@ -520,10 +520,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         promotionId: "61950cbcec9e962a3c0009fd",
     });
     const product3 = new Product({
-        name: "Sơ Mi Tay Ngắn Y Nguyên Bản 18- Summer Ver2",
+        name: "T-Shirt Somi Y Nguyen Ban 18- Summer Ver2",
         price: 9.9,
         quantity: 100,
-        description: "Chất liệu: Vải dù - in chuyển nhiệt \nThành phần: 100% poly",
+        description: "Material: Umbrella fabric - heat transfer printing \nIngredients: 100% poly",
         category: "T-Shirt",
         sku: "TS0020246",
         sold: 4,
@@ -542,10 +542,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         ],
     });
     const product4 = new Product({
-        name: "Quần Dài Jean Slimfit Đơn Giản B35",
+        name: "Long Jean Slimfit Basic B35",
         price: 18.7,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 98% cotton 2% spandex",
+        description: "Materials: Jean Cotton \nIngredients: 98% cotton 2% spandex",
         category: "Jeans",
         sku: "J0019585",
         image: "https://imgur.com/Q827jxx.jpg",
@@ -561,10 +561,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         promotionId: "61950cbcec9e962a3c0009fd",
     });
     const product5 = new Product({
-        name: "PKTT Nón Đơn Giản A21",
+        name: "PKTT Basic Hat A21",
         price: 5.28,
         quantity: 100,
-        description: "Chất liệu: Kaki \nThành phần: 100% cotto \n",
+        description: "Materials: Kaki \nIngredients: 100% cotton \n",
         category: "Hat",
         sku: "H0019689",
         sold: 8,
@@ -576,10 +576,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         ],
     });
     const product6 = new Product({
-        name: "PKTT Nón Đặc Biệt A16",
+        name: "PKTT Special Hat A16",
         price: 6.6,
         quantity: 100,
-        description: "Chất liệu: Kaki \nThành phần: 100% cotto \n",
+        description: "Materials: Kaki \nIngredients: 100% cotton \n",
         category: "Hat",
         sku: "H0019519",
         image: "https://imgur.com/eKaV0XK.jpg",
@@ -593,10 +593,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
         promotionId: "61966d2ce699223ca4b7dfa3",
     });
     const product10 = new Product({
-        name: "Quần Dài Jean Slimfit Đơn Giản M41",
+        name: "Long Jean Slimfit Basic M41",
         price: 18.7,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 78% cotton 21% recycle poly 1% spandex \nTính Năng Cân Bằng Nhiệt Độ",
+        description: "Materials: Jean Cotton \nIngredients: 78% cotton 21% recycle poly 1% spandex \nTemperature Balance Feature",
         category: "Jeans",
         sku: "J0020208",
         image: "https://i.imgur.com/3GnfM54.jpg",
@@ -610,10 +610,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product11 = new Product({
-        name: "Quần Dài Jean Straight Đặc Biệt M1",
+        name: "Long Jean Straight Special M1",
         price: 18,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n - Mềm mại \n- Thoáng mát",
+        description: "Materials: Jean Cotton \nIngredients: 99% cotton 1% spandex \n - Soft \n- Cool",
         category: "Jeans",
         sku: "J0020188",
         image: "https://i.imgur.com/jvlJDFd.jpg",
@@ -627,10 +627,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product12 = new Product({
-        name: "Quần Dài Jean Slimfit Đơn Giản M3",
+        name: "Long Jean Slimfit Basic M3",
         price: 18.2,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n - Mềm mại \n- Thoáng mát",
+        description: "Materials: Jean Cotton \nIngredients: 99% cotton 1% spandex \n - Soft \n- Cool",
         category: "Jeans",
         sku: "J0020189",
         sold: 7,
@@ -643,10 +643,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product13 = new Product({
-        name: "Quần Dài Jean Slimfit Đặc Biệt M8",
+        name: "Long Jean Slimfit Special M8",
         price: 18,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex ",
+        description: "Materials: Jean Cotton \nIngredients: 99% cotton 1% spandex ",
         category: "Jeans",
         sku: "J0020180",
         sold: 5,
@@ -661,10 +661,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product14 = new Product({
-        name: "Quần Dài Jean Slimfit Đặc Biệt M7",
+        name: "Long Jean Slimfit Special M7",
         price: 18.5,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex ",
+        description: "Materials: Jean Cotton \nIngredients: 99% cotton 1% spandex ",
         category: "Jeans",
         sku: "J0020178",
         sold: 11,
@@ -677,10 +677,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product15 = new Product({
-        name: "Quần Dài Jean Skinny 12VAHDT Vạn Xuân Kiến Quốc Ver1",
+        name: "Long Jean Skinny 12VAHDT Van Xuan Kien Quoc Ver1",
         price: 18.3,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 98% cotton 2% spandex \n- Khắc laser logo Vạn Xuân Kiến Quốc \n- Rách gối phong cách ",
+        description: "Materials: Jean Cotton \nIngredients: 98% cotton 2% spandex \n- Laser-Logo Van Xuan Kien Quoc \n- Torn style ",
         category: "Jeans",
         sku: "J0020148",
         sold: 3,
@@ -695,10 +695,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product16 = new Product({
-        name: "Quần Dài Jean Straight 12VAHDT Văn Hiến Chi Bang Ver1",
+        name: "Long Jean Straight 12VAHDT Van Hien Chi Bang Ver1",
         price: 18,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n- Thiết kế ống đứng \n- Thoải mái \n- Che khuyết điểm \n+ Wash thời trang \n+ In logo Văn Hiến Chi Bang ",
+        description: "Materials: Jean Cotton \nIngredients: 99% cotton 1% spandex \n- Stand up pants design \n- Convinience \n- Concealer pant \n+ Fashion wash \n+ Logo Van Hien Chi Bang ",
         category: "Jeans",
         sku: "J0020131",
         sold: 6,
@@ -711,10 +711,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product17 = new Product({
-        name: "Quần Dài Jean Slimfit Đơn Giản 12VAHDT Vạn Xuân Kiến Quốc Ver2",
+        name: "Long Jean Slimfit Basic 12VAHDT Van Xuan Kien Quoc Ver2",
         price: 18.3,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 98% cotton 2% spandex \n- In logo Vạn Xuân Kiến Quốc ",
+        description: "Materials: Jean Cotton \nIngredients: 98% cotton 2% spandex \n- Logo Van Xuan Kien Quoc ",
         category: "Jeans",
         sku: "J0020130",
         sold: 3,
@@ -729,10 +729,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product18 = new Product({
-        name: "Quần Dài Jean Slimfit Đơn Giản Logo 2010 Ver1",
+        name: "Long Jean Slimfit Basic Logo 2010 Ver1",
         price: 18,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n- In Logo Y2010 phía sau túi",
+        description: "Materials: Jean Cotton \nIngredients: 99% cotton 1% spandex \n- Printed Y2010 Logo on the back of the pocket",
         category: "Jeans",
         sku: "J0020118",
         sold: 4,
@@ -745,10 +745,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product19 = new Product({
-        name: "Quần Dài Jean Slimfit Đặc Biệt M3",
+        name: "Long Jean Slimfit Special M3",
         price: 18.3,
         quantity: 100,
-        description: "Chất liệu: Jean Cotton \nThành phần: 99% cotton 1% spandex \n- Mềm mại \n- Thoáng mát \n- Thấm hút \nHDSD: \n- Hãy lộn mặt trái của sản phẩm trước khi giặt để hạn chế bay màu vải. \n- Không nên sử dụng các chất tẩy rửa mạnh trong quá trình giặt.",
+        description: "Materials: Jean Cotton \nIngredients: 99% cotton 1% spandex \n- Soft \n- Cool \n- Absorbent \nHDSD: \n- Turn the product upside down before washing to prevent color fading. \n- Do not use strong detergents in the washing process.",
         category: "Jeans",
         sku: "J0019946",
         sold: 6,
@@ -763,10 +763,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product20 = new Product({
-        name: "Áo Thun Cổ Tròn Linh Vật Bbuff Ver1",
+        name: "T-shirt Round Neck Bbuff Ver1",
         price: 7.8,
         quantity: 100,
-        description: "Chất liệu: Cotton 4 Chiều Tie Dye\nThành phần: 92% cotton 8% spandex\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại, ít nhăn\n- Co giãn tối ưu\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết thêu + may đắp logo\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
+        description: "Materials: Cotton 4 ways Tie Dye\nIngredients: 92% cotton 8% spandex\n- Friendly\n- Absorb moisture\n- Soft\n- Optimal stretch\n- Odor control\n- Temperature Control\n+ Embroidery motifs + logo stitching\n- HDSD:\n+ Should be washed with products of the same color\n+ Do not use bleach or strong detergents\n+ Should be dried in the shade to keep the color stable",
         category: "T-Shirt",
         sku: "TS0020285",
         sold: 3,
@@ -779,10 +779,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product21 = new Product({
-        name: "Áo Thun Cổ Tròn Linh Vật Bbuff Ver1",
+        name: "T-shirt Thun Round Neck Bbuff Ver1",
         price: 7.8,
         quantity: 100,
-        description: "Chất liệu: Cotton 4 Chiều Tie Dye\nThành phần: 92% cotton 8% spandex\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại, ít nhăn\n- Co giãn tối ưu\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết thêu + may đắp logo\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
+        description: "Materials: Cotton 4 ways Tie Dye\nIngredients: 92% cotton 8% spandex\n- Friendly\n- Absorb moisture\n- Soft\n- Optimal stretch\n- Odor control\n- Odor control\n- Temperature Control\n+ Embroidery motifs + logo stitching\n- HDSD:\n+ Should be washed with products of the same color\n+ Do not use bleach or strong detergents\n+ Should be dried in the shade to keep the color stable",
         category: "T-Shirt",
         sku: "TS0020286",
         sold: 6,
@@ -797,10 +797,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product22 = new Product({
-        name: "Áo Thun Cổ Tròn Linh Vật Bbuff Ver2",
+        name: "T-shirt Thun Round Neck Linh Vật Bbuff Ver2",
         price: 7.8,
         quantity: 100,
-        description: "Chất liệu: Cotton 4 Chiều Tie Dye\nThành phần: 92% cotton 8% spandex\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại, ít nhăn\n- Co giãn tối ưu\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết thêu + may đắp logo\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
+        description: "Materials: Cotton 4 ways Tie Dye\nIngredients: 92% cotton 8% spandex\n- Friendly\n- Absorb moisture\n- Soft\n- Optimal stretch\n- Odor control\n- Odor control\n- Temperature Control\n+ Embroidery motifs + logo stitching\n- HDSD:\n+ Should be washed with products of the same color\n+ Do not use bleach or strong detergents\n+ Should be dried in the shade to keep the color stable",
         category: "T-Shirt",
         sku: "TS0020287",
         sold: 4,
@@ -813,10 +813,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product23 = new Product({
-        name: "Áo Thun Cổ Tròn Linh Vật Bbuff Ver1",
+        name: "T-shirt Thun Round Neck Linh Vật Bbuff Ver1",
         price: 7.8,
         quantity: 100,
-        description: "Chất liệu: Cotton 4 Chiều Tie Dye\nThành phần: 92% cotton 8% spandex\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại, ít nhăn\n- Co giãn tối ưu\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết thêu + may đắp logo\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
+        description: "Materials: Cotton 4 ways Tie Dye\nIngredients: 92% cotton 8% spandex\n- Friendly\n- Absorb moisture\n- Soft\n- Optimal stretch\n- Odor control\n- Odor control\n- Temperature Control\n+ Embroidery motifs + logo stitching\n- HDSD:\n+ Should be washed with products of the same color\n+ Do not use bleach or strong detergents\n+ Should be dried in the shade to keep the color stable",
         category: "T-Shirt",
         sku: "TS0020254",
         sold: 2,
@@ -831,10 +831,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product24 = new Product({
-        name: "Áo Thun Cổ Tròn Đặc Biệt Hand Drawn M10",
+        name: "T-shirt Thun Round Neck Special Hand Drawn M10",
         price: 8.3,
         quantity: 100,
-        description: "Chất liệu: Cotton Compact\nThành phần: 100% Cotton\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết in nước\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
+        description: "Materials: Cotton Compact\nIngredients: 100% Cotton\n- Friendly\n- Absorb moisture\n- Soft\n- Optimal stretch\n- Odor control\n- Odor control\n+ Water print pattern\n- HDSD:\n+ Should be washed with products of the same color\n+ Do not use bleach or strong detergents\n+ Should be dried in the shade to keep the color stable",
         category: "T-Shirt",
         sku: "TS0020193",
         sold: 2,
@@ -847,10 +847,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product25 = new Product({
-        name: "Áo Thun Cổ Tròn Linh Vật Bbuff Ver1",
+        name: "T-shirt Thun Round Neck Linh Vật Bbuff Ver1",
         price: 8.5,
         quantity: 100,
-        description: "Chất liệu: Cotton Compact\nThành phần: 100% cotton\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết in dẻo\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
+        description: "Materials: Cotton Compact\nIngredients: 100% cotton\n- Friendly\n- Absorb moisture\n- Soft\n- Optimal stretch\n- Odor control\n- Odor control\n+ Flexible print pattern\n- HDSD:\n+ Should be washed with products of the same color\n+ Do not use bleach or strong detergents\n+ Should be dried in the shade to keep the color stable",
         category: "T-Shirt",
         sku: "TS0020157",
         sold: 8,
@@ -865,10 +865,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product26 = new Product({
-        name: "Áo Thun Cổ Tròn Linh Vật Rồng M5",
+        name: "T-shirt Thun Round Neck Linh Vật Rồng M5",
         price: 8,
         quantity: 100,
-        description: "Chất liệu: Cotton Compact\nThành phần: 100% Cotton\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết in nước\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
+        description: "Materials: Cotton Compact\nIngredients: 100% Cotton\n- Friendly\n- Absorb moisture\n- Soft\n- Optimal stretch\n- Odor control\n- Odor control\n+ Water print pattern\n- HDSD:\n+ Should be washed with products of the same color\n+ Do not use bleach or strong detergents\n+ Should be dried in the shade to keep the color stable",
         category: "T-Shirt",
         sku: "TS0020163",
         image: "https://i.imgur.com/1Uq2r7R.jpg",
@@ -880,10 +880,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product27 = new Product({
-        name: "Áo Thun Cổ Tròn Y Nguyên Bản 18+ M9",
+        name: "T-shirt Thun Round Neck Y Nguyên Bản 18+ M9",
         price: 8,
         quantity: 100,
-        description: "Chất liệu: Cotton 2 chiều\nThành phần: 100% Cotton\n- Thân thiện\n- Thấm hút thoát ẩm\n- Mềm mại\n- Kiểm soát mùi\n- Điều hòa nhiệt\n+ Họa tiết in trame + in dẻo\n- HDSD:\n+ Nên giặt chung với sản phẩm cùng màu\n+ Không dùng thuốc tẩy hoặc xà phòng có tính tẩy mạnh\n+ Nên phơi trong bóng râm để giữ sp bền màu",
+        description: "Materials: Cotton 2 chiều\nIngredients: 100% Cotton\n- Friendly\n- Absorb moisture\n- Soft\n- Optimal stretch\n- Odor control\n- Odor control\n+ Trame print pattern + flexible printing\n- HDSD:\n+ Should be washed with products of the same color\n+ Do not use bleach or strong detergents\n+ Should be dried in the shade to keep the color stable",
         category: "T-Shirt",
         sku: "TS0020050",
         image: "https://i.imgur.com/9cST7Hu.jpg",
@@ -895,10 +895,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product28 = new Product({
-        name: "Áo Thun Cổ Tròn Đơn Giản M5",
+        name: "T-shirt Thun Round Neck Basic M5",
         price: 8.2,
         quantity: 100,
-        description: "Chất liệu: Cotton 2 chiều\nThành phần: 100% Cotton\n- Co dãn 2 chiều\n- Thấm hút mồ hôi tốt mang lại cảm giác thoáng mát",
+        description: "Materials: Cotton 2D\nIngredients: 100% Cotton\n- 2-way stretch\n- Good sweat absorption brings cool feeling",
         category: "T-Shirt",
         sku: "TS0020024",
         sold: 2,
@@ -913,10 +913,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product29 = new Product({
-        name: "Áo Thun Cổ Tròn Đơn Giản M5",
+        name: "T-shirt Round Neck Basic M5",
         price: 8.2,
         quantity: 100,
-        description: "Chất liệu: Cotton 2 chiều\nThành phần: 100% Cotton\n- Co dãn 2 chiều\n- Thấm hút mồ hôi tốt mang lại cảm giác thoáng mát",
+        description: "Materials: Cotton 2D\nIngredients: 100% Cotton\n- 2-way stretch\n- Good sweat absorption brings cool feeling",
         category: "T-Shirt",
         sku: "TS0020023",
         sold: 2,
@@ -931,10 +931,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product31 = new Product({
-        name: "PKTT Nón 12VAHDT Kỳ Lau Vạn Định Ver1",
+        name: "PKTT Hat 12VAHDT Ky Lau Van Dinh Ver1",
         price: 6,
         quantity: 100,
-        description: "Chất liệu : Kaki\nThành phần: 100% cotton\n- Thêu vi tính chỉ kim tuyến Logo Kỳ Lau Vạn Định",
+        description: "Materials : Kaki\nIngredients: 100% cotton\n- Computerized embroidery with glitter Logo Ky Lau Van Dinh",
         category: "Hat",
         sku: "H0019781",
         image: "https://i.imgur.com/456PZRB.jpg",
@@ -950,10 +950,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product32 = new Product({
-        name: "PKTT Nón Linh Vật Cửu Long Ver1",
+        name: "PKTT Hat Linh vat Cuu Long Ver1",
         price: 6,
         quantity: 100,
-        description: "Chất liệu : Kaki\nThành phần: 100% cotton\n- Thêu chỉ kim tuyến Cửu Long\n- Phản quang bản đồ Đồng bằng sông Cửu Long",
+        description: "Materials : Kaki\nIngredients: 100% cotton\n- Embroidery thread Cuu Long\n- Reflection map of the Mekong Delta",
         category: "Hat",
         sku: "H0019865",
         sold: 4,
@@ -966,10 +966,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product33 = new Product({
-        name: "PKTT Nón 12VAHDT Văn Hiến Chi Bang Ver2",
+        name: "PKTT Hat 12VAHDT Van Hien Chi Bang Ver2",
         price: 6,
         quantity: 100,
-        description: "Chất liệu : Kaki\nThành phần: 100% cotton",
+        description: "Materials : Kaki\nIngredients: 100% cotton",
         category: "Hat",
         sku: "H0019725",
         sold: 4,
@@ -984,10 +984,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product34 = new Product({
-        name: "PKTT Nón Thiên Nhiên Kì Vĩ Darkness Hunters Ver1",
+        name: "PKTT Hat Amazing Nature Darkness Hunters Ver1",
         price: 6,
         quantity: 100,
-        description: "Chất liệu : Kaki\nThành phần: 100% cotton\n Phản quang hình in dơi",
+        description: "Materials : Kaki\nIngredients: 100% cotton\n Reflection of bat",
         category: "Hat",
         sku: "H0019796",
         sold: 3,
@@ -1000,10 +1000,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product35 = new Product({
-        name: "PKTT Nón Thần Cổ Đại Anubis Ver1",
+        name: "PKTT Hat Ancient Gods Anubis Ver1",
         price: 6,
         quantity: 100,
-        description: "Chất liệu : Kaki - phối vải nhung\nThành phần: 100% cotton\n- Kỹ thuật lazer chữ ANUBIS\n- Logo Anubis thêu",
+        description: "Materials : Kaki - velvet fabric\nIngredients: 100% cotton\n- ANUBIS . laser technology\n- Embroidered Anubis logo",
         category: "Hat",
         sku: "H0019916",
         sold: 12,
@@ -1019,10 +1019,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product36 = new Product({
-        name: "PKTT Nón Ngân Hà 4 Element Ver2 Lửa",
+        name: "PKTT Hat Galaxy 4 Element Ver2 Fire",
         price: 6,
         quantity: 100,
-        description: "Chất liệu : Kaki\nThành phần: 100% cotton",
+        description: "Materials : Kaki\nIngredients: 100% cotton",
         category: "Hat",
         sku: "H0019776",
         sold: 4,
@@ -1035,10 +1035,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product37 = new Product({
-        name: "PKTT Nón Đặc Biệt A06",
+        name: "PKTT Hat Special A06",
         price: 6.5,
         quantity: 100,
-        description: "Chất liệu : Kaki\nThành phần: 100% cotton",
+        description: "Materials : Kaki\nIngredients: 100% cotton",
         category: "Hat",
         sku: "H0019100",
         sold: 6,
@@ -1053,10 +1053,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product38 = new Product({
-        name: "PKTT Nón Thần Cổ Đại Horus Ver1",
+        name: "PKTT Hat Ancient Gods Horus Ver1",
         price: 6,
         quantity: 100,
-        description: "Chất liệu : Kaki\nThành phần: 100% cotton\n- Kỹ thuật in cao logo Horus\n- Họa tiết ngôi sao 6 cánh thêu chỉ kim tuyến bạc\n- Họa tiết con mắt phải của thần Horus thêu kỹ thuật số chỉ màu đỏ",
+        description: "Materials : Kaki\nIngredients: 100% cotton\n- High technique of printing Horus logo\n- 6-pointed star pattern embroidered with silver thread\n- Horus right eye motif with red thread digital embroidery",
         category: "Hat",
         sku: "H0019917",
         sold: 4,
@@ -1069,10 +1069,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product39 = new Product({
-        name: "PKTT Nón 12VAHDT Vạn Xuân Kiến Quốc Ver2",
+        name: "PKTT Hat 12VAHDT Van Xuan Kien Quoc Ver2",
         price: 6.5,
         quantity: 100,
-        description: "Vải : Dù phối lưới\nThành phần: 100% Poly\n- Logo Vạn Xuân Kiến Quốc\n+ Mặt trước in cao\n+ Mặt sau thêu",
+        description: "Materials: Fabric- Umbrella with mesh\nIngredients: 100% Poly\n- Logo Van Xuan Kien Quoc\n+ High print front\n+ Embroidered back side",
         category: "Hat",
         sku: "H0019978",
         sold: 4,
@@ -1088,10 +1088,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
 
     //data Shirt:7
     const product40 = new Product({
-        name: "Sơ Mi Cổ Danton Linh Vật Bbuff Ver1",
+        name: "Somi Danton Neck Mascot Bbuff Ver1",
         price: 9.7,
         quantity: 100,
-        description: "Chất liệu: Vải dù - in chuyển nhiệt\nThành phần: 100% poly\n- Co giãn 2 chiều\n- Bề mặt mềm mại\n- Nhanh khô\n- Độ bền cao\n+ Kỹ thuật in chuyển nhiệt + may đắp logo\n- HDSD:\n+ Nên sử dụng các loại bột giặt dịu nhẹ hoặc đã được pha loãng tránh làm hổng chất lượng vải.\n+ GIặt ủi nhiệt độ thường tránh nhiệt độ quá cao sẽ ảnh hưởng đến chất lượng hình in.\n+ Phơi trong bóng râm tránh nắng gắt .",
+        description: "Materials: Umbrella fabric - heat transfer printing\nIngredients: 100% poly\n- 2-way stretch\n- Soft\n- Dry fast\n- Durable\n+ Heat transfer printing technique + logo stitching\n- HDSD:\n+ It is recommended to use mild or diluted laundry detergents to avoid damaging the fabric quality.\n+ Wash at normal temperature to avoid excessive heat that will affect the print quality.\n+ Dry in the shade to avoid strong sunlight .",
         category: "Shirt",
         sku: "S0020281",
         sold: 5,
@@ -1104,10 +1104,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product41 = new Product({
-        name: "Sơ Mi Tay Ngắn Y Nguyên Bản 18- Summer Ver2",
+        name: "Somi Short Sleeves Y Original 18- Summer Ver2",
         price: 9.7,
         quantity: 100,
-        description: "Chất liệu: Vải dù - in chuyển nhiệt\nThành phần: 100% poly\n- Co giãn 2 chiều\n- Bề mặt mềm mại\n- Nhanh khô\n- Độ bền cao\n- HDSD:\n+ Nên sử dụng các loại bột giặt dịu nhẹ hoặc đã được pha loãng tránh các chất hóa học mạnh sẽ làm hổng chất lượng vải.\n+ Nên lộn mặt trái sản phẩm khi giặt, không nên dùng bàn chải quá cứng chà xát mạnh lên bề mặt vải.\n+ GIặt ủi nhiệt độ thường tránh nhiệt độ quá cao sẽ ảnh hưởng đến chất lượng hình in.\n+ Phơi trong bóng râm tránh nắng gắt .",
+        description: "Materials: Umbrella fabric - heat transfer printing\nIngredients: 100% poly\n- 2-way stretch\n- Soft\n- Dry fast\n- Durable\n- HDSD:\n+ It is recommended to use mild or diluted laundry detergents to avoid damaging the fabric quality.\n+ Should turn the product upside down when washing, do not use a brush that is too hard to rub strongly on the surface of the fabric.\n+ Wash at normal temperature to avoid excessive heat that will affect the print quality.\n+ Dry in the shade to avoid strong sunlight .",
         category: "Shirt",
         sku: "S0020246",
         sold: 5,
@@ -1122,10 +1122,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product42 = new Product({
-        name: "Sơ Mi Cổ Lãnh Tụ Đơn Giản M25",
+        name: "Somi Leader Collar Basic M25",
         price: 11,
         quantity: 100,
-        description: "Chất liệu: Vải Sơ Mi Cotton\nThành phần: 100% Cotton",
+        description: "Materials: Somi Cotton\nIngredients: 100% Cotton",
         category: "Shirt",
         sku: "S0020231",
         sold: 3,
@@ -1138,10 +1138,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product43 = new Product({
-        name: "Sơ Mi Tay Dài Đơn Giản M24",
+        name: "Somi long sleeves Basic M24",
         price: 11,
         quantity: 100,
-        description: "Chất liệu: Vải Sơ Mi \nThành phần: 63% poly 33% rayon 4% spandex \n- Mềm mại, bề mặt vải trơn mịn, cảm giác mát nhẹ khi mặc.",
+        description: "Materials: Somi \nIngredients: 63% poly 33% rayon 4% spandex \n- Soft, the surface of the fabric is smooth and feels cool to wear.",
         category: "Shirt",
         sku: "S0020220",
         sold: 6,
@@ -1156,10 +1156,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product44 = new Product({
-        name: "Sơ Mi Cổ Lãnh Tụ Đơn Giản M1",
+        name: "Somi Leader Collar Basic M1",
         price: 12.4,
         quantity: 100,
-        description: "Chất liệu: Vải Bamboo\nThành phần: 48.5% bamboo 48.5% poly 3% spandex\n- Khánh khuẩn và khử mùi\n- Mềm và nhẹ\n- Thoáng mát\n- Thấm hút\n- Nhanh khô",
+        description: "Materials: Vải Bamboo\nIngredients: 48.5% bamboo 48.5% poly 3% spandex\n- Khánh khuẩn và khử mùi\n- Mềm và nhẹ\n- Thoáng mát\n- Thấm hút\n- Nhanh khô",
         category: "Shirt",
         sku: "S0020219",
         sold: 8,
@@ -1172,10 +1172,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product45 = new Product({
-        name: "Sơ Mi Tay Ngắn Đơn Giản M3 ",
+        name: "Somi short sleeves Basic M3 ",
         price: 11,
         quantity: 100,
-        description: "Chất liệu: Kate\nThành phần: 88% superfine 12% modal\n- Ít Nhăn & Dễ ủi\n- Nhanh Khô\n- Thoáng mát",
+        description: "Materials: Kate\nIngredients: 88% superfine 12% modal\n- Less Wrinkling & Easy Ironing\n- Dry fast\n- Cool",
         category: "Shirt",
         sku: "S0020006",
         sold: 3,
@@ -1190,10 +1190,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product46 = new Product({
-        name: "Sơ Mi Tay Ngắn Đơn Giản M3",
+        name: "Somi Short sleeves Basic M3",
         price: 11,
         quantity: 100,
-        description: "Chất liệu: Kate\nThành phần: 88% superfine 12% modal\n- Ít Nhăn & Dễ ủi\n- Nhanh Khô\n- Thoáng mát",
+        description: "Materials: Kate\nIngredients: 88% superfine 12% modal\n- Less Wrinkling & Easy Ironing\n- Dry fast\n- Cool",
         category: "Shirt",
         sku: "S0020007",
         sold: 3,
@@ -1210,10 +1210,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
 
     //data Coat:5
     const product47 = new Product({
-        name: "Áo Khoác Classic Thể Thao M6",
+        name: "Coat Classic sporty M6",
         price: 13,
         quantity: 100,
-        description: "Chất liệu: Vài Dù\nThành phần: 100% poly\n- Chống tia UV UPF 50 +\n- Kháng Khuẩn\n- Trượt nước (khi đi dưới mưa nhỏ)\n- Siêu nhẹ\n- Siêu mỏng - Nhanh khô\n- Thiết kế mới\n+ Có lưới bên trong giảm ma sát và hạn chế bết dính\n+ Thoáng khí dưới lưng áo\n- Khóa cao qua cằm (che nắng được vùng cổ)\n- Cổ tay bo thun\n- 2 túi trong tiện lợi\n- 2 túi trước có dây kéo\n- Reverse Coil Zipper\n(Những chiếc khoá túi này có bề mặt ngoài dẹp, phẳng trong khi răng khoá thì ở trong)",
+        description: "Materials: Umbrella fabric\nIngredients: 100% poly\n- UV UPF 50 resistant +\n- Antimicrobial\n- Waterproof (when riding in light rain)\n- Super light\n- Super thin - Quick dry\n- New design\n+ Has a mesh inside to reduce friction and limit stickiness\n+ Breathable under the shirt\n- High lock over the chin (covers the neck area)\n- Elastic wrist\n- 2 convenient inner pockets\n- 2 front pockets with zipper\n- Reverse Coil Zipper\n(These bag locks have a flat, flat outer surface while the locking teeth are on the inside.)",
         category: "Coat",
         sku: "C0020100",
         sold: 2,
@@ -1226,10 +1226,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product48 = new Product({
-        name: "Áo Khoác Classic Y Nguyên Bản 18+ Logo 10 Ver1",
+        name: "Coat Classic Original Medicine 18+ Logo 10 Ver1",
         price: 20.2,
         quantity: 100,
-        description: "Chất liệu: Vải Dù\nThành phần: 100% poly\n- Cản gió\n- Trượt nước\n- Thoáng Khí\n- Vừa vặn Tối ưu\n- Chống thấm nước nhiều giờ liền\n- Bảo vệ chống tác động môi trường \n+ Reverse Coil Zipper\n(Những chiếc khoá túi này có bề mặt ngoài dẹp, phẳng trong khi răng khoá thì ở trong)\n+ Hai túi trong có dây kéo\n+ Nón rộng\n+ Gấu áo có dây rút phản quang điều chỉnh độ rộng phù hợp người dùng\n+ Dây kéo viền phản quang\n+ Họa tiết in chuyển nhiệt",
+        description: "Materials: Umbrella fabric\nIngredients: 100% poly\n- Wind resistance\n- Water slide\n- Breathable\n- Optimal Fit\n- Waterproof for hours\n- Protection against environmental impacts \n+ Reverse Coil Zipper\n(These bag locks have a flat, flat outer surface while the locking teeth are on the inside)\n+ Two inner zippered pockets\n+ Wide hat\n+The hem has a reflective drawstring to adjust the width to suit the user\n+ Reflective edge zipper\n+ Heat transfer printing pattern",
         category: "Coat",
         sku: "C0020029",
         sold: 4,
@@ -1244,10 +1244,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product49 = new Product({
-        name: "Áo Khoác Hoodie Ngân Hà Astronaut J01",
+        name: "Coat Hoodie Galaxy Astronaut J01",
         price: 13,
         quantity: 100,
-        description: "95% POLY \n- Hạn chế bám bẩn trong suốt quá trình sử dụng\n- Ít nhăn\n5% SPANDEX\nGiúp áo co giãn tối ưu\n \nHDSD:\n- Để đảm bảo cho chất liệu không bị xù lông, trong quá trình giặt bạn nên giặt mặt sau của vải này để tránh được những nguyên nhân làm vải polyester xuống màu.",
+        description: "Ingredients: 95% POLY \n- Limit staining during use\n- Less wrinkles\n5% SPANDEX\nHelps the shirt to stretch optimally\n \nHDSD:\n- To ensure that the material is not ruffled, in the washing process, you should wash the back of this fabric to avoid the causes of polyester fabric fading.",
         category: "Coat",
         sku: "C0019791",
         sold: 4,
@@ -1260,10 +1260,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product50 = new Product({
-        name: "Áo Khoác Hoodie Thần Cổ Đại Anubis Ver1",
+        name: "Coat Hoodie Ancient Gods Anubis Ver1",
         price: 14.1,
         quantity: 100,
-        description: "- Chất liệu: \nMINI ZURRY \n- Thành Phần:\n+ 95% COTTON\nThân thiện với môi trường\nThoáng mát\n+ 5% SPANDEX\nGiúp áo co giãn tối ưu",
+        description: "- Materials: \nMINI ZURRY \n- Ingredients:\n+ 95% COTTON\nEnvironmentally friendly\nCool\n+ 5% SPANDEX\nHelps the shirt to stretch optimally",
         category: "Coat",
         sku: "C0019784",
         image: "https://i.imgur.com/HTUdbqY.jpg",
@@ -1277,10 +1277,10 @@ exports.products = asyncMiddleware(async(req, res, next) => {
     });
 
     const product51 = new Product({
-        name: "Áo Khoác Hoodie 12VAHDT Văn Hiến Chi Bang Ver1 Hỏa",
+        name: "Coat Hoodie 12VAHDT Van hien Chi Bang Ver1 Hỏa",
         price: 15.2,
         quantity: 100,
-        description: "Chất liệu: Vảy cá chéo\nThành phần: 95%cotton 5%spandex\nCo dãn 4 chiều nên tạo được sự thoải mái khi mặc\nVải thấm hút mồ hôi tốt, thoáng khí",
+        description: "Materials: Cross fish scales\nIngredients: 95%cotton 5%spandex\n4-way stretch for comfortable wearing\nThe fabric is good at absorbing sweat and is breathable",
         category: "Coat",
         sku: "C0019473",
         sold: 2,
