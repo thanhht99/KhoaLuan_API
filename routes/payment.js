@@ -73,21 +73,44 @@ router.get("/pay/:orderCode", async(req, res) => {
             },
             amount: {
                 currency: "USD",
-                total: order ? `${order.totalPayment}` : "0",
+                total: order ?
+                    order.discount ?
+                    order.discount > 1 ?
+                    `${parseFloat(
+                    order.temporaryMoney - order.discount + order.transportFee
+                  ).toFixed(2)}` :
+                    `${parseFloat(
+                    order.temporaryMoney -
+                      (order.temporaryMoney * order.discount).toFixed(2) +
+                      order.transportFee
+                  ).toFixed(2)}` :
+                    `${order.totalPayment}` : "0",
                 details: {
                     shipping: order ? `${order.transportFee}` : "0",
                     subtotal: order ? `${order.temporaryMoney}` : "0",
+                    shipping_discount: order ?
+                        order.discount ?
+                        order.discount > 1 ?
+                        `${order.discount}` :
+                        `${(order.temporaryMoney * order.discount).toFixed(2)}` :
+                        "0" : "0",
                 },
             },
-            description: order ? order.note : "0",
+            description: order ? order.note : "",
         }, ],
     };
+
+    // console.log(
+    //     "🧧🧧🧧🧧🧧🧧🧧🧧🧧🧧🧧🧧🧧🧧🧧🧧🧧 ~ create_payment_json",
+    //     create_payment_json.transactions[0].amount
+    // );
 
     paypal.payment.create(create_payment_json, function(error, payment) {
         if (!order) {
             res.render("error");
         }
         if (error) {
+            // console.log("⛔⛔⛔⛔⛔⛔⛔⛔⛔");
             throw error;
         } else {
             for (let i = 0; i < payment.links.length; i++) {
@@ -111,10 +134,27 @@ router.get("/success/:orderCode", async(req, res) => {
         transactions: [{
             amount: {
                 currency: "USD",
-                total: order ? `${order.totalPayment}` : "0",
+                total: order ?
+                    order.discount ?
+                    order.discount > 1 ?
+                    `${parseFloat(
+                    order.temporaryMoney - order.discount + order.transportFee
+                  ).toFixed(2)}` :
+                    `${parseFloat(
+                    order.temporaryMoney -
+                      (order.temporaryMoney * order.discount).toFixed(2) +
+                      order.transportFee
+                  ).toFixed(2)}` :
+                    `${order.totalPayment}` : "0",
                 details: {
                     shipping: order ? `${order.transportFee}` : "0",
                     subtotal: order ? `${order.temporaryMoney}` : "0",
+                    shipping_discount: order ?
+                        order.discount ?
+                        order.discount > 1 ?
+                        `${order.discount}` :
+                        `${(order.temporaryMoney * order.discount).toFixed(2)}` :
+                        "0" : "0",
                 },
             },
         }, ],

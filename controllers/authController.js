@@ -316,8 +316,8 @@ exports.logout = asyncMiddleware(async(req, res, next) => {
         .json(new SuccessResponse(200, "Update isLogin successful =_="));
 });
 
-// Forget password
-exports.forgetPassword = asyncMiddleware(async(req, res, next) => {
+// Forget password Option 1
+exports.forgetPasswordOption1 = asyncMiddleware(async(req, res, next) => {
     const { userNameOrEmail } = req.body;
     req.checkBody("userNameOrEmail", "User Name Or Email is empty!!").notEmpty();
 
@@ -373,6 +373,63 @@ exports.forgetPassword = asyncMiddleware(async(req, res, next) => {
                             new SuccessResponse(
                                 200,
                                 `Please check your email ${newToken.email} to reset password`
+                            )
+                        );
+                } catch (err) {
+                    return next(new ErrorResponse(500, err));
+                }
+            }
+        }
+        return next(new ErrorResponse(403, "Account locked"));
+    }
+    return next(new ErrorResponse(404, "User Name Or Email not exist"));
+});
+
+// Forget password
+exports.forgetPassword = asyncMiddleware(async(req, res, next) => {
+    const { userNameOrEmail } = req.body;
+    req.checkBody("userNameOrEmail", "User Name Or Email is empty!!").notEmpty();
+
+    let errors = await req.getValidationResult();
+    if (!errors.isEmpty()) {
+        let array = [];
+        errors.array().forEach((e) => array.push(e.msg));
+        return next(new ErrorResponse(422, array));
+    }
+    const checkExistAccountByUserName = await Account.findOne({
+        userName: userNameOrEmail,
+    });
+    const checkExistAccountByEmail = await Account.findOne({
+        email: userNameOrEmail,
+    });
+
+    if (checkExistAccountByUserName || checkExistAccountByEmail) {
+        const account =
+            checkExistAccountByUserName || !checkExistAccountByEmail ?
+            checkExistAccountByUserName :
+            checkExistAccountByEmail;
+        if (account.isActive) {
+            const pass = crypto.randomBytes(10).toString("hex");
+
+            account.password = pass;
+            const updatedPassword = await account.save();
+
+            if (updatedPassword) {
+                try {
+                    await MailService.sendMail(
+                        `Clothes Store AT99<${process.env.USER_MAIL}>`,
+                        updatedPassword.email,
+                        "A new password",
+                        `Hi ${updatedPassword.userName}.<br>` +
+                        `\n<b>This is a new password we created:</b> <span style="color:red"><b>${pass}</b></span>.<br>` +
+                        `\nYou can change it anytime you want.<br>`
+                    );
+                    return res
+                        .status(200)
+                        .json(
+                            new SuccessResponse(
+                                200,
+                                `Please check your email ${updatedPassword.email} to reset password`
                             )
                         );
                 } catch (err) {
