@@ -36,7 +36,7 @@ ConnectMongo.getConnect();
 
 MailService.init();
 
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
 // middleware parse body
@@ -102,6 +102,7 @@ const server = app.listen(app.get("port"), () => {
 const io = (module.exports.io = require("socket.io")(server, {
     cors: {
         origin: "*",
+        methods: ["GET", "POST"],
     },
 }));
 const SocketManager = require("./SocketManager");

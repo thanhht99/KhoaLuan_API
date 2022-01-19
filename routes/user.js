@@ -13,7 +13,12 @@ router.get("/avatar/:id", userController.avatarUser);
 
 router.get("/:userName", jwtAuth, userController.findUserByUserName);
 
-router.get("/detail/:userName", jwtAuth, authorize("Admin"), userController.getUserByUserName);
+router.get(
+    "/detail/:userName",
+    jwtAuth,
+    authorize("Admin"),
+    userController.getUserByUserName
+);
 
 router.get("/", jwtAuth, userController.getUser);
 
@@ -27,6 +32,13 @@ router.get(
 );
 
 router.patch("/updatePassword", jwtAuth, userController.updatePassword);
+
+router.patch(
+    "/updatePasswordFromAdmin",
+    jwtAuth,
+    authorize("Admin"),
+    userController.updatePasswordFromAdmin
+);
 
 router.patch("/updateUser", jwtAuth, userController.updateUser);
 
