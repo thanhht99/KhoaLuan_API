@@ -79,6 +79,15 @@ exports.getVoucher = asyncMiddleware(async(req, res, next) => {
     if (!res_voucher) {
         return next(new ErrorResponse(404, "No voucher"));
     }
+    console.log("🚀🚀🚀🚀🚀🚀 ~ res_voucher", res_voucher);
+    const convertStartDate = new Date(res_voucher.startDate);
+    const convertEndDate = new Date(res_voucher.endDate);
+    const date = new Date();
+    if (date > convertEndDate || date < convertStartDate) {
+        return next(
+            new ErrorResponse(400, "The voucher code is not within the expiry date")
+        );
+    }
     return res.status(200).json(new SuccessResponse(200, res_voucher));
 });
 

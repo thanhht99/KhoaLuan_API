@@ -55,4 +55,11 @@ router.patch(
     productController.updateListImageProduct
 );
 
+//Change SKU to name
+router.post(
+    "/changeFromSkuToName",
+    baseAuth,
+    productController.changeFromSkuToName
+);
+
 module.exports = router;

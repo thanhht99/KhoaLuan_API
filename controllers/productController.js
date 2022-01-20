@@ -364,3 +364,26 @@ exports.updateListImageProduct = asyncMiddleware(async(req, res, next) => {
     }
     return res.status(200).json(new SuccessResponse(200, updatedProduct));
 });
+
+// Change SKU to name
+exports.changeFromSkuToName = asyncMiddleware(async(req, res, next) => {
+    const { products } = req.body;
+
+    const listProducts = await Promise.all(
+        products.map(async(item) => {
+            const findProduct = await Product.findOne({ sku: item.sku }).select(
+                "-updatedAt -createdAt -__v"
+            );
+            const show = {
+                ...item,
+                name: findProduct.name,
+            };
+            return show;
+        })
+    );
+
+    if (!listProducts) {
+        return next(new ErrorResponse(404, "No list of products"));
+    }
+    return res.status(200).json(new SuccessResponse(200, listProducts));
+});

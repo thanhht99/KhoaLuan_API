@@ -63,6 +63,19 @@ exports.orderOfUser = asyncMiddleware(async(req, res, next) => {
     return res.status(200).json(new SuccessResponse(200, order));
 });
 
+// search Order
+exports.searchOrder = asyncMiddleware(async(req, res, next) => {
+    const { orderCode } = req.params;
+    if (!orderCode.trim()) {
+        return next(new ErrorResponse(400, "Order Code is empty"));
+    }
+    const order = await Order.findOne({ orderCode });
+    if (!order) {
+        return next(new ErrorResponse(404, "No order"));
+    }
+    return res.status(200).json(new SuccessResponse(200, order));
+});
+
 // Create Order Postman
 exports.createOrderPostman = asyncMiddleware(async(req, res, next) => {
     const { address, payments, phone, voucherCode } = req.body;

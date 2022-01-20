@@ -12,6 +12,8 @@ router.get("/", jwtAuth, orderController.orderOfUser);
 
 router.post("/", baseAuth, orderController.createOrder);
 
+router.get("/search/:orderCode", baseAuth, orderController.searchOrder);
+
 router.post("/changeOrderStatus/:id", jwtAuth, authorize("Admin", "Saler"),
     orderController.changeOrderStatus
 );
